@@ -1,7 +1,5 @@
 # 🧪 SciFusion – Autonomous AI for Scientific Research
 
----
-
 ## 🔍 Project Overview
 
 **SciFusion** is an AI-powered research assistant designed to revolutionize scientific discovery through intelligent, autonomous workflows. By leveraging the **NovelSeek multi-agent framework**, it automates the **entire scientific process**—from generating hypotheses to designing and executing experiments, and refining outcomes with expert feedback in a closed-loop system.
@@ -63,6 +61,43 @@ SciFusion embraces the **agentic paradigm** to replicate the structure of collab
 
 ---
 
+## 🛠️ Tech Stack
+
+<div align="center">
+  <!-- Icons Row -->
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React.js" width="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original-wordmark.svg" alt="Express.js" width="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original-wordmark.svg" alt="MongoDB" width="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI" width="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" width="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="40"/>
+</div>
+
+
+### 🔍 Stack Description
+
+* ⚛️ **React.js** – Frontend library to build dynamic, responsive user interfaces.
+* 🌐 **Node.js** – Backend runtime environment for executing JavaScript server-side.
+* ⚙️ **Express.js** – Lightweight backend framework for handling routes and APIs.
+* 🍃 **MongoDB** – NoSQL database used for storing research content and metadata.
+* ⚡ **FastAPI** – High-performance Python framework to serve AI agent APIs.
+* 🐍 **Python** – Core language for LLM orchestration, agents, and scientific logic.
+* 🐳 **Docker** – Containerizes the entire system to ensure consistent deployments.
+* 🛠️ **GitHub** – Source code management, version control, and collaboration.
+
+---
+
+## 🏗️ System Architecture
+
+<div align="center"><img src="assets/architecture.svg" alt="Architecture" width="700px" /> </div>
+
+---
+## 🔄 Workflow Overview
+<div align="center"><img src="assets/WorkFlow.jpeg" alt="Workflow" width="700px" /> </div>
+
+---
 ## 👥 Contributors
 
 | 👤 Name                  | 🌐 GitHub Profile                                              |
