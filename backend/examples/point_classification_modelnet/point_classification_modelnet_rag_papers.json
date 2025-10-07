@@ -1,0 +1,565 @@
+{
+    "topic_description": "novel attention mechanisms for point cloud classification",
+    "all_queries": [
+        "",
+        "KeywordQuery(\"point cloud attention classification\")",
+        "GetReferences(\"bf7d8e4144ffafd763d16",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "KeywordQuery(\"hyperbolic transformer point cloud\")"
+    ],
+    "paper_bank": [
+        {
+            "id": "bf7d8e4144ffafd763d16d4f851ea70999bf5acd",
+            "paperId": "bf7d8e4144ffafd763d16d4f851ea70999bf5acd",
+            "title": "A 3D Point Cloud Classification Method Based on Adaptive Graph Convolution and Global Attention",
+            "year": 2024,
+            "citationCount": 8,
+            "openAccessPdf": {
+                "url": "https://www.mdpi.com/1424-8220/24/2/617/pdf?version=1705571269",
+                "status": "GOLD",
+                "license": "CCBY",
+                "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC11154494, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "A novel 3D point cloud classification method based on global attention and adaptive graph convolution (Att-AdaptNet) that dynamically learns features based on point interactions, generating adaptive kernels to effectively and precisely capture diverse relationships among points from different semantic parts is proposed."
+            },
+            "authors": [
+                {
+                    "authorId": "2253612913",
+                    "name": "Yaowei Yue"
+                },
+                {
+                    "authorId": "2280044740",
+                    "name": "Xiaonan Li"
+                },
+                {
+                    "authorId": "2253838050",
+                    "name": "Yun Peng"
+                }
+            ],
+            "abstract": "In recent years, there has been significant growth in the ubiquity and popularity of three-dimensional (3D) point clouds, with an increasing focus on the classification of 3D point clouds. To extract richer features from point clouds, many researchers have turned their attention to various point set regions and channels within irregular point clouds. However, this approach has limited capability in attending to crucial regions of interest in 3D point clouds and may overlook valuable information from neighboring features during feature aggregation. Therefore, this paper proposes a novel 3D point cloud classification method based on global attention and adaptive graph convolution (Att-AdaptNet). The method consists of two main branches: the first branch computes attention masks for each point, while the second branch employs adaptive graph convolution to extract global features from the point set. It dynamically learns features based on point interactions, generating adaptive kernels to effectively and precisely capture diverse relationships among points from different semantic parts. Experimental results demonstrate that the proposed model achieves 93.8% in overall accuracy and 90.8% in average accuracy on the ModeNet40 dataset.",
+            "score": 7
+        },
+        {
+            "id": "48fcd6cde48590d2efd87c0ef0e839bcd19a921c",
+            "paperId": "48fcd6cde48590d2efd87c0ef0e839bcd19a921c",
+            "title": "RISurConv: Rotation Invariant Surface Attention-Augmented Convolutions for 3D Point Cloud Classification and Segmentation",
+            "year": 2024,
+            "citationCount": 6,
+            "openAccessPdf": {
+                "url": "",
+                "status": null,
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/2408.06110, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "This work proposes a novel yet effective rotation invariant architecture for 3D point cloud classification and segmentation based on an attention-augmented convolution operator named RISurConv that is invariant to arbitrary rotations while maintaining high accuracy."
+            },
+            "authors": [
+                {
+                    "authorId": "2267872788",
+                    "name": "Zhiyuan Zhang"
+                },
+                {
+                    "authorId": "2315945312",
+                    "name": "Licheng Yang"
+                },
+                {
+                    "authorId": "2315924982",
+                    "name": "Zhiyu Xiang"
+                }
+            ],
+            "abstract": "Despite the progress on 3D point cloud deep learning, most prior works focus on learning features that are invariant to translation and point permutation, and very limited efforts have been devoted for rotation invariant property. Several recent studies achieve rotation invariance at the cost of lower accuracies. In this work, we close this gap by proposing a novel yet effective rotation invariant architecture for 3D point cloud classification and segmentation. Instead of traditional pointwise operations, we construct local triangle surfaces to capture more detailed surface structure, based on which we can extract highly expressive rotation invariant surface properties which are then integrated into an attention-augmented convolution operator named RISurConv to generate refined attention features via self-attention layers. Based on RISurConv we build an effective neural network for 3D point cloud analysis that is invariant to arbitrary rotations while maintaining high accuracy. We verify the performance on various benchmarks with supreme results obtained surpassing the previous state-of-the-art by a large margin. We achieve an overall accuracy of 96.0% (+4.7%) on ModelNet40, 93.1% (+12.8%) on ScanObjectNN, and class accuracies of 91.5% (+3.6%), 82.7% (+5.1%), and 78.5% (+9.2%) on the three categories of the FG3D dataset for the fine-grained classification task. Additionally, we achieve 81.5% (+1.0%) mIoU on ShapeNet for the segmentation task. Code is available here: https://github.com/cszyzhang/RISurConv",
+            "score": 7
+        },
+        {
+            "id": "a6dda2122f101433ae2f06d07dd2dd5b8ea48691",
+            "paperId": "a6dda2122f101433ae2f06d07dd2dd5b8ea48691",
+            "title": "Application of Hyperbolic Space Attention Mechanisms in 3D Point Cloud Classification",
+            "year": 2024,
+            "citationCount": 0,
+            "openAccessPdf": {
+                "url": "",
+                "status": "CLOSED",
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/CISCE62493.2024.10653457?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/CISCE62493.2024.10653457, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": null
+            },
+            "authors": [
+                {
+                    "authorId": "2320720618",
+                    "name": "Lamei Liu"
+                },
+                {
+                    "authorId": "2320717237",
+                    "name": "Zhiqiang Liu"
+                }
+            ],
+            "abstract": "A novel 3D point cloud classification method, Point Hyperbolic Geodesic Transformer (PHGT), is proposed in this paper, utilizing the Poincar\u00e9 ball model of hyperbolic space to enhance the feature extraction and classification processes of point cloud data. The expansive nature and exponential volume-diameter relationship of hyperbolic space, in comparison to traditional Euclidean space and manifolds, demonstrate advantages in managing data with complex hierarchical structures. In PHGT, the model's ability to recognize and process hierarchical structures is enhanced through the use of geodesic distances in hyperbolic space, replacing traditional dot product operations. Extensive experiments have been conducted on the standard datasets ModelNet40 and ScanObjectNN, verifying the effectiveness of PHGT in 3D point cloud classification. Results indicate that PHGT surpasses existing methods based on traditional manifold spaces in terms of classification accuracy and generalization capability. This study not only highlights the potential application of hyperbolic space in handling complex point cloud data but also offers valuable insights for the integration of hyperbolic geometry into other complex data analysis tasks in the future.",
+            "score": 7
+        },
+        {
+            "id": "4e2d186ead58146e41fc32652c5bc1a9182aa6c5",
+            "paperId": "4e2d186ead58146e41fc32652c5bc1a9182aa6c5",
+            "title": "UFO-Net: A Linear Attention-Based Network for Point Cloud Classification",
+            "year": 2023,
+            "citationCount": 2,
+            "openAccessPdf": {
+                "url": "https://www.mdpi.com/1424-8220/23/12/5512/pdf?version=1686829701",
+                "status": "GOLD",
+                "license": "CCBY",
+                "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC10303870, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "An augmented sampling and grouping module is designed to efficiently obtain fine-grained features from the original point cloud to use a linearly normalized attention mechanism in point cloud processing tasks, investigating a novel transformer-based point cloud classification architecture UFO-Net."
+            },
+            "authors": [
+                {
+                    "authorId": "2152235490",
+                    "name": "Sheng He"
+                },
+                {
+                    "authorId": "9691147",
+                    "name": "Peiyao Guo"
+                },
+                {
+                    "authorId": "2220988377",
+                    "name": "Zeyu Tang"
+                },
+                {
+                    "authorId": "2156282370",
+                    "name": "Dongxin Guo"
+                },
+                {
+                    "authorId": "2048732468",
+                    "name": "L. Wan"
+                },
+                {
+                    "authorId": "2112201187",
+                    "name": "Huilu Yao"
+                }
+            ],
+            "abstract": "Three-dimensional point cloud classification tasks have been a hot topic in recent years. Most existing point cloud processing frameworks lack context-aware features due to the deficiency of sufficient local feature extraction information. Therefore, we designed an augmented sampling and grouping module to efficiently obtain fine-grained features from the original point cloud. In particular, this method strengthens the domain near each centroid and makes reasonable use of the local mean and global standard deviation to extract point cloud\u2019s local and global features. In addition to this, inspired by the transformer structure UFO-ViT in 2D vision tasks, we first tried to use a linearly normalized attention mechanism in point cloud processing tasks, investigating a novel transformer-based point cloud classification architecture UFO-Net. An effective local feature learning module was adopted as a bridging technique to connect different feature extraction modules. Importantly, UFO-Net employs multiple stacked blocks to better capture feature representation of the point cloud. Extensive ablation experiments on public datasets show that this method outperforms other state-of-the-art methods. For instance, our network performed with 93.7% overall accuracy on the ModelNet40 dataset, which is 0.5% higher than PCT. Our network also achieved 83.8% overall accuracy on the ScanObjectNN dataset, which is 3.8% better than PCT.",
+            "score": 7
+        },
+        {
+            "id": "8ba1ed4853b72197c41853abd7ffc943f68b0200",
+            "paperId": "8ba1ed4853b72197c41853abd7ffc943f68b0200",
+            "title": "PointGT: A Method for Point-Cloud Classification and Segmentation Based on Local Geometric Transformation",
+            "year": 2024,
+            "citationCount": 42,
+            "openAccessPdf": {
+                "url": "",
+                "status": null,
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/TMM.2024.3374580?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/TMM.2024.3374580, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "The Point Geometry Transformation (PointGT) method for 3D point-cloud classification and part segmentation is proposed, by exploring the underlying geometric structure in the local and global of points by integrating a local abstraction module and an optimization strategy."
+            },
+            "authors": [
+                {
+                    "authorId": "2216517153",
+                    "name": "Huang Zhang"
+                },
+                {
+                    "authorId": "2263796382",
+                    "name": "Changshuo Wang"
+                },
+                {
+                    "authorId": "1410142769",
+                    "name": "Long Yu"
+                },
+                {
+                    "authorId": "2092246",
+                    "name": "Shengwei Tian"
+                },
+                {
+                    "authorId": "2195492834",
+                    "name": "Xin Ning"
+                },
+                {
+                    "authorId": "2237980969",
+                    "name": "J. Rodrigues"
+                }
+            ],
+            "abstract": "Recently, three-dimensional (3D) point-cloud analysis has been extensively utilized in the domain of machine vision, encompassing tasks include shape classification and segmentation. However the inherent disorder in point clouds poses a challenge in capturing relationships among points, particularly when dealing with mutilated and occluded data. To this end, We propose the Point Geometry Transformation (PointGT) method for 3D point-cloud classification and part segmentation, by exploring the underlying geometric structure in the local and global of points. Specifically, the efficacy of PointGT arises from the integration of a local abstraction (LA) module and an optimization strategy. The LA module is tailored to address the localized features inherent to point clouds. This module encapsulates the multidimensional attributes of local edge and inside points. The bi-directional cross-attention mechanism amalgamates these two constituents into the native channel with the primary objective of optimizing the exploitation of edge and inside delineations, thereby judiciously mitigating noise artifacts. Ultimately, the channel residual connections disseminate the post-downsampling point attributes, thereby inheriting the edge and inside delineations gleaned via post bi-directional attention. The effectiveness of the proposed method was verified through the validation of point-cloud classification and segmentation datasets. The empirical findings confirmed the efficacy of PointGT; accuracies of 93.2% and 87.8% were achieved for the ModelNet40 and ScanObjectNN datasets, respectively.",
+            "score": 6
+        },
+        {
+            "id": "2e8b0d1b9035180e2ab7ae5b607655a7c8485b5c",
+            "paperId": "2e8b0d1b9035180e2ab7ae5b607655a7c8485b5c",
+            "title": "Enhancing Point Cloud Classification and Segmentation With Attention-Enhanced SO-PointNet++",
+            "year": 2024,
+            "citationCount": 2,
+            "openAccessPdf": {
+                "url": "https://doi.org/10.1109/access.2024.3520138",
+                "status": "GOLD",
+                "license": "CCBYNCND",
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/ACCESS.2024.3520138?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/ACCESS.2024.3520138, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "SO-PointNet++ is presented, an enhanced PointNet++ architecture that integrates Shuffle Attention and Offset-Attention mechanisms to improve local and global feature extraction capabilities and a residual connection module is integrated into the PointNet++ architecture."
+            },
+            "authors": [
+                {
+                    "authorId": "2280406216",
+                    "name": "Gang Cheng"
+                },
+                {
+                    "authorId": "2336544739",
+                    "name": "Chengwei Gu"
+                }
+            ],
+            "abstract": "With the rapid advancement of deep learning in computer vision, accurately performing classification and segmentation tasks on 3D point clouds has become increasingly important. Despite significant progress, challenges persist due to the uneven density, noise, sparsity, shape complexity, and disorder inherent in 3D point cloud data. The accuracy of these tasks is closely tied to the quality of the features extracted by the network. This study presents SO-PointNet++, an enhanced PointNet++ architecture that integrates Shuffle Attention and Offset-Attention mechanisms to improve local and global feature extraction capabilities. Additionally, a residual connection module is integrated into the PointNet++ architecture. This module reduces the effect of the issue of gradient vanishing. We demonstrate SO-PointNet++\u2019s efficacy through experiments on the ModelNet40 and ShapeNet datasets, achieving an overall accuracy of 92.7% and a mean Intersection over Union (mIoU) of 85.6%, respectively. These results outperform existing methods, highlighting SO-PointNet++\u2019s potential to advance point cloud classification and segmentation.",
+            "score": 6
+        },
+        {
+            "id": "11a9daca6068afab6eac88c72bc60d77dc5feec9",
+            "paperId": "11a9daca6068afab6eac88c72bc60d77dc5feec9",
+            "title": "Global Attention-Guided Dual-Domain Point Cloud Feature Learning for Classification and Segmentation",
+            "year": 2024,
+            "citationCount": 1,
+            "openAccessPdf": {
+                "url": "https://arxiv.org/pdf/2407.08994",
+                "status": "GREEN",
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/2407.08994, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "This paper devise the contextual position-enhanced transformer (CPT) module, which is armed with an improved global attention mechanism, to produces a global-aware input embedding that serves as the guidance to subsequent aggregations."
+            },
+            "authors": [
+                {
+                    "authorId": "2311861203",
+                    "name": "Zihao Li"
+                },
+                {
+                    "authorId": "2295888103",
+                    "name": "Pan Gao"
+                },
+                {
+                    "authorId": "2295884906",
+                    "name": "Kang You"
+                },
+                {
+                    "authorId": "2312108594",
+                    "name": "Chuan Yan"
+                },
+                {
+                    "authorId": "2274835163",
+                    "name": "Manoranjan Paul"
+                }
+            ],
+            "abstract": "Previous studies have demonstrated the effectiveness of point-based neural models on the point cloud analysis task. However, there remains a crucial issue on producing the efficient input embedding for raw point coordinates. Moreover, another issue lies in the limited efficiency of neighboring aggregations, which is a critical component in the network stem. In this paper, we propose a global attention-guided dual-domain feature learning network (GAD) to address the above-mentioned issues. We first devise the contextual position-enhanced transformer (CPT) module, which is armed with an improved global attention mechanism, to produces a global-aware input embedding that serves as the guidance to subsequent aggregations. Then, the dual-domain K-nearest neighbor feature fusion (DKFF) is cascaded to conduct effective feature aggregation through novel dual-domain feature learning which appreciates both local geometric relations and long-distance semantic connections. Extensive experiments on multiple point cloud analysis tasks (e.g., classification, part segmentation, and scene semantic segmentation) demonstrate the superior performance of the proposed method and the efficacy of the devised modules.",
+            "score": 6
+        },
+        {
+            "id": "9403e258d0c7f278dd486b2344999723f8f7da35",
+            "paperId": "9403e258d0c7f278dd486b2344999723f8f7da35",
+            "title": "Strengthening 3D Point Cloud Classification through Self-Attention and Plane Features",
+            "year": 2024,
+            "citationCount": 0,
+            "openAccessPdf": {
+                "url": "",
+                "status": "CLOSED",
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/AVSS61716.2024.10672599?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/AVSS61716.2024.10672599, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "This paper introduces an innovative architecture for precise 3D point cloud classification that incorporates an embedding module that elevates the point cloud to higher-dimensional feature representations which is followed by geometric feature mapping and extraction modules to capture point cloud characteristics."
+            },
+            "authors": [
+                {
+                    "authorId": "2321685168",
+                    "name": "Jin-Cheng Liu"
+                },
+                {
+                    "authorId": "2311118994",
+                    "name": "Jun-Wei Hsieh"
+                },
+                {
+                    "authorId": "2119104462",
+                    "name": "Yumeng Zhang"
+                },
+                {
+                    "authorId": "2687140",
+                    "name": "Chun-Chieh Lee"
+                },
+                {
+                    "authorId": "2311117811",
+                    "name": "Kuo-Chin Fan"
+                }
+            ],
+            "abstract": "To address the unique attributes of three-dimensional point cloud data, this paper introduces an innovative architecture for precise 3D point cloud classification. Expanding on the PointMLP framework, we incorporate an embedding module that elevates the point cloud to higher-dimensional feature representations which are followed by geometric feature mapping and extraction modules to capture point cloud characteristics. To estimate local geometric structures, we use plane features to determine planes associated with nearby points. Additionally, we integrate self-attention mechanisms to capture intricate local geometric features. Moreover, MLP modules with residual connections are employed for efficient feature extraction. The derived features are then reduced in size using Max Pooling layers. For classification purposes, we utilize fully connected layers, batch normalization, activation functions, and random weight dropping techniques to enhance generalization and ensure robustness on unseen data. By adopting these architectural decisions, our proposed model achieves significant progress in accurately classifying 3D point clouds.",
+            "score": 5
+        },
+        {
+            "id": "eab2dce764cc2eec98ad037ccb9183df74af058f",
+            "paperId": "eab2dce764cc2eec98ad037ccb9183df74af058f",
+            "title": "Point Cloud-Based 3D Object Classification With Non Local Attention and Lightweight Convolution Neural Networks",
+            "year": 2024,
+            "citationCount": 0,
+            "openAccessPdf": {
+                "url": "",
+                "status": null,
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/ACCESS.2024.3485906?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/ACCESS.2024.3485906, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "This research introduces a novel lightweight model for 3D object classification based on point clouds that achieves higher accuracy while requiring minimal computing overhead and is the first study to propose a lightweight TnetLight module as a transformation network that aligns and converts input point clouds."
+            },
+            "authors": [
+                {
+                    "authorId": "2239005315",
+                    "name": "R. Karthik"
+                },
+                {
+                    "authorId": "2325647661",
+                    "name": "Rohan Inamdar"
+                },
+                {
+                    "authorId": "2327633535",
+                    "name": "S. Kavin Sundarr"
+                },
+                {
+                    "authorId": "2238721770",
+                    "name": "Jaehyuk Cho"
+                },
+                {
+                    "authorId": "2197126818",
+                    "name": "Sathishkumar Veerappampalayam Easwaramoorthy"
+                }
+            ],
+            "abstract": "Three-dimensional (3D) object classification is crucial in various applications, including autonomous driving, robotics, and augmented reality, where precise detection of objects in 3D space is required. Traditional techniques for 3D object classification encompass voxel-based representations, multi-view projections, and point cloud analysis. However, these approaches can be computationally intensive, and might not capture complete structure of the underlying object. This research introduces a novel lightweight model for 3D object classification based on point clouds that achieves higher accuracy while requiring minimal computing overhead. The proposed system incorporates adaptive sampling, an Attentive-Convolution Feature block, a Dualpath feature processing block, and a non-local attention mechanism to enhance feature representation and classification performance. To our knowledge, this is the first study to propose a lightweight TnetLight module as a transformation network that aligns and converts input point clouds, capturing subtle geometric variations and highlighting differences between objects to enhance shape recognition and differentiation accuracy. Additionally, the model integrates an Attentive-Convolution Feature extraction block that combines local geometric features with global contextual information, enhancing the network\u2019s ability to capture both detailed and broader characteristics for better differentiation between objects with slight variations. The network was evaluated on the ModelNet10 dataset, achieving an accuracy of 94.4%.",
+            "score": 5
+        },
+        {
+            "id": "d6687f72c5d210314e55b5c4b49018db65acca81",
+            "paperId": "d6687f72c5d210314e55b5c4b49018db65acca81",
+            "title": "Point Cloud Classification by Integrating Attention Mechanism with Sparse Convolutional",
+            "year": 2024,
+            "citationCount": 0,
+            "openAccessPdf": {
+                "url": "",
+                "status": null,
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/ICGMRS62107.2024.10581325?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/ICGMRS62107.2024.10581325, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "A 3D point cloud classification network based on Minkowski sparse convolution is proposed, and a sparse convolution module that integrates an attention mechanism is introduced that integrates an attention mechanism to fully represent the sparsely expressed features and enhance their expressive ability."
+            },
+            "authors": [
+                {
+                    "authorId": "2281097933",
+                    "name": "Li Lin"
+                },
+                {
+                    "authorId": "2281287095",
+                    "name": "Zongji Zhao"
+                },
+                {
+                    "authorId": "2310865567",
+                    "name": "Tianshu Ma"
+                },
+                {
+                    "authorId": "2310647842",
+                    "name": "Peng Zhang"
+                },
+                {
+                    "authorId": "2310652919",
+                    "name": "Lili Zhang"
+                }
+            ],
+            "abstract": "Point cloud data is one of the essential data sources for 3D reconstruction, and a major challenge in 3D reconstruction based on point clouds lies in the fine-grained classification of sparse point clouds. However, for large-scale objects such as buildings, the point sets can be extremely sparse, making it difficult to fully describe the morphological characteristics of the objects represented by the sampled point sets. In this paper, we propose a 3D point cloud classification network based on Minkowski sparse convolution, and introduce a sparse convolution module that integrates an attention mechanism. The aim is to fully represent the sparsely expressed features and enhance their expressive ability. To validate the effectiveness of our method, experiments were conducted on the ISPRS and 2019DFC datasets. The experimental results show that, compared to mainstream methods, our approach achieves higher point cloud classification accuracy and demonstrates good generalization ability.",
+            "score": 5
+        },
+        {
+            "id": "567def15fe0ee7df8296006e8ab298dc7f780de6",
+            "paperId": "567def15fe0ee7df8296006e8ab298dc7f780de6",
+            "title": "LiDAR Point Cloud Classification with Coordinate Attention Blueprint Separation Involution Neural Network",
+            "year": 2023,
+            "citationCount": 3,
+            "openAccessPdf": {
+                "url": "",
+                "status": null,
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/CSCWD57460.2023.10152815?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/CSCWD57460.2023.10152815, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "A 3D point cloud classification model with coordinate attention, blueprint separation involution neural network (BICANet), where the combination of 2D features and 3D features is adopted to maintain the spatial structure of the point cloud."
+            },
+            "authors": [
+                {
+                    "authorId": "2220584667",
+                    "name": "Jian Zhou"
+                },
+                {
+                    "authorId": "2133617351",
+                    "name": "Guodao Zhang"
+                },
+                {
+                    "authorId": "15997759",
+                    "name": "Liting Dai"
+                },
+                {
+                    "authorId": "1491637293",
+                    "name": "Guangjie Zhou"
+                },
+                {
+                    "authorId": "2157830277",
+                    "name": "Ruyu Liu"
+                }
+            ],
+            "abstract": "With the advent of the era of Industry 4.0 and the continuous development of point cloud data acquisition technology, point cloud data has been widely used in unmanned distribution of intelligent logistics. This paper designs a 3D point cloud classification model with coordinate attention, blueprint separation involution neural network (BICANet). Firstly, the combination of 2D features and 3D features is adopted to maintain the spatial structure of the point cloud. Secondly, the Involution network is introduced to reduce the amount of redundant data for neural network computation and improve the whole network computation efficiency. At the same time, to further enhance the network feature learning capability, the blueprint separation convolution is combined with coordinate attention. The experimental results prove that the overall accuracy of BICANet in Vaihingen and GML B datasets reaches 86.0% and 98.8%, respectively. It is highly competitive with the currently available methods.",
+            "score": 5
+        },
+        {
+            "id": "134aea2842966c4bd4fa236d810697bba8fbf8c2",
+            "paperId": "134aea2842966c4bd4fa236d810697bba8fbf8c2",
+            "title": "BICANet: LiDAR Point Cloud Classification Network Based on Coordinate Attention and Blueprint Separation Involution Neural Network",
+            "year": 2023,
+            "citationCount": 3,
+            "openAccessPdf": {
+                "url": "",
+                "status": "CLOSED",
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.1109/JSEN.2023.3323047?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.1109/JSEN.2023.3323047, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "A 3-D point cloud classification model coordinate attention blueprint separation involution neural network (BICANet) with multidimensional feature extraction with integrated blueprint separation convolution (CA) combined with coordinate attention (CA)."
+            },
+            "authors": [
+                {
+                    "authorId": "2247623069",
+                    "name": "Guodao Zhang"
+                },
+                {
+                    "authorId": "2312345010",
+                    "name": "Haiyang Ye"
+                },
+                {
+                    "authorId": "2260648072",
+                    "name": "Xiaoyun Gao"
+                },
+                {
+                    "authorId": "2157830277",
+                    "name": "Ruyu Liu"
+                },
+                {
+                    "authorId": "2258999432",
+                    "name": "Xiuting Tao"
+                },
+                {
+                    "authorId": "2331877461",
+                    "name": "Genfu Yang"
+                },
+                {
+                    "authorId": "2220584667",
+                    "name": "Jian Zhou"
+                },
+                {
+                    "authorId": "2259432262",
+                    "name": "Zhaomin Chen"
+                }
+            ],
+            "abstract": "With the advent of the era of Industry 4.0 and the continuous development of point cloud data acquisition technology, point cloud data have been widely used in the unmanned distribution of intelligent logistics. Applying deep neural networks to accurate light detection and ranging (LiDAR) point cloud classification results is considerably significant for unmanned transport. This article designs a 3-D point cloud classification model coordinate attention blueprint separation involution neural network (BICANet) with multidimensional feature extraction. First, to extract more point cloud features, 3-D point clouds are projected to a 2-D plane for calculating point cloud feature values, and multidimensional point cloud feature information is fused from different views. Second, the involution network is introduced to reduce the amount of redundant data for neural network computation and improve the whole network computation efficiency. At the same time, to further enhance the network feature learning capability, the blueprint separation convolution is combined with coordinate attention (CA). Finally, to draw our conclusions more rigorously, we conducted error analysis experiments and experimented with the generalization ability of our proposed BICANet model. The overall accuracy of BICANet in the Vaihingen and GML_B datasets was experimentally demonstrated to reach 86.0% and 98.8%, respectively. It is highly competitive with the currently available methods.",
+            "score": 5
+        },
+        {
+            "id": "4bbe9f217619dfdcf00c7d0171126d52fa4aeb40",
+            "paperId": "4bbe9f217619dfdcf00c7d0171126d52fa4aeb40",
+            "title": "3D Point Cloud Classification Method Based on Multiple Attention Mechanism and Dynamic Graph Convolution",
+            "year": 2023,
+            "citationCount": 2,
+            "openAccessPdf": {
+                "url": "https://itc.ktu.lt/index.php/ITC/article/download/33035/16043",
+                "status": "GOLD",
+                "license": "CCBY",
+                "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.5755/j01.itc.52.3.33035?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.5755/j01.itc.52.3.33035, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "The experimental results on the public data set ModelNet40 indicate that compared with the DGCNN classification network, the improved network model improves the classification accuracy of the data set by0.5 % and the average accuracy by 0.9 %."
+            },
+            "authors": [
+                {
+                    "authorId": "2248637896",
+                    "name": "Yu Zhang"
+                },
+                {
+                    "authorId": "2249432295",
+                    "name": "Zilong Wang"
+                },
+                {
+                    "authorId": "2248245246",
+                    "name": "Yongjian Zhu"
+                }
+            ],
+            "abstract": "In order to solve the problem of uneven density and the low classification accuracy of 3D point cloud, a 3D point cloud classification method fuses multi-attention machine is proposed. It is principally based on the traditional point cloud dynamic graph convolution classification network, into multiple attention mechanisms, including self-attention, spatial attention and channel attention mechanisms. The self-attention mechanism can reduce the dependence on irrelevant points while aligning point clouds, and input the processed point cloud into the classification network. Then the missing geometric information in the classification network is compensated by the integration of spatial and channel attention mechanisms. The experimental results on the public data set ModelNet40 indicate that compared with the DGCNN classification network, the improved network model improves the classification accuracy of the data set by 0.5 % and the average accuracy by 0.9 %. Meantime, the classification accuracy outstrips other contrast classification algorithms.",
+            "score": 5
+        },
+        {
+            "id": "36263665d7fa5aba16aa34d28c6fd5947ee1fa67",
+            "paperId": "36263665d7fa5aba16aa34d28c6fd5947ee1fa67",
+            "title": "Enhancing Octree-Based Context Models for Point Cloud Geometry Compression With Attention-Based Child Node Number Prediction",
+            "year": 2024,
+            "citationCount": 10,
+            "openAccessPdf": {
+                "url": "https://arxiv.org/pdf/2407.08528",
+                "status": "GREEN",
+                "license": null,
+                "disclaimer": "Notice: Paper or abstract available at https://arxiv.org/abs/2407.08528, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "tldr": {
+                "model": "tldr@v2.0.0",
+                "text": "An attention-based child node number prediction (ACNP) module that can predict the number of occupied child nodes and map it into an 8-dimensional vector to assist the context model in predicting the probability distribution of the occupancy of the current node for efficient entropy coding."
+            },
+            "authors": [
+                {
+                    "authorId": "2287469423",
+                    "name": "Chang Sun"
+                },
+                {
+                    "authorId": "2309786086",
+                    "name": "Hui Yuan"
+                },
+                {
+                    "authorId": "2240030965",
+                    "name": "Xiaolong Mao"
+                },
+                {
+                    "authorId": "2287142827",
+                    "name": "Xin Lu"
+                },
+                {
+                    "authorId": "3279313",
+                    "name": "R. Hamzaoui"
+                }
+            ],
+            "abstract": "In point cloud geometry compression, most octree-based context models use the cross-entropy between the one-hot encoding of node occupancy and the probability distribution predicted by the context model as the loss. This approach converts the problem of predicting the number (a regression problem) and the position (a classification problem) of occupied child nodes into a 255-dimensional classification problem. As a result, it fails to accurately measure the difference between the one-hot encoding and the predicted probability distribution. We first analyze why the cross-entropy loss function fails to accurately measure the difference between the one-hot encoding and the predicted probability distribution. Then, we propose an attention-based child node number prediction (ACNP) module to enhance the context models. The proposed module can predict the number of occupied child nodes and map it into an 8-dimensional vector to assist the context model in predicting the probability distribution of the occupancy of the current node for efficient entropy coding. Experimental results demonstrate that the proposed module enhances the coding efficiency of octree-based context models.",
+            "score": 3
+        }
+    ]
+}
