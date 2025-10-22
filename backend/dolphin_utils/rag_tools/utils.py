@@ -1,10 +1,19 @@
 import os
 import json
 import random
-from dolphin_utils.llm_utils import cal_price
+from dolphin_utils.llm_utils import cal_price, truncate_text_to_token_limit, count_tokens
 
 
 def call_api(client, model, prompt_messages, temperature=1.0, max_tokens=100, seed=2024, json_output=False):
+    # For Groq models, truncate messages to stay within limits
+    if model in ["openai/gpt-oss-120b", "openai/gpt-oss-20b"] or "groq" in model.lower():
+        for msg in prompt_messages:
+            if "content" in msg and isinstance(msg["content"], str):
+                token_count = count_tokens(msg["content"])
+                if token_count > 3000:
+                    print(f"Warning: Truncating message from {token_count} tokens to 3000")
+                    msg["content"] = truncate_text_to_token_limit(msg["content"], max_tokens=3000)
+    
     if "claude" in model:
         if json_output:
             prompt = prompt_messages[0][
@@ -20,16 +29,20 @@ def call_api(client, model, prompt_messages, temperature=1.0, max_tokens=100, se
         response = message.content[0].text
     else:
         response_format = {"type": "json_object"} if json_output else {"type": "text"}
-        completion = client.chat.completions.create(
-            model=model,
-            messages=prompt_messages,
-            temperature=temperature,
-            max_tokens=max_tokens,
-            seed=seed,
-            response_format=response_format
-        )
-        cost = cal_price(model, completion.usage)
-        response = completion.choices[0].message.content.strip()
+        try:
+            completion = client.chat.completions.create(
+                model=model,
+                messages=prompt_messages,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                seed=seed,
+                response_format=response_format
+            )
+            cost = cal_price(model, completion.usage)
+            response = completion.choices[0].message.content.strip()
+        except Exception as e:
+            print(f"Error in call_api: {e}")
+            raise
 
     return response, cost
 

@@ -118,7 +118,8 @@ class ExperimentManager:
         
         # Clean up result files
         result_dir = os.path.join(self.settings.RESULTS_DIR, experiment_id)
-        if os.path.exists(result_dir):\n            shutil.rmtree(result_dir)
+        if os.path.exists(result_dir):
+            shutil.rmtree(result_dir)
         
         return True
     

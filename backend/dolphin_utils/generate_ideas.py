@@ -7,12 +7,11 @@ from typing import List, Dict, Union
 from dolphin_utils.llm_utils import get_response_from_llm, extract_json_between_markers
 from dolphin_utils.rag_utils import format_papers_for_printing, format_papers_for_printing_ai_researcher
 from dolphin_utils.prompts import *
-
+import xml.etree.ElementTree as ET
 import requests
 import backoff
 import torch.nn.functional as F
 
-S2_API_KEY = os.getenv("S2_API_KEY")
 
 history_ideas_bank = []
 history_ideas_id = []
@@ -364,35 +363,67 @@ def on_backoff(details):
     )
 
 
+
+
+
 @backoff.on_exception(
     backoff.expo, requests.exceptions.HTTPError, on_backoff=on_backoff
 )
 def search_for_papers(query, result_limit=10) -> Union[None, List[Dict]]:
     if not query:
         return None
-    rsp = requests.get(
-        "https://api.semanticscholar.org/graph/v1/paper/search",
-        headers={"X-API-KEY": S2_API_KEY},
-        params={
-            "query": query,
-            "limit": result_limit,
-            "fields": "title,authors,venue,year,abstract,citationStyles,citationCount",
-        },
-    )
-    print(f"Response Status Code: {rsp.status_code}")
-    print(
-        f"Response Content: {rsp.text[:500]}"
-    )  # Print the first 500 characters of the response content
-    rsp.raise_for_status()
-    results = rsp.json()
-    total = results["total"]
-    time.sleep(1.0)
-    if not total:
+
+    # Construct the arXiv API query URL
+    base_url = "http://export.arxiv.org/api/query"
+    params = {
+        "search_query": f"all:{query}",
+        "start": 0,
+        "max_results": result_limit,
+        "sortBy": "relevance",
+        "sortOrder": "descending"
+    }
+
+    try:
+        # Send request to arXiv API
+        rsp = requests.get(base_url, params=params)
+        print(f"Response Status Code: {rsp.status_code}")
+        print(f"Response Content: {rsp.text[:500]}")  # Print first 500 characters for debugging
+        rsp.raise_for_status()
+
+        # Parse XML response
+        root = ET.fromstring(rsp.text)
+        namespace = {"atom": "http://www.w3.org/2005/Atom"}
+
+        papers = []
+        for entry in root.findall("atom:entry", namespace):
+            # Extract relevant fields
+            paper = {
+                "title": entry.find("atom:title", namespace).text.strip(),
+                "authors": ", ".join(
+                    author.find("atom:name", namespace).text.strip()
+                    for author in entry.findall("atom:author", namespace)
+                ),
+                "venue": "arXiv",  # arXiv doesn't have a traditional venue
+                "year": entry.find("atom:published", namespace).text[:4],  # Extract year from published date
+                "abstract": entry.find("atom:summary", namespace).text.strip() if entry.find("atom:summary",
+                                                                                             namespace) is not None else "",
+                "citationCount": 0,  # arXiv API doesn't provide citation counts
+                "id": entry.find("atom:id", namespace).text.strip()  # arXiv ID for reference
+            }
+            papers.append(paper)
+
+        time.sleep(3.0)  # arXiv API recommends a 3-second delay between requests
+        if not papers:
+            return None
+
+        return papers
+
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTP Error: {e}")
+        raise
+    except Exception as e:
+        print(f"Error parsing arXiv response: {e}")
         return None
-
-    papers = results["data"]
-    return papers
-
 
 novelty_system_msg = """You are an ambitious AI PhD student who is looking to publish a paper that will contribute significantly to the field.
 You have an idea and you want to check if it is novel or not. I.e., not overlapping significantly with existing literature or already well explored.
@@ -451,12 +482,21 @@ def check_idea_novelty(
         max_num_iterations=10,
         round=0
 ):
+    from dolphin_utils.llm_utils import truncate_text_to_token_limit
+    
     total_price = 0
     with open(osp.join(base_dir, "experiment.py"), "r") as f:
         code = f.read()
     with open(osp.join(base_dir, "prompt.json"), "r") as f:
         prompt = json.load(f)
         task_description = prompt["task_description"]
+    
+    # For Groq models, truncate code to avoid token limits
+    if model in ["openai/gpt-oss-120b", "openai/gpt-oss-20b"] or "groq" in model.lower():
+        # Truncate code to ~400 tokens max (VERY aggressive)
+        code = truncate_text_to_token_limit(code, max_tokens=400)
+        task_description = truncate_text_to_token_limit(task_description, max_tokens=150)
+        print(f"Truncated code to 400 tokens and task_description to 150 tokens for Groq")
 
     for idx, idea in enumerate(ideas):
         if "novel" in idea:
@@ -471,6 +511,10 @@ def check_idea_novelty(
 
         for j in range(max_num_iterations):
             try:
+                # Truncate papers_str if it gets too long (for Groq models)
+                if model in ["openai/gpt-oss-120b", "openai/gpt-oss-20b"] or "groq" in model.lower():
+                    papers_str = truncate_text_to_token_limit(papers_str, max_tokens=500)  # Very aggressive
+                
                 text, msg_history, price = get_response_from_llm(
                     novelty_prompt.format(
                         current_round=j + 1,

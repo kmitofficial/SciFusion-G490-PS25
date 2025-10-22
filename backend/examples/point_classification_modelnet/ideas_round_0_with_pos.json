@@ -1,0 +1,24 @@
+[
+    {
+        "Name": "hierarchical_feature_extraction",
+        "Title": "Hierarchical Set Abstraction: Learning Global and Local features of point clouds",
+        "Motivation": "Point-cloud analysis requires both global shape understanding and fine-grained local detail. Existing methods often focus on one at the expense of the other.",
+        "Method": "Our pipeline stacks multiple Set Abstraction (SA) and Feature Propagation (FP) modules. Each SA uses FPS sampling and ball-query grouping followed by MLPs to encode local geometry, with a global feature injected at the deepest layer via attention. FP modules then upsample and fuse features through skip-connections. The fused multi-scale features feed into a classification head.",
+        "Experiment": "In this experiment, we compare the performance of different feature extraction networks, especially considering both gloabl and local features",
+        "Summary": "Propose a hierarchical set abstraction method to effectively integrate global and local features",
+        "Feasibility": 9,
+        "Novelty": 6,
+        "independence": true,
+        "novel": false
+    },
+    {
+        "Name": "multi_scale_edgeconv_attention",
+        "Title": "Multi\u2011Scale Geometry\u2011Aware Edge Convolution with Attention for Point Cloud Classification",
+        "Motivation": "A single k\u2011NN graph captures only one spatial scale, which may miss either fine\u2011grained details or broader shape context. By processing two neighborhoods (small\u2011k and large\u2011k) and weighting edges with geometry\u2011aware attention, the network can jointly learn local texture and global structure while remaining lightweight.",
+        "Method": "1. After the first pointwise Conv1d block (output 64\u2011dim), keep the normalized xyz coordinates (B,3,N). 2. Build two static k\u2011NN graphs on these coordinates: k1=10 (fine) and k2=30 (coarse) using torch.cdist. 3. For each graph, compute edge features e_{ij} = [h_i, h_j - h_i] where h_i is the 64\u2011dim point feature. 4. Pass edge features through a shared MLP (64 \u2192 64 \u2192 128) to obtain raw edge embeddings. 5. Compute an attention coefficient a_{ij} = \u03c3(MLP_att([||p_i-p_j||_2, h_i\u00b7h_j])) (same MLP_att for both scales). 6. Multiply raw edge embeddings by a_{ij} and aggregate per point with max\u2011pool, yielding two 128\u2011dim feature maps (one per scale). 7. Concatenate the two aggregated features (256\u2011dim) and then concatenate with the original 64\u2011dim pointwise feature, producing a 320\u2011dim descriptor per point. 8. Feed this into the remaining convolutional layers (conv_layer2\u20114), updating their input channel sizes accordingly (e.g., conv_layer2: 320\u219264). 9. Optionally add a small smoothness regularizer on attention values (\u03bb\u22481e\u20113). 10. Global max\u2011pool and classification head remain unchanged.",
+        "Experiment": "Modify experiment.py as follows:  \n- Add a helper `knn(x, k)` to compute neighbor indices.  \n- Implement `EdgeConvAttention(nn.Module)` that takes `k` as an argument and performs steps 3\u20116.  \n- In `PointNetEncoder.__init__`, create two instances: `self.edgeconv1 = EdgeConvAttention(k=10)` and `self.edgeconv2 = EdgeConvAttention(k=30)`.  \n- In `PointNetEncoder.forward`, after `x = self.conv_layer1(x)`, obtain `xyz = points[:, :3, :]` and compute `f1 = self.edgeconv1(x, xyz)`, `f2 = self.edgeconv2(x, xyz)`.  \n- Concatenate `x, f1, f2` \u2192 shape (B, 320, N) and pass through updated `conv_layer2` (nn.Conv1d(320, 64, 1)) and the existing downstream layers.  \n- Adjust any subsequent layer input dimensions accordingly.  \n- Train with the same hyper\u2011parameters, logging overall accuracy and mean class accuracy.  \n- Compare against the baseline PointNet and the single\u2011scale EdgeConv\u2011Attention variant to quantify the benefit of multi\u2011scale attention.",
+        "Summary": "Introduce parallel EdgeConv\u2011Attention modules on two fixed k\u2011NN graphs (k=10 and k=30) to capture multi\u2011scale local geometry, improving point cloud classification with minimal overhead.",
+        "independence": true,
+        "novel": true
+    }
+]

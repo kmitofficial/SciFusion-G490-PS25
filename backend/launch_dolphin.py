@@ -156,14 +156,14 @@ if __name__ == "__main__":
         print(f"Using Anthropic API with model {args.model}.")
         client_model = args.model
         client = anthropic.Anthropic()
-    elif args.model in ["openai/gpt-oss-120b", "openai/gpt-oss-20b"] or "groq" in args.model.lower():
+    elif args.model in ["openai/gpt-oss-120b", "openai/gpt-oss-20b"] or "groq" in args.model.lower() or args.model.startswith("openai/"):
         import groq
         print(f"Using Groq API with model {args.model}.")
         client_model = args.model
         client = groq.Groq(
-            api_key=os.environ["GROQ_API_KEY"]
+            api_key=os.environ.get("GROQ_API_KEY")
         )
-    elif "gpt" in args.model:
+    elif "gpt" in args.model and not args.model.startswith("openai/"):
         import openai
         print(f"Using OpenAI API with model {args.model}.")
         client_model = args.model
