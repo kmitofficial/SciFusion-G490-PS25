@@ -1,6 +1,7 @@
 import os
 import json
 import random
+import google.generativeai as genai  # <-- 1. ADD THIS IMPORT
 from dolphin_utils.llm_utils import cal_price, truncate_text_to_token_limit, count_tokens
 
 
@@ -13,8 +14,49 @@ def call_api(client, model, prompt_messages, temperature=1.0, max_tokens=100, se
                 if token_count > 3000:
                     print(f"Warning: Truncating message from {token_count} tokens to 3000")
                     msg["content"] = truncate_text_to_token_limit(msg["content"], max_tokens=3000)
-    
-    if "claude" in model:
+
+    # --- 2. ADD THIS ENTIRE BLOCK FOR GEMINI ---
+    if isinstance(client, genai.GenerativeModel):
+        try:
+            config_args = {}
+            if max_tokens:
+                config_args['max_output_tokens'] = max_tokens
+            if temperature is not None:
+                config_args['temperature'] = temperature
+
+            # Convert OpenAI/Claude message format to Gemini format
+            gemini_messages = []
+            for msg in prompt_messages:
+                role = 'user' if msg['role'] == 'user' else 'model'
+                gemini_messages.append({'role': role, 'parts': [msg['content']]})
+
+            # Handle JSON output for Gemini via prompting
+            if json_output:
+                last_message = gemini_messages[-1]['parts'][0]
+                last_message += "\n\nRespond ONLY with a valid JSON object. Do not include any other text or markdown formatting (like ```json)."
+                gemini_messages[-1]['parts'][0] = last_message
+
+            completion = client.generate_content(
+                gemini_messages,
+                generation_config=genai.types.GenerationConfig(**config_args)
+            )
+            response = completion.text
+            cost = 0  # Placeholder: Add Gemini cost calculation if needed
+
+            if json_output:
+                # Clean up potential markdown formatting
+                response = response.strip()
+                if response.startswith("```json"):
+                    response = response[len("```json"):].strip()
+                if response.endswith("```"):
+                    response = response[:-len("```")].strip()
+
+        except Exception as e:
+            print(f"Error in Gemini API call: {e}")
+            raise
+
+    # --- CHANGE THIS `if` to `elif` ---
+    elif "claude" in model:
         if json_output:
             prompt = prompt_messages[0][
                          "content"] + " Directly output the JSON dict with no additional text (avoid the presence of newline characters (\"\n\") and unescaped double quotes within the string so that we can call json.loads() on the output later)."
@@ -168,5 +210,3 @@ def max_score(scores):
 def min_score(scores):
     scores = [int(s[0]) for s in scores]
     return min(scores)
-
-

@@ -189,6 +189,13 @@ if __name__ == "__main__":
         print(f"Using OpenAI API with locally deployed model: {args.model}.")
         client_model = args.model
         client = openai.OpenAI(base_url="http://localhost:11434/v1", api_key="na")
+    elif args.model.startswith("gemini"):
+        import google.generativeai as genai
+
+        print(f"Using Google Gemini API with model {args.model}.")
+        genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+        client = genai.GenerativeModel(args.model)
+        client_model = args.model
     else:
         raise ValueError(f"Model {args.model} is not supported. You need to add the model to dolphin_utils/llm_utils.py and launch_dolphin.py manually")
 

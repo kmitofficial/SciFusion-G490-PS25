@@ -1,3 +1,4 @@
+import os
 import backoff
 import openai
 import groq
@@ -21,11 +22,11 @@ def truncate_text_to_token_limit(text, max_tokens=4000, model="gpt-4"):
         encoding = tiktoken.encoding_for_model(model)
     except KeyError:
         encoding = tiktoken.get_encoding("cl100k_base")
-    
+
     tokens = encoding.encode(text)
     if len(tokens) <= max_tokens:
         return text
-    
+
     # Truncate and add indicator
     truncated_tokens = tokens[:max_tokens]
     truncated_text = encoding.decode(truncated_tokens)
@@ -51,6 +52,8 @@ def cal_price(model, usage):
     elif "groq" in model.lower():
         # Default Groq pricing for unknown models
         return (0.001 * usage.prompt_tokens + 0.002 * usage.completion_tokens) / 1000.0
+    elif "gemini" in model.lower():
+        return (0.001 * usage.prompt_tokens + 0.002 * usage.completion_tokens) / 1000.0
     else:
         print(f"!Warning: Cannot calculate price for model: {model}. Ignore this if you are using locally deployed model.")
         return 0
@@ -68,7 +71,7 @@ def get_response_from_llm(
 ):
     if msg_history is None:
         msg_history = []
-    
+
     # Initialize response and content variables to avoid UnboundLocalError
     response = None
     content = ""
@@ -159,7 +162,7 @@ def get_response_from_llm(
         price = cal_price(model, response.usage)
         content = response.choices[0].message.content
         new_msg_history = new_msg_history + [{"role": "assistant", "content": content}]
-    
+
     elif model == "Intern-S1":
         new_msg_history = msg_history + [{"role": "user", "content": msg}]
         response = client.chat.completions.create(
@@ -183,28 +186,28 @@ def get_response_from_llm(
     elif model in ["openai/gpt-oss-120b", "openai/gpt-oss-20b"] or "groq" in model.lower():
         # Groq has strict token limits - be VERY aggressive with truncation
         # For gpt-oss-120b: 8000 token limit on input (including system + all messages)
-        
+
         # Truncate system message very aggressively
         system_token_count = count_tokens(system_message)
         max_system_tokens = 800  # Very small limit for system message
         if system_token_count > max_system_tokens:
             print(f"Warning: Truncating system message from {system_token_count} tokens to {max_system_tokens}")
             system_message = truncate_text_to_token_limit(system_message, max_system_tokens)
-        
+
         # Truncate message history - keep only last message if exists
         if len(msg_history) > 2:
             print(f"Warning: Truncating message history from {len(msg_history)} messages to last 2")
             msg_history = msg_history[-2:]
-        
+
         # Truncate user message aggressively
         msg_token_count = count_tokens(msg)
         max_msg_tokens = 1200  # Very small limit for user message
         if msg_token_count > max_msg_tokens:
             print(f"Warning: Truncating user message from {msg_token_count} tokens to {max_msg_tokens}")
             msg = truncate_text_to_token_limit(msg, max_msg_tokens)
-        
+
         new_msg_history = msg_history + [{"role": "user", "content": msg}]
-        
+
         try:
             response = client.chat.completions.create(
                 model=model,
@@ -225,6 +228,42 @@ def get_response_from_llm(
         except Exception as e:
             print(f"Error calling Groq API: {e}")
             raise
+    elif model == "gemini-2.5-flash-lite" or model== "gemini-2.5-flash":
+        # Convert message history to a single prompt
+        prompt = f"{system_message}\n\n"
+        for m in msg_history:
+            prompt += f"{m['role'].capitalize()}: {m['content']}\n"
+        prompt += f"User: {msg}"
+
+        # Truncate prompt if necessary (Gemini has a ~1M token limit, but we'll use 25,000 for safety)
+        prompt_token_count = count_tokens(prompt, model)
+        max_prompt_tokens = 25000
+        if prompt_token_count > max_prompt_tokens:
+            print(f"Warning: Truncating prompt from {prompt_token_count} tokens to {max_prompt_tokens}")
+            prompt = truncate_text_to_token_limit(prompt, max_prompt_tokens, model)
+
+        try:
+            response = client.generate_content(
+                contents=prompt,
+                generation_config={
+                    "temperature": temperature,
+                    "max_output_tokens": min(max_tokens, 3000),
+                }
+            )
+            content = response.text.strip()
+            # Estimate token usage for pricing
+            usage = type('Usage', (), {
+                'prompt_tokens': count_tokens(prompt, model),
+                'completion_tokens': count_tokens(content, model)
+            })()
+            price = cal_price(model, usage)
+            new_msg_history = msg_history + [
+                {"role": "user", "content": msg},
+                {"role": "assistant", "content": content}
+            ]
+        except Exception as e:
+            print(f"Error calling Gemini API: {e}")
+            return "", msg_history, 0
     else:
         raise ValueError(f"Model {model} not supported.")
 
