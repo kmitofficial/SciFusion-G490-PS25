@@ -21,12 +21,13 @@ fi
 python launch_dolphin.py \
     --model gemini-2.5-flash-lite \
     --code_model gemini-2.5-flash-lite \
-    --experiment point_classification_modelnet \
-    --topic "novel attention mechanisms for point cloud classification" \
+    --experiment Chem_LLM \
+    --topic "Predicting Chemical Properties of Compounds Using Large Language Models (LLMs)" \
     --rag \
-    --num-ideas 3 \
+    --max_papers 10 \
+    --num-ideas 2 \
     --round 0 \
     --check_similarity \
     --embedding_model sentence-transformers/all-roberta-large-v1 \
-    --save_name gemini_test_run \
+    --save_name chem_test \
     | tee launch_dolphin.txt

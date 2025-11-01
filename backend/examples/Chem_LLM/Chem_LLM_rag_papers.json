@@ -1,0 +1,209 @@
+{
+    "topic_description": "Predicting Chemical Properties of Compounds Using Large Language Models (LLMs)",
+    "all_queries": [
+        "Input(\"chemical structure or name\"), Output(\"chemical property\")",
+        "KeywordQuery(\"large language models chemical property prediction\")"
+    ],
+    "paper_bank": [
+        {
+            "id": "2510.10248v2",
+            "paperId": "2510.10248v2",
+            "title": "Reasoning-Enhanced Large Language Models for Molecular Property\n  Prediction",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Molecular property prediction is crucial for drug discovery and materials\nscience, yet existing approaches suffer from limited interpretability, poor\ncross-task generalization, and lack of chemical reasoning capabilities.\nTraditional machine learning models struggle with task transferability, while\nspecialized molecular language models provide little insight into their\ndecision-making processes. To address these limitations, we propose\n\\textbf{MPPReasoner}, a multimodal large language model that incorporates\nchemical reasoning for molecular property prediction. Our approach, built upon\nQwen2.5-VL-7B-Instruct, integrates molecular images with SMILES strings to\nenable comprehensive molecular understanding. We develop a two-stage training\nstrategy: supervised fine-tuning (SFT) using 16,000 high-quality reasoning\ntrajectories generated through expert knowledge and multiple teacher models,\nfollowed by Reinforcement Learning from Principle-Guided Rewards (RLPGR). RLPGR\nemploys verifiable, rule-based rewards that systematically evaluate chemical\nprinciple application, molecular structure analysis, and logical consistency\nthrough computational verification. Extensive experiments across 8 datasets\ndemonstrate significant performance improvements, with MPPReasoner\noutperforming the best baselines by 7.91\\% and 4.53\\% on in-distribution and\nout-of-distribution tasks respectively. MPPReasoner exhibits exceptional\ncross-task generalization and generates chemically sound reasoning paths that\nprovide valuable insights into molecular property analysis, substantially\nenhancing both interpretability and practical utility for chemists. Code is\navailable at https://anonymous.4open.science/r/MPPReasoner-12687.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2411.15500v1",
+            "paperId": "2411.15500v1",
+            "title": "MolMetaLM: a Physicochemical Knowledge-Guided Molecular Meta Language\n  Model",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Most current molecular language models transfer the masked language model or\nimage-text generation model from natural language processing to molecular\nfield. However, molecules are not solely characterized by atom/bond symbols;\nthey encapsulate important physical/chemical properties. Moreover, normal\nlanguage models bring grammar rules that are irrelevant for understanding\nmolecules. In this study, we propose a novel physicochemical knowledge-guided\nmolecular meta language framework MolMetaLM. We design a molecule-specialized\nmeta language paradigm, formatted as multiple <S,P,O> (subject, predicate,\nobject) knowledge triples sharing the same S (i.e., molecule) to enhance\nlearning the semantic relationships between physicochemical knowledge and\nmolecules. By introducing different molecular knowledge and noises, the meta\nlanguage paradigm generates tens of thousands of pretraining tasks. By\nrecovering the token/sequence/order-level noises, MolMetaLM exhibits\nproficiency in large-scale benchmark evaluations involving property prediction,\nmolecule generation, conformation inference, and molecular optimization.\nThrough MolMetaLM, we offer a new insight for designing language models.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2010.09885v2",
+            "paperId": "2010.09885v2",
+            "title": "ChemBERTa: Large-Scale Self-Supervised Pretraining for Molecular\n  Property Prediction",
+            "year": "2020",
+            "citationCount": 0,
+            "abstract": "GNNs and chemical fingerprints are the predominant approaches to representing\nmolecules for property prediction. However, in NLP, transformers have become\nthe de-facto standard for representation learning thanks to their strong\ndownstream task transfer. In parallel, the software ecosystem around\ntransformers is maturing rapidly, with libraries like HuggingFace and BertViz\nenabling streamlined training and introspection. In this work, we make one of\nthe first attempts to systematically evaluate transformers on molecular\nproperty prediction tasks via our ChemBERTa model. ChemBERTa scales well with\npretraining dataset size, offering competitive downstream performance on\nMoleculeNet and useful attention-based visualization modalities. Our results\nsuggest that transformers offer a promising avenue of future work for molecular\nrepresentation learning and property prediction. To facilitate these efforts,\nwe release a curated dataset of 77M SMILES from PubChem suitable for\nlarge-scale self-supervised pretraining.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2310.03030v3",
+            "paperId": "2310.03030v3",
+            "title": "GPT-MolBERTa: GPT Molecular Features Language Model for molecular\n  property prediction",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "With the emergence of Transformer architectures and their powerful\nunderstanding of textual data, a new horizon has opened up to predict the\nmolecular properties based on text description. While SMILES are the most\ncommon form of representation, they are lacking robustness, rich information\nand canonicity, which limit their effectiveness in becoming generalizable\nrepresentations. Here, we present GPT-MolBERTa, a self-supervised large\nlanguage model (LLM) which uses detailed textual descriptions of molecules to\npredict their properties. A text based description of 326000 molecules were\ncollected using ChatGPT and used to train LLM to learn the representation of\nmolecules. To predict the properties for the downstream tasks, both BERT and\nRoBERTa models were used in the finetuning stage. Experiments show that\nGPT-MolBERTa performs well on various molecule property benchmarks, and\napproaching state of the art performance in regression tasks. Additionally,\nfurther analysis of the attention mechanisms show that GPT-MolBERTa is able to\npick up important information from the input textual data, displaying the\ninterpretability of the model.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2209.01307v4",
+            "paperId": "2209.01307v4",
+            "title": "TransPolymer: a Transformer-based language model for polymer property\n  predictions",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "Accurate and efficient prediction of polymer properties is of great\nsignificance in polymer design. Conventionally, expensive and time-consuming\nexperiments or simulations are required to evaluate polymer functions.\nRecently, Transformer models, equipped with self-attention mechanisms, have\nexhibited superior performance in natural language processing. However, such\nmethods have not been investigated in polymer sciences. Herein, we report\nTransPolymer, a Transformer-based language model for polymer property\nprediction. Our proposed polymer tokenizer with chemical awareness enables\nlearning representations from polymer sequences. Rigorous experiments on ten\npolymer property prediction benchmarks demonstrate the superior performance of\nTransPolymer. Moreover, we show that TransPolymer benefits from pretraining on\nlarge unlabeled dataset via Masked Language Modeling. Experimental results\nfurther manifest the important role of self-attention in modeling polymer\nsequences. We highlight this model as a promising computational tool for\npromoting rational polymer design and understanding structure-property\nrelationships from a data science view.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2209.14803v1",
+            "paperId": "2209.14803v1",
+            "title": "polyBERT: A chemical language model to enable fully machine-driven\n  ultrafast polymer informatics",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "Polymers are a vital part of everyday life. Their chemical universe is so\nlarge that it presents unprecedented opportunities as well as significant\nchallenges to identify suitable application-specific candidates. We present a\ncomplete end-to-end machine-driven polymer informatics pipeline that can search\nthis space for suitable candidates at unprecedented speed and accuracy. This\npipeline includes a polymer chemical fingerprinting capability called polyBERT\n(inspired by Natural Language Processing concepts), and a multitask learning\napproach that maps the polyBERT fingerprints to a host of properties. polyBERT\nis a chemical linguist that treats the chemical structure of polymers as a\nchemical language. The present approach outstrips the best presently available\nconcepts for polymer property prediction based on handcrafted fingerprint\nschemes in speed by two orders of magnitude while preserving accuracy, thus\nmaking it a strong candidate for deployment in scalable architectures including\ncloud infrastructures.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2405.14203v1",
+            "paperId": "2405.14203v1",
+            "title": "GLaD: Synergizing Molecular Graphs and Language Descriptors for Enhanced\n  Power Conversion Efficiency Prediction in Organic Photovoltaic Devices",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "This paper presents a novel approach for predicting Power Conversion\nEfficiency (PCE) of Organic Photovoltaic (OPV) devices, called GLaD:\nsynergizing molecular Graphs and Language Descriptors for enhanced PCE\nprediction. Due to the lack of high-quality experimental data, we collect a\ndataset consisting of 500 pairs of OPV donor and acceptor molecules along with\ntheir corresponding PCE values, which we utilize as the training data for our\npredictive model. In this low-data regime, GLaD leverages properties learned\nfrom large language models (LLMs) pretrained on extensive scientific literature\nto enrich molecular structural representations, allowing for a multimodal\nrepresentation of molecules. GLaD achieves precise predictions of PCE, thereby\nfacilitating the synthesis of new OPV molecules with improved efficiency.\nFurthermore, GLaD showcases versatility, as it applies to a range of molecular\nproperty prediction tasks (BBBP, BACE, ClinTox, and SIDER), not limited to\nthose concerning OPV materials. Especially, GLaD proves valuable for tasks in\nlow-data regimes within the chemical space, as it enriches molecular\nrepresentations by incorporating molecular property descriptions learned from\nlarge-scale pretraining. This capability is significant in real-world\nscientific endeavors like drug and material discovery, where access to\ncomprehensive data is crucial for informed decision-making and efficient\nexploration of the chemical space.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2503.22962v2",
+            "paperId": "2503.22962v2",
+            "title": "Multimodal machine learning with large language embedding model for\n  polymer property prediction",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Contemporary large language models (LLMs), such as GPT-4 and Llama, have\nharnessed extensive computational power and diverse text corpora to achieve\nremarkable proficiency in interpreting and generating domain-specific content,\nincluding materials science. To leverage the domain knowledge embedded within\nthese models, we propose a simple yet effective multimodal architecture,\nPolyLLMem, which integrates text embeddings generated by Llama 3 with molecular\nstructure embeddings derived from Uni-Mol, for polymer properties prediction\ntasks. In our model, Low-rank adaptation (LoRA) layers were also incorporated\nduring the property prediction tasks to refine the embeddings based on our\nlimited polymer dataset, thereby enhancing their chemical relevance for polymer\nSMILES representation. This balanced fusion of fine-tuned textual and\nstructural information enables PolyLLMem to accurately predict a variety of\npolymer properties despite the scarcity of training data. Its performance is\ncomparable to, and in some cases exceeds, that of graph-based models, as well\nas transformer-based models that typically require pretraining on millions of\npolymer samples. These findings demonstrate that LLM, such as Llama, can\neffectively capture chemical information encoded in polymer PSMILES, and\nunderscore the efficacy of multimodal fusion of LLM embeddings and molecular\nstructure embeddings in overcoming data scarcity and accelerating the discovery\nof advanced polymeric materials.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2411.03537v2",
+            "paperId": "2411.03537v2",
+            "title": "Two-Stage Pretraining for Molecular Property Prediction in the Wild",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Molecular deep learning models have achieved remarkable success in property\nprediction, but they often require large amounts of labeled data. The challenge\nis that, in real-world applications, labels are extremely scarce, as obtaining\nthem through laboratory experimentation is both expensive and time-consuming.\nIn this work, we introduce MoleVers, a versatile pretrained molecular model\ndesigned for various types of molecular property prediction in the wild, i.e.,\nwhere experimentally-validated labels are scarce. MoleVers employs a two-stage\npretraining strategy. In the first stage, it learns molecular representations\nfrom unlabeled data through masked atom prediction and extreme denoising, a\nnovel task enabled by our newly introduced branching encoder architecture and\ndynamic noise scale sampling. In the second stage, the model refines these\nrepresentations through predictions of auxiliary properties derived from\ncomputational methods, such as the density functional theory or large language\nmodels. Evaluation on 22 small, experimentally-validated datasets demonstrates\nthat MoleVers achieves state-of-the-art performance, highlighting the\neffectiveness of its two-stage framework in producing generalizable molecular\nrepresentations for diverse downstream properties.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2106.09553v3",
+            "paperId": "2106.09553v3",
+            "title": "Large-Scale Chemical Language Representations Capture Molecular\n  Structure and Properties",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Models based on machine learning can enable accurate and fast molecular\nproperty predictions, which is of interest in drug discovery and material\ndesign. Various supervised machine learning models have demonstrated promising\nperformance, but the vast chemical space and the limited availability of\nproperty labels make supervised learning challenging. Recently, unsupervised\ntransformer-based language models pretrained on a large unlabelled corpus have\nproduced state-of-the-art results in many downstream natural language\nprocessing tasks. Inspired by this development, we present molecular embeddings\nobtained by training an efficient transformer encoder model, MoLFormer, which\nuses rotary positional embeddings. This model employs a linear attention\nmechanism, coupled with highly distributed training, on SMILES sequences of 1.1\nbillion unlabelled molecules from the PubChem and ZINC datasets. We show that\nthe learned molecular representation outperforms existing baselines, including\nsupervised and self-supervised graph neural networks and language models, on\nseveral downstream tasks from ten benchmark datasets. They perform\ncompetitively on two others. Further analyses, specifically through the lens of\nattention, demonstrate that MoLFormer trained on chemical SMILES indeed learns\nthe spatial relationships between atoms within a molecule. These results\nprovide encouraging evidence that large-scale molecular language models can\ncapture sufficient chemical and structural information to predict various\ndistinct molecular properties, including quantum-chemical properties.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2306.11976v1",
+            "paperId": "2306.11976v1",
+            "title": "Interactive Molecular Discovery with Natural Language",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Natural language is expected to be a key medium for various human-machine\ninteractions in the era of large language models. When it comes to the\nbiochemistry field, a series of tasks around molecules (e.g., property\nprediction, molecule mining, etc.) are of great significance while having a\nhigh technical threshold. Bridging the molecule expressions in natural language\nand chemical language can not only hugely improve the interpretability and\nreduce the operation difficulty of these tasks, but also fuse the chemical\nknowledge scattered in complementary materials for a deeper comprehension of\nmolecules. Based on these benefits, we propose the conversational molecular\ndesign, a novel task adopting natural language for describing and editing\ntarget molecules. To better accomplish this task, we design ChatMol, a\nknowledgeable and versatile generative pre-trained model, enhanced by injecting\nexperimental property information, molecular spatial knowledge, and the\nassociations between natural and chemical languages into it. Several typical\nsolutions including large language models (e.g., ChatGPT) are evaluated,\nproving the challenge of conversational molecular design and the effectiveness\nof our knowledge enhancement method. Case observations and analysis are\nconducted to provide directions for further exploration of natural-language\ninteraction in molecular discovery.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2407.20267v1",
+            "paperId": "2407.20267v1",
+            "title": "A Large Encoder-Decoder Family of Foundation Models For Chemical\n  Language",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Large-scale pre-training methodologies for chemical language models represent\na breakthrough in cheminformatics. These methods excel in tasks such as\nproperty prediction and molecule generation by learning contextualized\nrepresentations of input tokens through self-supervised learning on large\nunlabeled corpora. Typically, this involves pre-training on unlabeled data\nfollowed by fine-tuning on specific tasks, reducing dependence on annotated\ndatasets and broadening chemical language representation understanding. This\npaper introduces a large encoder-decoder chemical foundation models pre-trained\non a curated dataset of 91 million SMILES samples sourced from PubChem, which\nis equivalent to 4 billion of molecular tokens. The proposed foundation model\nsupports different complex tasks, including quantum property prediction, and\noffer flexibility with two main variants (289M and $8\\times289M$). Our\nexperiments across multiple benchmark datasets validate the capacity of the\nproposed model in providing state-of-the-art results for different tasks. We\nalso provide a preliminary assessment of the compositionality of the embedding\nspace as a prerequisite for the reasoning tasks. We demonstrate that the\nproduced latent space is separable compared to the state-of-the-art with\nfew-shot learning capabilities.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2308.06911v3",
+            "paperId": "2308.06911v3",
+            "title": "GIT-Mol: A Multi-modal Large Language Model for Molecular Science with\n  Graph, Image, and Text",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Large language models have made significant strides in natural language\nprocessing, enabling innovative applications in molecular science by processing\ntextual representations of molecules. However, most existing language models\ncannot capture the rich information with complex molecular structures or\nimages. In this paper, we introduce GIT-Mol, a multi-modal large language model\nthat integrates the Graph, Image, and Text information. To facilitate the\nintegration of multi-modal molecular data, we propose GIT-Former, a novel\narchitecture that is capable of aligning all modalities into a unified latent\nspace. We achieve a 5%-10% accuracy increase in properties prediction and a\n20.2% boost in molecule generation validity compared to the baselines. With the\nany-to-language molecular translation strategy, our model has the potential to\nperform more downstream tasks, such as compound name recognition and chemical\nreaction prediction.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2303.03363v2",
+            "paperId": "2303.03363v2",
+            "title": "Enhancing Activity Prediction Models in Drug Discovery with the Ability\n  to Understand Human Language",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Activity and property prediction models are the central workhorses in drug\ndiscovery and materials sciences, but currently they have to be trained or\nfine-tuned for new tasks. Without training or fine-tuning, scientific language\nmodels could be used for such low-data tasks through their announced zero- and\nfew-shot capabilities. However, their predictive quality at activity prediction\nis lacking. In this work, we envision a novel type of activity prediction model\nthat is able to adapt to new prediction tasks at inference time, via\nunderstanding textual information describing the task. To this end, we propose\na new architecture with separate modules for chemical and natural language\ninputs, and a contrastive pre-training objective on data from large biochemical\ndatabases. In extensive experiments, we show that our method CLAMP yields\nimproved predictive performance on few-shot learning benchmarks and zero-shot\nproblems in drug discovery. We attribute the advances of our method to the\nmodularized architecture and to our pre-training objective.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2208.06665v1",
+            "paperId": "2208.06665v1",
+            "title": "Cloud-Based Real-Time Molecular Screening Platform with MolFormer",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "With the prospect of automating a number of chemical tasks with high\nfidelity, chemical language processing models are emerging at a rapid speed.\nHere, we present a cloud-based real-time platform that allows users to\nvirtually screen molecules of interest. For this purpose, molecular embeddings\ninferred from a recently proposed large chemical language model, named\nMolFormer, are leveraged. The platform currently supports three tasks: nearest\nneighbor retrieval, chemical space visualization, and property prediction.\nBased on the functionalities of this platform and results obtained, we believe\nthat such a platform can play a pivotal role in automating chemistry and\nchemical engineering research, as well as assist in drug discovery and material\ndesign tasks. A demo of our platform is provided at\n\\url{www.ibm.biz/molecular_demo}.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2310.16802v2",
+            "paperId": "2310.16802v2",
+            "title": "From Molecules to Materials: Pre-training Large Generalizable Models for\n  Atomic Property Prediction",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Foundation models have been transformational in machine learning fields such\nas natural language processing and computer vision. Similar success in atomic\nproperty prediction has been limited due to the challenges of training\neffective models across multiple chemical domains. To address this, we\nintroduce Joint Multi-domain Pre-training (JMP), a supervised pre-training\nstrategy that simultaneously trains on multiple datasets from different\nchemical domains, treating each dataset as a unique pre-training task within a\nmulti-task framework. Our combined training dataset consists of $\\sim$120M\nsystems from OC20, OC22, ANI-1x, and Transition-1x. We evaluate performance and\ngeneralization by fine-tuning over a diverse set of downstream tasks and\ndatasets including: QM9, rMD17, MatBench, QMOF, SPICE, and MD22. JMP\ndemonstrates an average improvement of 59% over training from scratch, and\nmatches or sets state-of-the-art on 34 out of 40 tasks. Our work highlights the\npotential of pre-training strategies that utilize diverse data to advance\nproperty prediction across chemical domains, especially for low-data tasks.\nPlease visit https://nima.sh/jmp for further information.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2502.12383v1",
+            "paperId": "2502.12383v1",
+            "title": "Locally-Deployed Chain-of-Thought (CoT) Reasoning Model in Chemical\n  Engineering: Starting from 30 Experimental Data",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "In the field of chemical engineering, traditional data-processing and\nprediction methods face significant challenges. Machine-learning and\nlarge-language models (LLMs) also have their respective limitations. This paper\nexplores the application of the Chain-of-Thought (CoT) reasoning model in\nchemical engineering, starting from 30 experimental data points. By integrating\ntraditional surrogate models like Gaussian processes and random forests with\npowerful LLMs such as DeepSeek-R1, a hierarchical architecture is proposed. Two\nCoT-building methods, Large Language Model-Chain of Thought (LLM-CoT) and\nMachine Learning-Large Language Model-Chain of Thought (ML-LLM-CoT), are\nstudied. The LLM-CoT combines local models DeepSeek-r1:14b and Qwen2:7b with\nOllama. The ML-LLM-CoT integrates a pre-trained Gaussian ML model with the\nLLM-based CoT framework. Our results show that during construction, ML-LLM-CoT\nis more efficient. It only has 2 points that require rethink and a total of 4\nrethink times, while LLM-CoT has 5 points that need to be re-thought and 34\ntotal rethink times. In predicting the solubility of 20 molecules with\ndissimilar structures, the number of molecules with a prediction deviation\nhigher than 100\\% for the Gaussian model, LLM-CoT, and ML-LLM-CoT is 7, 6, and\n4 respectively. These results indicate that ML-LLM-CoT performs better in\ncontrolling the number of high-deviation molecules, optimizing the average\ndeviation, and achieving a higher success rate in solubility judgment,\nproviding a more reliable method for chemical engineering and molecular\nproperty prediction. This study breaks through the limitations of traditional\nmethods and offers new solutions for rapid property prediction and process\noptimization in chemical engineering.",
+            "tldr": null,
+            "score": 6
+        },
+        {
+            "id": "2409.02231v3",
+            "paperId": "2409.02231v3",
+            "title": "SmileyLlama: Modifying Large Language Models for Directed Chemical Space\n  Exploration",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Here we show that a general-purpose large language model (LLM) chatbot,\nLlama-3.1-8B-Instruct, can be transformed via supervised fine-tuning of\nengineered prompts into a chemical language model (CLM), SmileyLlama, for\nmolecule generation. We benchmark SmileyLlama by comparing it to CLMs trained\nfrom scratch on large amounts of ChEMBL data for their ability to generate\nvalid and novel drug-like molecules. We also use direct preference optimization\nto both improve SmileyLlama's adherence to a prompt and to generate molecules\nwithin the iMiner reinforcement learning framework to predict new drug\nmolecules with optimized 3D conformations and high binding affinity to drug\ntargets, illustrated with the SARS-Cov-2 Main Protease. This overall framework\nallows a LLM to speak directly as a CLM which can generate molecules with\nuser-specified properties, rather than acting only as a chatbot with knowledge\nof chemistry or as a helpful virtual assistant. While our dataset and analyses\nare geared toward drug discovery, this general procedure can be extended to\nother chemical applications such as chemical synthesis.",
+            "tldr": null,
+            "score": 6
+        },
+        {
+            "id": "2210.14642v2",
+            "paperId": "2210.14642v2",
+            "title": "Exploring Data-Driven Chemical SMILES Tokenization Approaches to\n  Identify Key Protein-Ligand Binding Moieties",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "Machine learning models have found numerous successful applications in\ncomputational drug discovery. A large body of these models represents molecules\nas sequences since molecular sequences are easily available, simple, and\ninformative. The sequence-based models often segment molecular sequences into\npieces called chemical words (analogous to the words that make up sentences in\nhuman languages) and then apply advanced natural language processing techniques\nfor tasks such as $\\textit{de novo}$ drug design, property prediction, and\nbinding affinity prediction. However, the chemical characteristics and\nsignificance of these building blocks, chemical words, remain unexplored. This\nstudy aims to investigate the chemical vocabularies generated by popular\nsubword tokenization algorithms, namely Byte Pair Encoding (BPE), WordPiece,\nand Unigram, and identify key chemical words associated with protein-ligand\nbinding. To this end, we build a language-inspired pipeline that treats high\naffinity ligands of protein targets as documents and selects key chemical words\nmaking up those ligands based on tf-idf weighting. Further, we conduct case\nstudies on a number of protein families to analyze the impact of key chemical\nwords on binding. Through our analysis, we find that these key chemical words\nare specific to protein targets and correspond to known pharmacophores and\nfunctional groups. Our findings will help shed light on the chemistry captured\nby the chemical words, and by machine learning models for drug discovery at\nlarge.",
+            "tldr": null,
+            "score": 5
+        },
+        {
+            "id": "2308.16259v2",
+            "paperId": "2308.16259v2",
+            "title": "Materials Informatics Transformer: A Language Model for Interpretable\n  Materials Properties Prediction",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Recently, the remarkable capabilities of large language models (LLMs) have\nbeen illustrated across a variety of research domains such as natural language\nprocessing, computer vision, and molecular modeling. We extend this paradigm by\nutilizing LLMs for material property prediction by introducing our model\nMaterials Informatics Transformer (MatInFormer). Specifically, we introduce a\nnovel approach that involves learning the grammar of crystallography through\nthe tokenization of pertinent space group information. We further illustrate\nthe adaptability of MatInFormer by incorporating task-specific data pertaining\nto Metal-Organic Frameworks (MOFs). Through attention visualization, we uncover\nthe key features that the model prioritizes during property prediction. The\neffectiveness of our proposed model is empirically validated across 14 distinct\ndatasets, hereby underscoring its potential for high throughput screening\nthrough accurate material property prediction.",
+            "tldr": null,
+            "score": 0
+        }
+    ]
+}

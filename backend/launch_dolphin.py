@@ -1,4 +1,3 @@
-import openai
 import os.path as osp
 import shutil
 import json
@@ -199,20 +198,39 @@ if __name__ == "__main__":
     else:
         raise ValueError(f"Model {args.model} is not supported. You need to add the model to dolphin_utils/llm_utils.py and launch_dolphin.py manually")
 
+
+    # Build directories
     base_dir = osp.join("examples", args.experiment)
+
     if args.save_name:
         results_dir = osp.join("results", args.save_name)
     else:
         results_dir = osp.join("results", args.experiment)
+
+    os.makedirs(base_dir, exist_ok=True)
+    os.makedirs(results_dir, exist_ok=True)
 
     exp_base_file_list = None
 
     if args.rag:
         from dolphin_utils.rag_tools.lit_review import collect_papers
         assert args.topic is not None
-        paper_bank, total_cost, all_queries = collect_papers(args.topic, client, client_model, args.seed, args.memory_papers, args.max_papers)
-        paper_dict = {"topic_description": args.topic, "all_queries": all_queries, "paper_bank": paper_bank}
-        with open(osp.join(base_dir, f"{args.experiment}_rag_papers.json"), "w") as f:
+
+        # Collect papers
+        paper_bank, total_cost, all_queries = collect_papers(
+            args.topic, client, client_model, args.seed, args.memory_papers, args.max_papers
+        )
+
+        # Prepare dictionary
+        paper_dict = {
+            "topic_description": args.topic,
+            "all_queries": all_queries,
+            "paper_bank": paper_bank
+        }
+
+        file_path = osp.join(base_dir, f"{args.experiment}_rag_papers.json")
+
+        with open(file_path, "w") as f:
             json.dump(paper_dict, f, indent=4)
 
     ideas = generate_ideas(

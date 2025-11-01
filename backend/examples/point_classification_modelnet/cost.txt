@@ -1,1 +1,1 @@
-Generate 3 ideas, the total cost is $0.073825, $0.024608333333333333 per idea.The total cost of ideas novelty check is $0.095158.
+Generate 2 ideas, the total cost is $0.06322, $0.03161 per idea.
