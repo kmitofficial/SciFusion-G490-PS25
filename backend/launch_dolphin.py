@@ -16,12 +16,7 @@ load_dotenv()
 if "GOOGLE_API_KEY" not in os.environ:
     print("[ERROR] GOOGLE_API_KEY not found in .env file. Please ensure it is set.")
     sys.exit(1)
-if "GROQ_API_KEY" in os.environ:
-    os.environ["GROQ_API_KEY"] = os.environ["GROQ_API_KEY"]
-    print("[PROCESS] Top-level: Found GROQ_API_KEY.")
-else:
-    print("[ERROR] GROQ_API_KEY not found in .env file. Please ensure it is set for the --code_model.")
-    sys.exit(1)
+
 # --- END AUTH FIX ---
 
 from aider.coders import Coder
