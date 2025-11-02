@@ -6,7 +6,7 @@ python experiment.py \
   --num_category 40 \
   --data_root /path/to/data \
   --learning_rate 1e-3 \
-  --max_epoch 200 \
+  --max_epoch 1 \
   --val_per_epoch 5
 
  #/path/to/data_root \

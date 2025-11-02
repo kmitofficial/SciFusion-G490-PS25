@@ -15,10 +15,11 @@ from torch.utils.data import DataLoader, Dataset
 from transformers import (
     get_linear_schedule_with_warmup,
     BertForSequenceClassification,
-    AutoTokenizer,
-    AdamW
+    AutoTokenizer
 )
+from torch.optim import AdamW
 from sklearn.metrics import roc_auc_score
+from datasets import load_dataset
 
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -33,17 +34,18 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class TrainingConfig:
-    max_seq_len: int = 50
-    epochs: int = 3
-    batch_size: int = 32
-    learning_rate: float = 2e-5
+    max_seq_len: int = 32      # smaller sequence length
+    epochs: int = 1            # only 1 epoch
+    batch_size: int = 8        # smaller batch size
+    learning_rate: float = 3e-5
     patience: int = 1
-    max_grad_norm: float = 10.0
-    warmup_ratio: float = 0.1
-    model_path: str = 'Bert ckpt path'
+    max_grad_norm: float = 1.0
+    warmup_ratio: float = 0.0
+    model_path: str = 'prajjwal1/bert-tiny'   # <<< much smaller model
     num_labels: int = 2
-    if_save_model: bool = True
-    out_dir: str = './run_0'
+    if_save_model: bool = False              # disable saving to speed up
+    out_dir: str = './run_fast'
+
 
     def validate(self) -> None:
         if self.max_seq_len <= 0:
@@ -122,15 +124,30 @@ class BertClassifier(nn.Module):
             batch_seqs: torch.Tensor,
             batch_seq_masks: torch.Tensor,
             batch_seq_segments: torch.Tensor,
-            labels: torch.Tensor
-    ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
-        loss, logits = self.bert(
+            labels: Optional[torch.Tensor] = None  # Allow labels to be None
+    ) -> Tuple[Optional[torch.Tensor], torch.Tensor, torch.Tensor]:  # Loss can be None
+
+        # Get the full model output
+        outputs = self.bert(
             input_ids=batch_seqs,
             attention_mask=batch_seq_masks,
             token_type_ids=batch_seq_segments,
             labels=labels
-        )[:2]
+        )
+
+        # Check if we are in training/validation or inference mode
+        if labels is not None:
+            # Labels were provided, so loss is computed
+            loss = outputs.loss
+            logits = outputs.logits
+        else:
+            # Labels were not provided (inference), so no loss
+            loss = None
+            logits = outputs.logits
+
         probabilities = nn.functional.softmax(logits, dim=-1)
+
+        # Return loss (which can be None), logits, and probabilities
         return loss, logits, probabilities
 
 
@@ -343,8 +360,27 @@ class BertTrainer:
             target_dir: str,
             epoch: int
     ) -> None:
-        test_metrics, all_probs = self._validate_epoch(test_loader)
-        logger.info(f"Test accuracy: {test_metrics['accuracy'] * 100:.2f}%")
+        self.model.eval()
+        all_probs = []
+        with torch.no_grad():
+            for batch in tqdm(test_loader, desc="Testing"):
+                batch = tuple(t.to(self.device) for t in batch)
+                input_ids, attention_mask, token_type_ids, _ = batch
+                # dummy labels removed
+                _, _, probabilities = self.model(input_ids, attention_mask, token_type_ids, labels=None)
+                all_probs.extend(probabilities[:, 1].cpu().numpy())
+
+        # generate predictions only
+        test_prediction = pd.DataFrame({'prob_1': all_probs})
+        test_prediction['prob_0'] = 1 - test_prediction['prob_1']
+        test_prediction['prediction'] = test_prediction.apply(
+            lambda x: 0 if x['prob_0'] > x['prob_1'] else 1,
+            axis=1
+        )
+
+        output_path = os.path.join(target_dir, f"test_prediction_epoch_{epoch}.csv")
+        test_prediction.to_csv(output_path, index=False)
+        logger.info(f"Test predictions saved to {output_path}")
 
         test_prediction = pd.DataFrame({'prob_1': all_probs})
         test_prediction['prob_0'] = 1 - test_prediction['prob_1']
@@ -445,27 +481,19 @@ def main(out_dir):
         config = TrainingConfig(out_dir=out_dir)
         pathlib.Path(config.out_dir).mkdir(parents=True, exist_ok=True)
 
-        data_path = "your data path"
-        train_df = pd.read_csv(
-            os.path.join(data_path, "train.tsv"),
-            sep='\t',
-            header=None,
-            names=['similarity', 's1']
-        )
-        dev_df = pd.read_csv(
-            os.path.join(data_path, "dev.tsv"),
-            sep='\t',
-            header=None,
-            names=['similarity', 's1']
-        )
-        test_df = pd.read_csv(
-            os.path.join(data_path, "test.tsv"),
-            sep='\t',
-            header=None,
-            names=['similarity', 's1']
-        )
+        logger.info("Loading small sample of dataset...")
+        dataset = load_dataset("glue", "sst2")
 
-        set_seed(2024)
+        # Take only 200 samples from train, 100 from val, 100 from test
+        train_df = dataset["train"].to_pandas().sample(200, random_state=42)[["label", "sentence"]]
+        dev_df = dataset["validation"].to_pandas().sample(100, random_state=42)[["label", "sentence"]]
+        test_df = dataset["test"].to_pandas().sample(100, random_state=42)[["label", "sentence"]]
+
+        train_df.columns = ["similarity", "s1"]
+        dev_df.columns = ["similarity", "s1"]
+        test_df.columns = ["similarity", "s1"]
+
+        set_seed(42)
 
         trainer = BertTrainer(config)
         trainer.train_and_evaluate(train_df, dev_df, test_df, "./output/Bert/")

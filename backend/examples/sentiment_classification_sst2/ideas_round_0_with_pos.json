@@ -1,0 +1,22 @@
+[
+    {
+        "Name": "group_convolution_bert",
+        "Title": "Injecting BERT with group convolution",
+        "Motivation": "BERT's attention blocks rely on heavy fully-connected layers, leading to high computational and memory costs. Replacing them with group convolution can reduce parameters and speed up inference without sacrificing representational power.",
+        "Method": "We substitute the projection layers in each self-attention head with group convolutions. Features are split into groups, convolved with small kernels, then fed into the standard attention and normalization pipeline. This reduces parameter count and computation while maintaining accuracy.",
+        "Experiment": "In this experiment, we compare the performance of different sentiment classification networks, especially considering using group convolution instead of fully connect layer in the attention block in BERT",
+        "Summary": "Combine group convolution and BERT to improve the efficiency of BERT",
+        "Feasibility": 9,
+        "Novelty": 6
+    },
+    {
+        "Name": "stratified_aug_bert",
+        "Title": "Enhancing Tiny BERT Sentiment Classification with Stratified Sampling and Contextual Augmentation",
+        "Motivation": "Tiny BERT models, due to their limited capacity and training on small data subsets, are highly susceptible to overfitting and can struggle with generalization. Imbalanced class distributions in sampled datasets further exacerbate this issue. Human understanding of sentiment is nuanced and relies on diverse linguistic expressions. This research aims to boost the robustness and generalization of tiny BERT models by employing stratified sampling to ensure data representativeness and applying controlled text augmentation to introduce linguistic variability, thereby improving learning efficiency and performance under data constraints.",
+        "Method": "We propose a two-pronged approach to enhance the training of tiny BERT models for sentiment classification. Firstly, we implement stratified sampling when preparing the training, validation, and test datasets from the GLUE SST-2 dataset. This ensures that the proportion of positive and negative sentiment examples is accurately preserved across all splits, preventing biases from small, randomly sampled subsets. Secondly, we apply controlled data augmentation to the *stratified training set*. For each original training sentence, we generate one augmented version by applying random word deletion (with a probability $p_{del}$) and random word swapping (with a probability $p_{swap}$). This effectively doubles the training data size and exposes the model to diverse phrasing, paraphrasing, and minor syntactic variations without requiring external models or datasets. The augmented samples retain the original sentiment label. This strategy is particularly beneficial for tiny models, which can leverage this richer training signal to learn more robust representations.",
+        "Experiment": "1. Load the full 'glue', 'sst2' dataset.\n2. Use `datasets.Dataset.train_test_split` with `stratify_by_column='label'` to create stratified train, validation, and test splits.\n3. Sample a fixed number of examples (e.g., 200 for train, 100 for dev, 100 for test) from these stratified splits.\n4. Implement a `augment_sentence` function that takes a sentence and applies random word deletion (e.g., 10% probability per word) and random adjacent word swapping (e.g., 5% probability). This function will be called to generate one augmented version for each sentence in the stratified training set.\n5. Extend the training data (DataFrame) with these augmented samples, effectively doubling the training set size.\n6. Train the `BertTrainer` with the augmented and stratified data, using the `bert-tiny` model.\n7. Compare the performance metrics (validation accuracy, AUC) against the baseline experiment (random sampling, no augmentation) and a variant with stratified sampling only. Analyze the performance gains attributable to augmentation.",
+        "Summary": "This study investigates the combined benefits of stratified data sampling and controlled text augmentation (deletion/swapping) for improving the generalization and robustness of tiny BERT models in sentiment analysis tasks with limited data.",
+        "Feasibility": 9,
+        "Novelty": 6
+    }
+]

@@ -20,15 +20,11 @@ fi
 # Run the Dolphin launcher with environment variable
 python launch_dolphin.py \
     --model gemini-2.5-flash-lite \
-    --code_model openrouter/qwen/qwen3-coder:free \
+    --code_model flash \
     --skip-novelty-check \
-    --experiment Chem_LLM \
-    --topic "Predicting Chemical Properties of Compounds Using Large Language Models (LLMs)" \
-    --rag \
-    --max_papers 5 \
+    --experiment sentiment_classification_sst2 \
+    --topic "novel attention mechanisms for sentiment classification" \
     --num-ideas 1 \
     --round 0 \
-    --check_similarity \
-    --embedding_model sentence-transformers/all-roberta-large-v1 \
-    --save_name chem_test \
+    --save_name theTest \
     | tee launch_dolphin.txt

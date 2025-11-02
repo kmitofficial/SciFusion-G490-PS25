@@ -16,11 +16,12 @@ load_dotenv()
 if "GOOGLE_API_KEY" not in os.environ:
     print("[ERROR] GOOGLE_API_KEY not found in .env file. Please ensure it is set.")
     sys.exit(1)
-if "OPENROUTER_API_KEY" not in os.environ:
-    print("[ERROR] OPENROUTER_API_KEY not found in .env file. Please ensure it is set for the --code_model.")
-    sys.exit(1)
+if "GROQ_API_KEY" in os.environ:
+    os.environ["GROQ_API_KEY"] = os.environ["GROQ_API_KEY"]
+    print("[PROCESS] Top-level: Found GROQ_API_KEY.")
 else:
-    print("[PROCESS] Top-level: Found OPENROUTER_API_KEY.")
+    print("[ERROR] GROQ_API_KEY not found in .env file. Please ensure it is set for the --code_model.")
+    sys.exit(1)
 # --- END AUTH FIX ---
 
 from aider.coders import Coder
@@ -197,7 +198,6 @@ def do_idea(base_dir, results_dir, idea, model, log_file=False):
     print(f"[PROCESS] do_idea: Writing notes.txt")
     with open(notes, "w") as f:
         f.write(f"# Title: {idea['Title']}\n")
-        f.write(f"# Method: {idea.get('Method', 'N/A')}\n") # <-- Safety net for 'Method' key
         f.write(f"# Experiment description: {idea['Experiment']}\n")
         f.write(f"## Run 0: Baseline\n")
         f.write(f"Results: {baseline_results}\n")
@@ -222,9 +222,9 @@ def do_idea(base_dir, results_dir, idea, model, log_file=False):
         io = InputOutput(yes=True, chat_history_file=f"{folder_name}/{idea_name}_aider.txt")
 
         # --- This is the original, correct code ---
-        # Aider will read the OPENROUTER_API_KEY from the environment
+        # Aider will read the GROQ_API_KEY from the environment
         # (which we loaded at the top of the script)
-        # when it sees a model name like "openrouter/..."
+        # when it sees a model name like "groq/..." or "openai/..."
 
         print(f"[PROCESS] do_idea: Initializing model for Coder: {model}")
 
@@ -234,7 +234,7 @@ def do_idea(base_dir, results_dir, idea, model, log_file=False):
             ollama_model = "ollama/" + "-".join(model.split("-")[1:])
             main_model = Model(ollama_model)
         else:
-            main_model = Model(model)  # This will now work for "openrouter/qwen/qwen3-coder:free"
+            main_model = Model(model)  # This will now work for "openai/gpt-oss-120b"
         # --- End of fix ---
 
         print(f"[PROCESS] do_idea: Creating Coder with files: {fnames}")
@@ -350,15 +350,8 @@ if __name__ == "__main__":
         client = genai.GenerativeModel(args.model)
         client_model = args.model
     else:
-        # This will handle OpenRouter for the *main* client, if you ever want to do that.
-        # But for now, we only need OpenRouter for the --code_model.
-        print(f"Using model {args.model}, assuming it's supported by a loaded API key (like OpenRouter).")
-        import openai
-        client = openai.OpenAI(
-            base_url = "https://openrouter.ai/api/v1",
-            api_key = os.environ.get("OPENROUTER_API_KEY")
-        )
-        client_model = args.model
+        raise ValueError(
+            f"Model {args.model} is not supported. You need to add the model to dolphin_utils/llm_utils.py and launch_dolphin.py manually")
 
     print(f"[PROCESS] LLM Client created successfully.")
 
