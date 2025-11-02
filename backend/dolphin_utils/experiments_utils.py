@@ -19,7 +19,10 @@ def info_traceback(stderr):
     pattern = r'File "(.*)", line (\d+), in (.+)\n (.*)'
     matches = re.findall(pattern, stderr)
     match = re.search(rf'\w*Error\w*(.*)', stderr, re.DOTALL)
-    message = match.group(1).strip()
+    if match:
+        message = match.group(1).strip()
+    else:
+        message = stderr # Fallback if no Error pattern found
     externel = []
     for match in matches:
         if match[0].split('/')[-1] == 'experiment.py':
@@ -71,13 +74,24 @@ def run_experiment(folder_name, run_num, timeout=18000):
             traceback, message, tb = None, None, None
             return result.returncode, next_prompt, traceback, message
 
+        # --- THIS IS THE FIX FOR ERROR 2 ---
+        tb = None
+        traceback = None
+        message = None
+        traceback_path = osp.join(cwd, f"run_{run_num}", "traceback.log")
+
         if result.stderr:
             print(result.stderr, file=sys.stderr)
-            with open(osp.join(cwd, f"run_{run_num}", "traceback.log"), "r") as file:
-                tb = file.read()
-            traceback, message = info_traceback(tb)
-        else:
-            traceback, message, tb = None, None, None
+            if osp.exists(traceback_path): # Check if the file exists *before* opening
+                with open(traceback_path, "r") as file:
+                    tb = file.read()
+                traceback, message = info_traceback(tb)
+            else:
+                print(f"[PROCESS] run_experiment: stderr was present, but no traceback.log found at {traceback_path}.")
+                # Fallback to using the raw stderr
+                tb = result.stderr # Use raw stderr as traceback
+                traceback, message = info_traceback(tb) # Try to parse it anyway
+        # --- END OF FIX ---
 
         if result.returncode != 0:
             print(f"Run {run_num} failed with return code {result.returncode}")
@@ -92,11 +106,17 @@ def run_experiment(folder_name, run_num, timeout=18000):
                 stderr_output = "..." + stderr_output[-MAX_STDERR_OUTPUT:]
             next_prompt = f"Run failed with the following error {stderr_output}"
         else:
-            with open(osp.join(cwd, f"run_{run_num}", "final_info.json"), "r") as f:
-                results = json.load(f)
-            results = {k: v["means"] for k, v in results.items()}
+            # This part should not be reached if final_info.json wasn't found at the top
+            # But we leave it for safety.
+            try:
+                with open(osp.join(cwd, f"run_{run_num}", "final_info.json"), "r") as f:
+                    results = json.load(f)
+                results = {k: v["means"] for k, v in results.items()}
+                next_prompt = next_experiment_prompt.format(RUN_NUM=run_num, RESULTS=results, NEXT_RUN_NUM=run_num+1)
+            except FileNotFoundError:
+                print(f"Run {run_num} succeeded (code 0) but final_info.json was not found.")
+                next_prompt = "Run succeeded (return code 0) but no 'final_info.json' was produced. Please check the code to ensure it saves results correctly."
 
-            next_prompt = next_experiment_prompt.format(RUN_NUM=run_num, RESULTS=results, NEXT_RUN_NUM=run_num+1)
 
         return result.returncode, next_prompt, traceback, message
     except TimeoutExpired:
@@ -114,7 +134,7 @@ def perform_experiments(idea, folder_name, coder, baseline_results) -> bool:
     run = 1
     next_prompt = coder_prompt.format(
         title=idea["Title"],
-        method=idea["Method"],
+        method=idea.get("Method", "N/A"), # <-- Safety net for 'Method' key
         idea=idea["Experiment"],
         max_runs=MAX_RUNS,
         baseline_results=baseline_results,
@@ -129,9 +149,22 @@ def perform_experiments(idea, folder_name, coder, baseline_results) -> bool:
             return False
         if "ALL_COMPLETED" in coder_out:
             break
-        if filecmp.cmp(os.path.join(folder_name, 'experiment.py'), os.path.join(folder_name, 'run_0', 'experiment.py')):
-            print("do not modify code")
-            continue
+
+        # --- THIS IS THE "SAFETY NET" FIX ---
+        # We will try to compare the files, but if the baseline file is missing,
+        # we will just skip the check and continue instead of crashing.
+        baseline_script_path = os.path.join(folder_name, 'run_0', 'experiment.py')
+        new_script_path = os.path.join(folder_name, 'experiment.py')
+
+        if not osp.exists(baseline_script_path):
+            print(f"[WARNING] Baseline file {baseline_script_path} not found. Skipping file comparison.")
+        elif filecmp.cmp(new_script_path, baseline_script_path):
+            print("AI Coder did not modify the code. Re-prompting.")
+            next_prompt = "You did not modify the code. Please apply the changes as requested."
+            current_iter += 1
+            continue # Skip the rest of the loop and re-prompt
+        # --- END OF FIX ---
+
         return_code, next_prompt, traceback, message = run_experiment(folder_name, run)
         # add traceback and code_structure
         if traceback:
