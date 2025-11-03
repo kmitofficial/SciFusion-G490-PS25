@@ -22,11 +22,9 @@ python launch_dolphin.py \
     --model gemini-2.5-flash-lite \
     --code_model flash \
     --experiment sentiment_classification_sst2 \
-    --topic "novel attention mechanisms for sentiment classification" \
-    --check_similarity \
-    --skip-novelty-check \
+    --topic "Emotion-Driven Attention for Sentiment Classification" \
     --rag \
-    --num-ideas 3 \
+    --num-ideas 1 \
     --round 0 \
-    --save_name theTest \
+    --save_name thechallenge2 \
     | tee launch_dolphin.txt
