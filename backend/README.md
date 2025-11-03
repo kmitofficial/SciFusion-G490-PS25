@@ -173,6 +173,101 @@ bash launch_dolphin.sh
 - Note that you need to add api_key and specify the model and topic in `launch_dolphin.sh`. You can refer to the [doc](./docs/ollama_doc.md) if you want to use self-deployed model.
 - Data for Point Classfication, Image Classification, and Sentiment Classification tasks can be downloaded [here](https://drive.google.com/drive/folders/1mq1y7EWW9dgPlS26hXNa3wxL7_2vvNju?usp=sharing).
 
+## 🧭 AutoAD Backend API (FastAPI)
+
+The `backend/server` package exposes a lightweight FastAPI layer that lets you scaffold new experiments and drive the agentic AutoAD pipeline directly from your chat-style frontend.
+
+### Run the API server
+
+1. Install dependencies (the main `requirements.txt` already includes FastAPI, Uvicorn, and aider):
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Launch the development server from the backend root:
+
+   ```bash
+   uvicorn app.main:app --reload --app-dir server
+   ```
+
+   The service will be available at `http://localhost:8000` by default, with the interactive docs at `/docs`.
+
+  > **Tip:** To persist session history across restarts, ensure a MongoDB instance is reachable and set the following environment variables (defaults target a local daemon):
+  >
+  > ```bash
+  > export MONGODB_URI="mongodb://127.0.0.1:27017"
+  > export MONGODB_DB="autoad"
+  > export MONGODB_SESSION_COLLECTION="sessions"
+  > ```
+  >
+  > The FastAPI app automatically loads `.env`, so adding these keys there works too.
+
+### Session persistence and monitoring
+
+- Session metadata is now mirrored into MongoDB; history survives uvicorn reloads and server restarts. If MongoDB is unavailable, the service gracefully falls back to in-memory tracking.
+- A lightweight dashboard (`session_monitor.html`) lives at the backend root. Serve it with `python -m http.server 5500` and open `http://127.0.0.1:5500/session_monitor.html` to watch session progress and final artifact paths.
+
+### Project management endpoints
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/projects` | Create a new experiment scaffold (directories, baseline files, prompts). |
+| `GET` | `/projects` | List all provisioned projects with their RAG state and timestamps. |
+| `GET` | `/projects/{slug}` | Fetch the full configuration for a specific project. |
+
+**Create project request body (`ProjectCreateRequest`)**
+
+```json
+{
+  "name": "Protein Folding Explorer",
+  "topic": "Protein folding pathways",
+  "objective": "Design improved folding prediction algorithms",
+  "success_metric": "Top-1 accuracy on CASP",
+  "user_persona": "Computational biologist",
+  "data_sources": ["CASP15", "AlphaFold DB"],
+  "constraints": ["<24h runtime", "NVIDIA A100"],
+  "preferred_modalities": ["transformers", "graph neural networks"],
+  "enable_rag": true,
+  "seed": 2025,
+  "rag_max_papers": 20,
+  "rag_memory_papers": 10,
+  "notes": "Prioritize explainability."
+}
+```
+
+The response contains the slug, filesystem paths, and timestamps so you can immediately trigger AutoAD runs.
+
+### Session orchestration endpoints
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `POST` | `/sessions` | Kick off the AutoAD pipeline for a project (idea generation → experiments). |
+| `GET` | `/sessions` | Retrieve a summary list of all sessions for dashboard views. |
+| `GET` | `/sessions/{session_id}` | Fetch the full status snapshot including the latest stage, events, and result folders. |
+| `GET` | `/sessions/{session_id}/events` | Poll just the event timeline for streaming-style UIs. |
+
+**Launch session request body (`SessionCreateRequest`)**
+
+```json
+{
+  "project_slug": "protein-folding-explorer",
+  "model": "gemini-2.5-flash-lite",
+  "code_model": "flash",
+  "parallel": 0,
+  "num_ideas": 12,
+  "skip_idea_generation": false,
+  "skip_novelty_check": false,
+  "check_similarity": true,
+  "embedding_model": "sentence-transformers/all-roberta-large-v1",
+  "use_rag": true,
+  "topic_override": "Protein folding stability",
+  "round": 0
+}
+```
+
+The service enqueues the job, returns a `session_id`, and emits stage-by-stage events (Queued → Preparing → Retrieval → Idea Generation → Novelty Check → Execution → Complete/Failed). The `result_paths` array lists the directories under `results/<slug>/` that successfully compiled and ran.
+
 ## Citation
 ```
 @article{team2025novelseek,

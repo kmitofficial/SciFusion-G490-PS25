@@ -1,0 +1,17 @@
+{
+    "name": "Sentiment Classification Sst 2",
+    "slug": "sentiment-classification-sst-2",
+    "topic": "Sentiment Classification Sst 2",
+    "objective": "Run AutoAD experiments using the pre-seeded example shipped with the repository.",
+    "success_metric": "Refer to run_0/final_info.json for baseline metrics.",
+    "user_persona": null,
+    "data_sources": [],
+    "constraints": [],
+    "preferred_modalities": [],
+    "enable_rag": false,
+    "seed": 2025,
+    "rag_max_papers": 20,
+    "rag_memory_papers": 10,
+    "notes": "Auto-generated legacy project config.",
+    "created_at": "2025-11-03T16:24:25.980591"
+}
