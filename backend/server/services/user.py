@@ -17,15 +17,14 @@ async def get_or_create_stub_user() -> UserInDB:
     user_doc = await users_collection.find_one({"username": STUB_USERNAME})
 
     if user_doc:
-        # Found it, return the user
-        return UserInDB(**user_doc, _id=user_doc["_id"])
+        # Found it. Pydantic will handle the _id alias.
+        return UserInDB(**user_doc)
 
     # 2. Not found, so let's create it
     print(f"Stub user '{STUB_USERNAME}' not found, creating...")
     new_user_data = {
         "username": STUB_USERNAME,
         "email": "test@user.com"
-        # In a real system, we'd add a hashed_password
     }
     insert_result = await users_collection.insert_one(new_user_data)
 
@@ -33,4 +32,9 @@ async def get_or_create_stub_user() -> UserInDB:
     created_user_doc = await users_collection.find_one(
         {"_id": insert_result.inserted_id}
     )
-    return UserInDB(**created_user_doc, _id=created_user_doc["_id"])
+
+    if created_user_doc:
+        return UserInDB(**created_user_doc)
+
+    # This should never happen, but it's a safe fallback
+    raise Exception("Failed to create or find stub user.")

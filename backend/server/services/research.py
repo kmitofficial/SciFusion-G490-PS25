@@ -2,21 +2,30 @@ import subprocess
 import sys
 import os
 from server.models.job import ResearchRequest
-from server.core.db import db  # Import our single DB instance
+from server.core.db import db
 from bson import ObjectId
 
+# Import the API callback functions from launch_dolphin
+# We will call them directly if the script crashes
+# We need to add all of them, just in case
+try:
+    from launch_dolphin import update_job_status
+except ImportError:
+    # This is a fallback in case of circular imports, though unlikely
+    def update_job_status(job_id, status):
+        print(f"[RESEARCH_SERVICE] Fallback: Job {job_id} status to {status}")
+
 # Get the synchronous 'jobs' collection
-# We use sync here because this is a background task,
-# not a high-concurrency API route.
 jobs_collection = db.get_jobs_collection_sync()
 
 
 def run_research_task(job_id: str, req: ResearchRequest):
     """
-    The background task, now with database updates!
+    The background task, now with
+    1. Corrected argparse flags
+    2. Final log saving
     """
 
-    # 1. Get the job's ObjectId
     try:
         job_oid = ObjectId(job_id)
     except Exception:
@@ -32,12 +41,6 @@ def run_research_task(job_id: str, req: ResearchRequest):
 
     print(f"--- 🚀 [Job: {job_id}] Starting Job ---")
 
-    # 2. Update job status to 'running' in DB
-    jobs_collection.update_one(
-        {"_id": job_oid},
-        {"$set": {"status": "running"}}
-    )
-
     # Build the command
     command = [
         python_executable, script_path,
@@ -47,17 +50,28 @@ def run_research_task(job_id: str, req: ResearchRequest):
         "--topic", req.topic,
         "--num-ideas", str(req.num_ideas),
         "--round", str(req.round),
-        "--save_name", f"api_job_{job_id}",  # Give it a unique name
+        "--save_name", f"api_job_{job_id}",
+        "--job-id", job_id  # <-- Pass the job_id
     ]
-    if req.rag: command.append("--rag")
-    if req.check_similarity: command.append("--check_similarity")
-    if req.skip_novelty_check: command.append("--skip-novelty-check")
+
+    # --- THIS IS THE FIX ---
+    # Add boolean flags only if they are True
+    # Must use hyphens to match argparse in launch_dolphin.py
+    if req.rag:
+        command.append("--rag")
+    if req.check_similarity:
+        command.append("--check_similarity")
+    if req.skip_novelty_check:
+        command.append("--skip-novelty-check")
+    # --- END OF FIX ---
 
     print(f"[Job: {job_id}] Running command: {' '.join(command)}")
 
-    final_update = {}
+    final_log = ""
+    final_error_log = ""
+
     try:
-        # 3. Run the script and wait for it to complete
+        # Run the script and wait for it to complete
         process = subprocess.run(
             command,
             capture_output=True,
@@ -67,26 +81,41 @@ def run_research_task(job_id: str, req: ResearchRequest):
             cwd=working_dir
         )
 
-        print(f"--- ✅ [Job: {job_id}] Job Finished ---")
+        final_log = process.stdout
+        final_error_log = process.stderr
 
-        # 4. Prepare final update for the DB
-        final_update = {
-            "status": "complete",
-            "log": process.stdout,
-            "error_log": process.stderr
-        }
+        if process.returncode == 0:
+            print(f"--- ✅ [Job: {job_id}] Job Finished ---")
+            # The script *should* send its own 'complete' status,
+            # but we'll save the logs just in case
+            jobs_collection.update_one(
+                {"_id": job_oid},
+                {"$set": {"log": final_log, "error_log": final_error_log}}
+            )
+        else:
+            print(f"--- ❌ [Job: {job_id}] Script Failed (Return Code {process.returncode}) ---")
+            # If the script crashed, it didn't send 'complete'
+            # Let's save the logs and set status to 'failed'
+            jobs_collection.update_one(
+                {"_id": job_oid},
+                {"$set": {
+                    "status": "failed",
+                    "log": final_log,
+                    "error_log": final_error_log
+                }}
+            )
+            # Manually notify the frontend
+            update_job_status(job_id, "failed")
 
     except Exception as e:
-        print(f"--- ❌ [Job: {job_id}] Job Failed Critically ---")
-        final_update = {
-            "status": "failed",
-            "error_log": str(e)
-        }
-
-    # 5. Save final update to MongoDB
-    jobs_collection.update_one(
-        {"_id": job_oid},
-        {"$set": final_update}
-    )
-
-    print(f"--- 💾 [Job: {job_id}] Results saved to database. ---")
+        print(f"--- ❌ [Job: {job_id}] Script Host Failed Critically ---")
+        final_error_log = str(e)
+        jobs_collection.update_one(
+            {"_id": job_oid},
+            {"$set": {
+                "status": "failed",
+                "error_log": final_error_log
+            }}
+        )
+        # Manually notify the frontend
+        update_job_status(job_id, "failed")

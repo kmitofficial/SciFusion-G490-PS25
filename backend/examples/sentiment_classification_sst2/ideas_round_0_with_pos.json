@@ -8,6 +8,17 @@
         "Summary": "Combine group convolution and BERT to improve the efficiency of BERT",
         "Feasibility": 9,
         "Novelty": 6,
-        "novel": true
+        "independence": true
+    },
+    {
+        "Name": "learned_sentiment_modulation_attention",
+        "Title": "Learned Sentiment Modulation for Adaptive Attention in BERT",
+        "Motivation": "Standard BERT attention mechanisms fail to dynamically adapt to the semantic impact of sentiment modifiers like negations and intensifiers. Humans readily adjust their interpretation based on these cues, suggesting a need for attention mechanisms that can learn to weigh contextually relevant information more effectively.",
+        "Method": "We propose a Learned Sentiment Modulation (LSM) mechanism that enhances BERT's self-attention. For each input sequence, LSM first identifies tokens corresponding to predefined negation (e.g., 'not') and intensifier (e.g., 'very') words. For each identified modifier token, a specific linguistic feature representation is generated. Within each attention head, a small, *learnable* projection module takes this linguistic feature representation and outputs a scalar bias term. This bias term is then added to the raw attention scores computed for tokens that are modified by this specific linguistic cue *before* the softmax. This allows the model to learn the optimal way to adjust attention based on the type and presence of sentiment modifiers, leading to more nuanced and accurate sentiment representations. The novelty lies in the integration of learned, adaptive bias terms directly into the attention score calculation, conditioned on identified sentiment modifiers.",
+        "Experiment": "1. Define lists of common negation and intensifier words. 2. For each modifier token, create a feature representation (e.g., one-hot encoding of type). 3. Subclass `BertForSequenceClassification` to create `LearnedSentimentModulatedBert`. Modify the attention layer's forward pass: identify modifier tokens, generate their feature representations, use a learnable projection module per head to output a bias term conditioned on the modifier type, and add this bias to the attention scores before softmax. 4. Update `BertClassifier` to use this new custom BERT model. 5. Train and evaluate the modified model using the existing `BertTrainer` on the SST-2 dataset. 6. Compare performance (accuracy, AUC) against a baseline BERT model. 7. Analyze the learned bias terms and attention patterns to understand how the model adapts.",
+        "Summary": "Introduces a Learned Sentiment Modulation mechanism that allows BERT's attention to adaptively adjust based on learned biases derived from negation and intensifier words.",
+        "Feasibility": 8,
+        "Novelty": 8,
+        "independence": true
     }
 ]
