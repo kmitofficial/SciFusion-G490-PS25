@@ -40,8 +40,8 @@ def parse_arguments():
     parser.add_argument("--skip-novelty-check", action="store_true", help="Skip novelty check and use existing ideas")
     parser.add_argument("--experiment", type=str, default="point_classification_modelnet",
                         help="Experiment to run AutoAD on.")
-    parser.add_argument("--model", type=str, default="claude-3-5-sonnet-20240620", help="Model to use for AutoAD.")
-    parser.add_argument("--code_model", type=str, default="deepseek",
+    parser.add_argument("--model", type=str, default="gemini-2.5-flash-lite", help="Model to use for AutoAD.")
+    parser.add_argument("--code_model", type=str, default="flash",
                         help="Model to use for experimental implementation.")
     parser.add_argument("--parallel", type=int, default=0,
                         help="Number of parallel processes to run. 0 for sequential execution.")
