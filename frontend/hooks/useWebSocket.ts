@@ -5,7 +5,6 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "./useAuth";
 
 const getWebSocketUrl = () => {
-    // Default to localhost, but allow override via environment variable
     const wsUrl =
         process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/api/v1/ws";
     return wsUrl;
@@ -14,13 +13,17 @@ const getWebSocketUrl = () => {
 export const useWebSocket = (
     onMessage: (message: any) => void,
     onError: (error: string) => void,
+    // --- NEW ---
+    shouldConnect: boolean = true, // Default to true
 ) => {
     const { token } = useAuth();
     const ws = useRef<WebSocket | null>(null);
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        if (token) {
+        // --- UPDATED ---
+        // Only connect if we have a token AND shouldConnect is true
+        if (token && shouldConnect) {
             const wsUrl = `${getWebSocketUrl()}?token=${token}`;
             ws.current = new WebSocket(wsUrl);
 
@@ -35,7 +38,6 @@ export const useWebSocket = (
                     onMessage(message);
                 } catch (e) {
                     console.error("Failed to parse WebSocket message:", e);
-                    // Handle non-JSON or plain text log messages
                     onMessage({ type: "LOG", data: event.data });
                 }
             };
@@ -51,12 +53,17 @@ export const useWebSocket = (
                 setIsConnected(false);
             };
 
-            // Cleanup on component unmount
+            // Cleanup on component unmount or if shouldConnect changes to false
             return () => {
                 ws.current?.close();
             };
+        } else {
+            // If we shouldn't connect, ensure we are disconnected
+            ws.current?.close();
+            setIsConnected(false);
         }
-    }, [token, onMessage, onError]);
+    }, [token, onMessage, onError, shouldConnect]); // Add shouldConnect to deps
+    // --- END UPDATED ---
 
     return { isConnected };
 };

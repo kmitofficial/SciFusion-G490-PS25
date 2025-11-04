@@ -47,3 +47,23 @@ class Job(BaseModel):
 
     class Config:
         json_encoders = {PydanticObjectId: str}
+
+
+class ResearchRequestSidebar(BaseModel):
+    """
+    A small model for just the topic in the sidebar.
+    """
+    topic: str
+
+class JobSidebarItem(BaseModel):
+    """
+    A small model for the job list in the sidebar.
+    Matches the projection in the 'get_all_jobs' endpoint.
+    """
+    id: PydanticObjectId = Field(..., alias="_id")
+    request: ResearchRequestSidebar
+    created_at: datetime
+    status: str
+
+    class Config:
+        json_encoders = {PydanticObjectId: str}
