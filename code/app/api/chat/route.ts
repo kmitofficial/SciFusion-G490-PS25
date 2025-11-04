@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
     const { text } = await generateText({
       model: "openai/gpt-4o-mini",
-      system: `You are Pointer, an intelligent AI assistant specialized in helping developers. You provide:
+      system: `You are Scifusion, an intelligent AI assistant specialized in helping developers. You provide:
 - Code reviews and suggestions
 - Debugging assistance
 - Performance optimization tips

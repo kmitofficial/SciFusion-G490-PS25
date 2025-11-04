@@ -1,274 +1,511 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useRef, useEffect } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input"
-import { Send, Loader2, Menu, Settings2 } from "lucide-react"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
+import { cn } from "@/lib/utils"
+import {
+  Brain,
+  Loader2,
+  Menu,
+  PanelRightClose,
+  PanelRightOpen,
+  Settings2,
+  Sparkles,
+  User,
+} from "lucide-react"
 
-interface Message {
+import { useSessionEvents } from "@/hooks/use-session-events"
+import { apiFetch } from "@/lib/api-client"
+
+const SYSTEM_PROMPT =
+  "You are SciFusion's research copilot. Provide concise, evidence-driven insights and suggest next experimental steps when possible."
+
+export interface Thought {
+  title: string
+  detail: string
+}
+
+interface ChatSummary {
+  chat_id: string
+  session_id: string
+  project_slug: string
+  title: string
+  created_at: string
+}
+
+export interface Message {
   id: string
   role: "user" | "assistant"
   content: string
   timestamp: Date
+  thoughts?: Thought[]
 }
 
 interface ChatInterfaceProps {
-  conversationId: string | null
+  chatId: string | null
+  sessionId: string | null
+  token: string | null
+  onChatCreated: (chat: ChatSummary) => void
   onToggleSidebar: () => void
-  isSidebarOpen: boolean
+  initialMessages?: Message[]
+  onMessagesUpdate: (chatId: string | null, messages: Message[]) => void
 }
 
-export function ChatInterface({ conversationId, onToggleSidebar, isSidebarOpen }: ChatInterfaceProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      role: "assistant",
-      content:
-        "Welcome to Scifusion! I'm your AI-powered research assistant. I can help you generate research hypotheses, validate experiments, provide domain-specific insights in bioinformatics, materials science, environmental modeling, and more. What research challenge can I help you explore today?",
-      timestamp: new Date(),
-    },
-  ])
+const stageOrder = [
+  "QUEUED",
+  "PREPARING",
+  "RETRIEVAL",
+  "IDEA_GENERATION",
+  "NOVELTY_CHECK",
+  "EXECUTION",
+  "COMPLETE",
+  "FAILED",
+]
+
+const stageLabels: Record<string, string> = {
+  QUEUED: "Queued",
+  PREPARING: "Preparing",
+  RETRIEVAL: "Retrieval",
+  IDEA_GENERATION: "Idea generation",
+  NOVELTY_CHECK: "Novelty check",
+  EXECUTION: "Experiment execution",
+  COMPLETE: "Complete",
+  FAILED: "Failed",
+}
+
+export const INITIAL_ASSISTANT_MESSAGE: Message = {
+  id: "intro",
+  role: "assistant",
+  content:
+    "Welcome to SciFusion. Share the research problem you're exploring, and I'll help orchestrate project setup, literature review, hypothesis generation, and automated experimentation.",
+  timestamp: new Date(),
+}
+
+export function ChatInterface({
+  chatId,
+  sessionId,
+  token,
+  onChatCreated,
+  onToggleSidebar,
+  initialMessages = [INITIAL_ASSISTANT_MESSAGE],
+  onMessagesUpdate,
+}: ChatInterfaceProps) {
+  const [messages, setMessages] = useState<Message[]>(() => initialMessages.map((message) => ({ ...message })))
   const [inputValue, setInputValue] = useState("")
   const [numIdeas, setNumIdeas] = useState("5")
   const [maxPapers, setMaxPapers] = useState("10")
   const [isLoading, setIsLoading] = useState(false)
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [isInspectorOpen, setIsInspectorOpen] = useState(true)
+  const [isMobileInspectorOpen, setIsMobileInspectorOpen] = useState(false)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const chatIdRef = useRef<string | null>(chatId)
+  const { events, groupedByStage, state: streamState } = useSessionEvents(sessionId)
 
   useEffect(() => {
-    scrollToBottom()
+    chatIdRef.current = chatId
+  }, [chatId])
+
+  useEffect(() => {
+    setMessages(initialMessages.map((message) => ({ ...message })))
+  }, [chatId, initialMessages])
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const orderedStages = useMemo(() => {
+    return stageOrder
+      .map((stage) => ({ stage, events: groupedByStage[stage] ?? [] }))
+      .filter((entry) => entry.events.length > 0)
+  }, [groupedByStage])
+
+  const handleSendMessage = async (event: React.FormEvent) => {
+    event.preventDefault()
     if (!inputValue.trim()) return
 
+    const parsedIdeas = Number.parseInt(numIdeas, 10)
+    const parsedPapers = Number.parseInt(maxPapers, 10)
+
+    if (Number.isNaN(parsedIdeas) || parsedIdeas <= 0) {
+      setErrorMessage("Number of ideas must be a positive number")
+      return
+    }
+
+    if (Number.isNaN(parsedPapers) || parsedPapers < 0) {
+      setErrorMessage("Max papers must be zero or greater")
+      return
+    }
+
+    if (!token) {
+      setErrorMessage("You must be signed in to chat with the assistant.")
+      return
+    }
+
+    setErrorMessage(null)
+
     const userMessage: Message = {
-      id: String(messages.length + 1),
+      id: crypto.randomUUID(),
       role: "user",
-      content: inputValue,
+      content: inputValue.trim(),
       timestamp: new Date(),
     }
 
-    setMessages((prev) => [...prev, userMessage])
+    const nextMessages = [...messages, userMessage]
+    setMessages(nextMessages)
     setInputValue("")
     setIsLoading(true)
+    onMessagesUpdate(chatIdRef.current, nextMessages)
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: [
-            ...messages.map((msg) => ({
-              role: msg.role,
-              content: msg.content,
-            })),
-            {
-              role: "user",
-              content: inputValue,
-            },
-          ],
-          numIdeas: Number.parseInt(numIdeas),
-          maxPapers: Number.parseInt(maxPapers),
-        }),
-      })
+      if (!chatId) {
+        const created = await apiFetch<ChatSummary>(
+          "/chats",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              prompt: userMessage.content,
+              num_ideas: parsedIdeas,
+              max_papers: parsedPapers,
+            }),
+          },
+          token,
+        )
 
-      if (!response.ok) {
-        throw new Error("Failed to get response from AI")
+        chatIdRef.current = created.chat_id
+        onChatCreated(created)
       }
 
-      const data = await response.json()
+      const payloadMessages = nextMessages.map((message) => ({
+        role: message.role,
+        content: message.content,
+      }))
+
+      const response = await apiFetch<{
+        content: string
+        thoughts?: Thought[]
+      }>(
+        "/ai/chat",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            model: "gemini-2.5-flash-lite",
+            system_prompt: SYSTEM_PROMPT,
+            messages: payloadMessages,
+          }),
+        },
+        token,
+      )
 
       const assistantMessage: Message = {
-        id: String(messages.length + 2),
+        id: crypto.randomUUID(),
         role: "assistant",
-        content: data.content,
+        content: response.content,
+        thoughts: response.thoughts ?? [],
         timestamp: new Date(),
       }
 
-      setMessages((prev) => [...prev, assistantMessage])
+      setMessages((prev) => {
+        const updated = [...prev, assistantMessage]
+        onMessagesUpdate(chatIdRef.current, updated)
+        return updated
+      })
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Failed to get AI response"
-      const errorAssistantMessage: Message = {
-        id: String(messages.length + 2),
-        role: "assistant",
-        content: `Sorry, I encountered an error: ${errorMessage}. Please try again.`,
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, errorAssistantMessage])
+      const message = error instanceof Error ? error.message : "Failed to get AI response"
+      setErrorMessage(message)
+      setMessages((prev) => {
+        const fallback: Message = {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          content: `Sorry, I ran into a problem: ${message}`,
+          timestamp: new Date(),
+        }
+        const updated = [...prev, fallback]
+        onMessagesUpdate(chatIdRef.current, updated)
+        return updated
+      })
     } finally {
       setIsLoading(false)
     }
   }
 
-  return (
-    <div className="flex flex-col h-full">
-      {/* Top Bar */}
-      <div className="flex items-center justify-between h-16 px-4 md:px-6 border-b border-white/10 bg-background">
-        <div className="flex items-center gap-2">
-          <button onClick={onToggleSidebar} className="md:hidden p-2 hover:bg-white/10 rounded-lg transition-colors">
-            <Menu className="h-5 w-5 text-foreground" />
-          </button>
-          <h1 className="text-lg font-semibold text-foreground hidden md:block">Scifusion</h1>
-        </div>
-        <button className="p-2 hover:bg-white/10 rounded-lg transition-colors">
-          <Settings2 className="h-5 w-5 text-foreground" />
-        </button>
+  const insightsPanel = (
+    <div className="flex h-full flex-col">
+      <div className="border-b border-border/60 px-5 py-4">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">AutoAD pipeline</h3>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Live reasoning trace from the backend execution. Expand a stage to inspect individual events.
+        </p>
       </div>
-
-      {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
-        {messages.length === 1 && messages[0].role === "assistant" ? (
-          <div className="flex flex-col items-center justify-center h-full">
-            <div className="w-full max-w-2xl space-y-6">
-              {/* Welcome Message */}
-              <div className="text-center mb-8">
-                <div className="mb-4 w-20 h-20 rounded-full bg-gradient-to-br from-teal-500/20 to-cyan-600/20 flex items-center justify-center border border-teal-500/30 mx-auto">
-                  <span className="text-4xl">🔬</span>
+      <ScrollArea className="flex-1 px-4">
+        <div className="space-y-6 py-4">
+          {orderedStages.length === 0 ? (
+            <div className="text-sm text-muted-foreground">
+              {streamState === "connecting"
+                ? "Connecting to session stream..."
+                : "No events yet. Kick off a chat to see the pipeline unfold."}
+            </div>
+          ) : (
+            orderedStages.map(({ stage, events }) => (
+              <Card key={stage} className="border border-border/40 bg-background/60">
+                <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="bg-teal-500/10 text-teal-300">
+                      {stageLabels[stage] ?? stage}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">{events.length} update{events.length === 1 ? "" : "s"}</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground uppercase tracking-wide">{events[0]?.timestamp ? new Date(events[0].timestamp).toLocaleTimeString() : ""}</span>
                 </div>
-                <h2 className="text-3xl font-bold text-foreground mb-2">What research question can I help with?</h2>
-                <p className="text-muted-foreground">
-                  Generate novel hypotheses, validate experiments, and accelerate your scientific discovery across
-                  multiple domains.
-                </p>
+                <div className="space-y-3 px-4 py-3 text-sm">
+                  {events.map((event, index) => (
+                    <div key={`${stage}-${index}`} className="space-y-1">
+                      <p className="font-medium text-foreground">{event.message}</p>
+                      {event.metadata && Object.keys(event.metadata).length > 0 ? (
+                        <pre className="whitespace-pre-wrap rounded-md bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
+                          {JSON.stringify(event.metadata, null, 2)}
+                        </pre>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            ))
+          )}
+        </div>
+      </ScrollArea>
+      <div className="border-t border-border/60 px-4 py-3 text-xs text-muted-foreground">
+        Stream status: <span className="font-medium text-foreground">{streamState}</span>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="relative flex h-full w-full overflow-hidden rounded-3xl border border-border/30 bg-gradient-to-br from-slate-900/70 via-slate-900/40 to-slate-950/60 shadow-xl backdrop-blur">
+      <Drawer open={isMobileInspectorOpen} onOpenChange={setIsMobileInspectorOpen}>
+        <DrawerContent className="h-[85vh]">
+          <DrawerHeader>
+            <DrawerTitle className="flex items-center gap-2 text-base">
+              <Brain className="h-4 w-4 text-teal-300" /> Live reasoning
+            </DrawerTitle>
+            <DrawerDescription>Realtime progress from the AutoAD execution pipeline.</DrawerDescription>
+          </DrawerHeader>
+          <div className="flex-1 overflow-hidden px-2 pb-2">
+            {insightsPanel}
+          </div>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="secondary">Close</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+
+      <div className="flex flex-1 flex-col">
+        <header className="flex h-16 items-center justify-between border-b border-border/60 px-4 lg:px-6">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onToggleSidebar}
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-border/40 text-muted-foreground transition hover:bg-white/5 lg:hidden"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-teal-500/30 to-cyan-500/40 text-white">
+                <Sparkles className="h-5 w-5" />
               </div>
-
-              {/* Input Form Container */}
-              <div className="bg-gradient-to-br from-white/5 to-white/2 border border-white/20 rounded-2xl p-6 space-y-4">
-                {/* Main Prompt Input */}
-                <div>
-                  <input
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Input text field for prompt"
-                    disabled={isLoading}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-teal-500 transition-colors"
-                  />
-                </div>
-
-                {/* Number Input Fields */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-2 block">Number of Ideas</label>
-                    <input
-                      type="number"
-                      value={numIdeas}
-                      onChange={(e) => setNumIdeas(e.target.value)}
-                      min="1"
-                      max="20"
-                      disabled={isLoading}
-                      className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-foreground focus:outline-none focus:border-teal-500 transition-colors text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-2 block">Max Papers</label>
-                    <input
-                      type="number"
-                      value={maxPapers}
-                      onChange={(e) => setMaxPapers(e.target.value)}
-                      min="1"
-                      max="50"
-                      disabled={isLoading}
-                      className="w-full px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-foreground focus:outline-none focus:border-teal-500 transition-colors text-sm"
-                    />
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <Button
-                  onClick={handleSendMessage}
-                  disabled={isLoading || !inputValue.trim()}
-                  className="w-full bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50 py-3 font-medium"
-                >
-                  {isLoading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                  {isLoading ? "Generating..." : "Generate Research Ideas"}
-                </Button>
+              <div>
+                <p className="text-sm font-semibold text-foreground">SciFusion Copilot</p>
+                <p className="text-xs text-muted-foreground">Research orchestration workspace</p>
               </div>
             </div>
           </div>
-        ) : (
-          <>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-3 ${message.role === "user" ? "justify-end" : "justify-start"}`}
-              >
-                {message.role === "assistant" && (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0">
-                    <span className="text-sm text-white font-bold">S</span>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="secondary"
+              className="hidden md:flex items-center gap-2"
+              onClick={() => setIsInspectorOpen((prev) => !prev)}
+            >
+              {isInspectorOpen ? <PanelRightClose className="h-4 w-4" /> : <PanelRightOpen className="h-4 w-4" />}
+              {isInspectorOpen ? "Hide pipeline" : "Show pipeline"}
+            </Button>
+            <Button
+              variant="secondary"
+              className="md:hidden"
+              onClick={() => setIsMobileInspectorOpen(true)}
+            >
+              <Brain className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" className="h-10 w-10 rounded-lg border-border/40 text-muted-foreground">
+              <Settings2 className="h-4 w-4" />
+            </Button>
+          </div>
+        </header>
+
+        <main className="flex-1 overflow-hidden">
+          <div className="flex h-full flex-col">
+            <ScrollArea className="flex-1 px-4 py-6 lg:px-8">
+              <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+                {errorMessage ? (
+                  <Alert variant="destructive">
+                    <AlertDescription>{errorMessage}</AlertDescription>
+                  </Alert>
+                ) : null}
+
+                {messages.map((message) => {
+                  const isAssistant = message.role === "assistant"
+                  return (
+                    <div key={message.id} className={cn("flex w-full", isAssistant ? "justify-start" : "justify-end")}
+                    >
+                      <div
+                        className={cn(
+                          "relative max-w-full rounded-2xl border px-5 py-4 text-sm shadow-lg", 
+                          isAssistant
+                            ? "border-teal-500/30 bg-gradient-to-br from-teal-500/10 via-slate-900/60 to-cyan-500/10 text-foreground"
+                            : "border-teal-500/40 bg-gradient-to-br from-teal-600/80 to-emerald-600/80 text-white",
+                        )}
+                      >
+                        <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground/80">
+                          {isAssistant ? (
+                            <span className="flex items-center gap-1 text-teal-200">
+                              <Sparkles className="h-3 w-3" /> Assistant
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1 text-white/80">
+                              <User className="h-3 w-3" /> You
+                            </span>
+                          )}
+                          <span className="text-muted-foreground/60">
+                            {message.timestamp.toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
+                          </span>
+                        </div>
+                        <Separator className="my-3 opacity-20" />
+                        <div className="space-y-3 text-sm leading-relaxed">
+                          <p className="whitespace-pre-wrap">{message.content}</p>
+                          {isAssistant && message.thoughts && message.thoughts.length > 0 ? (
+                            <Accordion type="single" collapsible className="rounded-xl border border-teal-500/20 bg-black/30">
+                              <AccordionItem value="thoughts">
+                                <AccordionTrigger className="px-4 text-xs font-semibold uppercase tracking-wide text-teal-200">
+                                  View reasoning trail
+                                </AccordionTrigger>
+                                <AccordionContent className="space-y-3 px-4">
+                                  {message.thoughts.map((thought, index) => (
+                                    <div key={`${message.id}-thought-${index}`} className="rounded-lg border border-white/10 bg-white/5 p-3">
+                                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                        {thought.title}
+                                      </p>
+                                      <p className="mt-1 text-sm text-foreground/90 whitespace-pre-wrap">
+                                        {thought.detail}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+
+                {isLoading ? (
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin text-teal-200" /> Generating response…
                   </div>
-                )}
+                ) : null}
 
-                <div
-                  className={`max-w-xs md:max-w-md lg:max-w-lg px-4 py-3 rounded-lg ${
-                    message.role === "user"
-                      ? "bg-teal-600/20 text-foreground rounded-br-none border border-teal-500/30"
-                      : "bg-white/10 text-foreground border border-white/20 rounded-bl-none"
-                  }`}
-                >
-                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
-                  <span className="text-xs opacity-50 mt-1 block">
-                    {message.timestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
+
+            <div className="border-t border-border/60 bg-background/60 px-4 py-4 lg:px-8">
+              <form onSubmit={handleSendMessage} className="mx-auto flex w-full max-w-3xl flex-col gap-3">
+                <div className="flex flex-col gap-3 md:flex-row">
+                  <Input
+                    value={inputValue}
+                    onChange={(event) => setInputValue(event.target.value)}
+                    placeholder="Describe the research question or dataset you'd like to explore."
+                    disabled={isLoading}
+                    className="flex-1 border border-border/40 bg-black/40 text-sm text-foreground placeholder:text-muted-foreground"
+                  />
+                  <Button
+                    type="submit"
+                    disabled={isLoading || !inputValue.trim()}
+                    className="h-11 gap-2 bg-teal-600 text-sm font-semibold text-white hover:bg-teal-500"
+                  >
+                    {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                    {isLoading ? "Generating" : "Ask the copilot"}
+                  </Button>
                 </div>
 
-                {message.role === "user" && (
-                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20">
-                    <span className="text-sm">👤</span>
+                <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <label className="font-medium">Ideas</label>
+                    <Input
+                      type="number"
+                      min={1}
+                      max={20}
+                      value={numIdeas}
+                      onChange={(event) => setNumIdeas(event.target.value)}
+                      disabled={isLoading || !!chatId}
+                      className="h-9 w-20 border border-border/40 bg-black/40"
+                    />
                   </div>
-                )}
-              </div>
-            ))}
-
-            {isLoading && (
-              <div className="flex gap-3 justify-start">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm text-white font-bold">S</span>
+                  <div className="flex items-center gap-2">
+                    <label className="font-medium">Max papers</label>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={50}
+                      value={maxPapers}
+                      onChange={(event) => setMaxPapers(event.target.value)}
+                      disabled={isLoading || !!chatId}
+                      className="h-9 w-24 border border-border/40 bg-black/40"
+                    />
+                  </div>
+                  <span className="hidden md:inline text-muted-foreground">Session ID: {sessionId ?? "new"}</span>
                 </div>
-                <div className="bg-white/10 border border-white/20 rounded-lg rounded-bl-none px-4 py-3">
-                  <Loader2 className="h-4 w-4 animate-spin text-teal-500" />
-                </div>
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </>
-        )}
+              </form>
+            </div>
+          </div>
+        </main>
       </div>
 
-      {/* Input Area - Only shown when there are messages */}
-      {messages.length > 1 || (messages.length === 1 && messages[0].role === "user") ? (
-        <div className="border-t border-white/10 p-4 md:p-6 bg-background">
-          <form onSubmit={handleSendMessage} className="flex gap-3">
-            <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Ask about hypothesis generation, experiments, or research insights..."
-              disabled={isLoading}
-              className="bg-white/5 border border-white/10 text-foreground placeholder:text-muted-foreground focus:border-teal-500"
-            />
-            <Button
-              type="submit"
-              disabled={isLoading || !inputValue.trim()}
-              className="bg-teal-600 text-white hover:bg-teal-700 px-4"
-            >
-              <Send className="h-4 w-4" />
-            </Button>
-          </form>
-        </div>
-      ) : null}
+      <aside
+        className={cn(
+          "hidden w-[360px] flex-col border-l border-border/40 bg-black/40 xl:flex",
+          isInspectorOpen ? "xl:flex" : "xl:hidden",
+        )}
+      >
+        {insightsPanel}
+      </aside>
     </div>
   )
 }

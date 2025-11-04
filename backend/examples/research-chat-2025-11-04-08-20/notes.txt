@@ -1,0 +1,4 @@
+# Auto-generated notes
+## Run 0
+Results: {'baseline_metric': {'means': [0.0], 'stds': [0.0]}}
+Description: Default baseline stub.

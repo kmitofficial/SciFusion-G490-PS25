@@ -193,19 +193,18 @@ The `backend/server` package exposes a lightweight FastAPI layer that lets you s
 
    The service will be available at `http://localhost:8000` by default, with the interactive docs at `/docs`.
 
-  > **Tip:** To persist session history across restarts, ensure a MongoDB instance is reachable and set the following environment variables (defaults target a local daemon):
+  > **Heads up:** MongoDB now backs all persistence (users, auth tokens, chats, and sessions). Point the backend at your cluster via environment variables—defaults target a local daemon on `mongodb://127.0.0.1:27017`:
   >
   > ```bash
-  > export MONGODB_URI="mongodb://127.0.0.1:27017"
-  > export MONGODB_DB="autoad"
-  > export MONGODB_SESSION_COLLECTION="sessions"
+  > export MONGO_URI="mongodb://127.0.0.1:27017"
+  > export MONGO_DB_NAME="scifusion"
   > ```
   >
-  > The FastAPI app automatically loads `.env`, so adding these keys there works too.
+  > The legacy names `MONGODB_URI` and `MONGODB_DB` remain supported for convenience. Add the keys to your `.env` or shell before launching Uvicorn, and make sure your MongoDB server is running.
 
 ### Session persistence and monitoring
 
-- Session metadata is now mirrored into MongoDB; history survives uvicorn reloads and server restarts. If MongoDB is unavailable, the service gracefully falls back to in-memory tracking.
+- User accounts, auth tokens, chat history, and session metadata all live in MongoDB, so the backend requires a reachable Mongo instance. Without it the API will fail fast at startup.
 - A lightweight dashboard (`session_monitor.html`) lives at the backend root. Serve it with `python -m http.server 5500` and open `http://127.0.0.1:5500/session_monitor.html` to watch session progress and final artifact paths.
 
 ### Project management endpoints

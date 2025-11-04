@@ -60,7 +60,7 @@ export default function SignupPage() {
       await signup(formData.name, formData.email, formData.password)
       setSuccess(true)
       setTimeout(() => {
-        router.push("/dashboard")
+        router.push("/chat")
       }, 2000)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed")

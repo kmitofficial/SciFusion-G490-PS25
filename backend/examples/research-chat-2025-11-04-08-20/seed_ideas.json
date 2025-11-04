@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "Baseline",
+        "Title": "Baseline for Research chat 2025-11-04 08:20",
+        "Summary": "novel attention mechanisms for sentiment classification",
+        "Experiment": "Establish a baseline metric before applying AutoAD iterations.",
+        "Method": "Baseline implementation placeholder.",
+        "Data": [],
+        "Constraints": []
+    }
+]

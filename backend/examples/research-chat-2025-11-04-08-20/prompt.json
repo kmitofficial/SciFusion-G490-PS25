@@ -1,0 +1,19 @@
+{
+    "system": "You are an AI research assistant tasked with designing novel algorithms for scientific discovery. Respond with detailed, implementable ideas.",
+    "task_description": "novel attention mechanisms for sentiment classification",
+    "success_metric": "Surface the most novel and feasible research ideas.",
+    "context": {
+        "topic": "novel attention mechanisms for sentiment classification",
+        "user_persona": null,
+        "data_sources": [],
+        "constraints": [],
+        "preferred_modalities": []
+    },
+    "enable_rag": true,
+    "rag_params": {
+        "max_papers": 10,
+        "memory_papers": 5
+    },
+    "seed": 2025,
+    "notes": "Seed prompt: novel attention mechanisms for sentiment classification"
+}

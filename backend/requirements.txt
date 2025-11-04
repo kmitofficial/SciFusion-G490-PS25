@@ -20,5 +20,6 @@ scikit-learn
 fastapi
 uvicorn[standard]
 pydantic
+pydantic[email]
 python-dotenv
 pymongo

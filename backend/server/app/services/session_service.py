@@ -14,7 +14,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Callable, Dict, List, Optional
 from uuid import uuid4
 
 from aider.coders import Coder
@@ -25,10 +25,6 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.errors import PyMongoError
 
-from dolphin_utils.experiments_utils import perform_experiments
-from dolphin_utils.generate_ideas import check_idea_novelty, generate_ideas
-from dolphin_utils.rag_tools.lit_review import collect_papers
-
 from app.models.session import (
     PipelineStage,
     SessionCreateRequest,
@@ -37,6 +33,7 @@ from app.models.session import (
     SessionStatus,
 )
 from app.services import project_service
+from app.services.llm_service import build_llm_client
 from app.services.project_service import ProjectNotFoundError
 
 
@@ -242,6 +239,43 @@ class _SessionLogWriter(io.TextIOBase):
         super().close()
 
 
+class _SessionLoggingHandler(logging.Handler):
+    """Forward logging records emitted during a pipeline stage into session events."""
+
+    _SUPPRESSED_PREFIXES = (
+        "uvicorn",
+        "uvicorn.error",
+        "uvicorn.access",
+        "fastapi",
+        "asyncio",
+        "pymongo",
+        "app.services.session_service",
+    )
+
+    def __init__(self, state: SessionState, stage: PipelineStage) -> None:
+        super().__init__(level=logging.INFO)
+        self._state = state
+        self._stage = stage
+        self.setFormatter(logging.Formatter("%(message)s"))
+
+    def emit(self, record: logging.LogRecord) -> None:  # type: ignore[override]
+        for prefix in self._SUPPRESSED_PREFIXES:
+            if record.name.startswith(prefix):
+                return
+        try:
+            message = self.format(record).strip()
+        except Exception:  # pragma: no cover - best-effort formatting safeguard
+            message = record.getMessage().strip()
+        if not message:
+            return
+        metadata = {
+            "type": "log",
+            "logger": record.name,
+            "level": record.levelname,
+        }
+        _emit_log_event(self._state, self._stage, message, metadata)
+
+
 @contextmanager
 def _capture_session_output(state: SessionState, stage: PipelineStage):
     """Capture stdout/stderr during a pipeline stage and stream them as events."""
@@ -252,9 +286,22 @@ def _capture_session_output(state: SessionState, stage: PipelineStage):
     stderr_wrapper = _SessionLogWriter(state, stage, original_stderr)
     sys.stdout = stdout_wrapper  # type: ignore[assignment]
     sys.stderr = stderr_wrapper  # type: ignore[assignment]
+    root_logger = logging.getLogger()
+    handler = _SessionLoggingHandler(state, stage)
+    root_logger.addHandler(handler)
+    original_level = root_logger.level
+    level_adjusted = False
+    effective_level = root_logger.getEffectiveLevel()
+    if effective_level > logging.INFO:
+        root_logger.setLevel(logging.INFO)
+        level_adjusted = True
     try:
         yield
     finally:
+        handler.close()
+        root_logger.removeHandler(handler)
+        if level_adjusted:
+            root_logger.setLevel(original_level)
         stdout_wrapper.close()
         stderr_wrapper.close()
         sys.stdout = original_stdout  # type: ignore[assignment]
@@ -365,60 +412,6 @@ def _mark_complete(state: SessionState, message: str) -> None:
     _record_event(state, PipelineStage.COMPLETE, message)
 
 
-def _build_llm_client(model_name: str):
-    """Instantiate the appropriate API client for the requested LLM."""
-
-    if "claude" in model_name:
-        import anthropic
-
-        client = anthropic.Anthropic()
-        client_model = model_name
-    elif model_name in {"openai/gpt-oss-120b", "openai/gpt-oss-20b"} or "groq" in model_name.lower() or model_name.startswith("openai/"):
-        import groq
-
-        client = groq.Groq(api_key=os.environ.get("GROQ_API_KEY"))
-        client_model = model_name
-    elif "gpt" in model_name and not model_name.startswith("openai/"):
-        import openai
-
-        client = openai.OpenAI()
-        client_model = model_name
-    elif "deepseek" in model_name:
-        import openai
-
-        client = openai.OpenAI(
-            api_key=os.environ["DEEPSEEK_API_KEY"],
-            base_url="https://api.deepseek.com",
-        )
-        client_model = model_name
-    elif model_name == "Intern-S1":
-        import openai
-
-        client = openai.OpenAI(
-            api_key=os.environ["INS1_API_KEY"],
-            base_url="https://chat.intern-ai.org.cn/api/v1/",
-        )
-        client_model = model_name
-    elif model_name.startswith("localhost"):
-        import openai
-
-        client = openai.OpenAI(base_url="http://localhost:11434/v1", api_key="na")
-        client_model = model_name
-    elif model_name.startswith("gemini"):
-        import google.generativeai as genai
-
-        api_key = os.environ.get("GOOGLE_API_KEY")
-        if not api_key:
-            raise RuntimeError("GOOGLE_API_KEY must be set to use Gemini models.")
-        genai.configure(api_key=api_key)
-        client = genai.GenerativeModel(model_name)
-        client_model = model_name
-    else:
-        raise ValueError(f"Unsupported model '{model_name}'. Please extend session_service to handle it.")
-
-    return client, client_model
-
-
 def _build_coder_model(model_name: str) -> Model:
     """Create an aider Model wrapper honoring provider-specific prefixes."""
 
@@ -460,12 +453,23 @@ def _write_idea_notes(folder: Path, idea: dict, baseline_results: Dict[str, List
         handle.write("Description: Baseline results.\n")
 
 
+def _load_pipeline_modules():
+    """Import heavy AutoAD helpers lazily to avoid startup crashes."""
+
+    from dolphin_utils.experiments_utils import perform_experiments
+    from dolphin_utils.generate_ideas import check_idea_novelty, generate_ideas
+    from dolphin_utils.rag_tools.lit_review import collect_papers
+
+    return perform_experiments, generate_ideas, check_idea_novelty, collect_papers
+
+
 def _run_single_idea(
     state: SessionState,
     idea: dict,
     base_dir: Path,
     results_dir: Path,
     code_model: str,
+    perform_experiments_fn: Callable[[dict, str, Coder, Dict[str, List[float]]], bool],
 ) -> Optional[str]:
     """Execute AutoAD for a single idea and return the result directory path."""
 
@@ -495,7 +499,7 @@ def _run_single_idea(
     )
 
     with _capture_session_output(state, PipelineStage.EXECUTION):
-        success = perform_experiments(idea, str(folder), coder, baseline_results)
+        success = perform_experiments_fn(idea, str(folder), coder, baseline_results)
     if success:
         return str(folder)
     return None
@@ -568,7 +572,26 @@ def execute_session(session_id: str) -> None:
         if state is None:
             raise SessionNotFoundError(f"Session '{session_id}' not found.")
 
+        logger.info(
+            "session=%s stage=%s worker_started background AutoAD pipeline",
+            state.session_id,
+            state.stage.value,
+        )
+        _record_event(
+            state,
+            state.stage,
+            "Background worker picked up the AutoAD pipeline.",
+            metadata={"worker_thread": threading.get_ident()},
+        )
+
     try:
+        (
+            perform_experiments_fn,
+            generate_ideas_fn,
+            check_idea_novelty_fn,
+            collect_papers_fn,
+        ) = _load_pipeline_modules()
+
         project = project_service.get_project(state.project_slug)
     except ProjectNotFoundError as exc:
         with _sessions_lock:
@@ -580,14 +603,19 @@ def execute_session(session_id: str) -> None:
     results_dir = Path(project.results_dir)
 
     with _sessions_lock:
-        _record_event(state, PipelineStage.PREPARING, "Preparing project directories.")
+        _record_event(
+            state,
+            PipelineStage.PREPARING,
+            "Preparing project directories.",
+            metadata={"base_dir": str(base_dir), "results_dir": str(results_dir)},
+        )
     _ensure_directories(base_dir, results_dir)
 
     topic = payload.topic_override or project.topic
     use_rag = payload.use_rag if payload.use_rag is not None else project.enable_rag
 
     try:
-        client, client_model = _build_llm_client(payload.model)
+        client, client_model, _ = build_llm_client(payload.model)
     except Exception as exc:  # pragma: no cover - defensive logging
         with _sessions_lock:
             _mark_failure(state, f"Failed to build LLM client: {exc}")
@@ -603,7 +631,7 @@ def execute_session(session_id: str) -> None:
             _record_event(state, PipelineStage.RETRIEVAL, f"Collecting literature for topic '{topic}'.")
         try:
             with _capture_session_output(state, PipelineStage.RETRIEVAL):
-                paper_bank, total_cost, all_queries = collect_papers(
+                paper_bank, total_cost, all_queries = collect_papers_fn(
                     topic,
                     client,
                     client_model,
@@ -653,7 +681,7 @@ def execute_session(session_id: str) -> None:
         _record_event(state, PipelineStage.IDEA_GENERATION, "Generating candidate ideas.")
     try:
         with _capture_session_output(state, PipelineStage.IDEA_GENERATION):
-            ideas = generate_ideas(
+            ideas = generate_ideas_fn(
                 str(base_dir),
                 client=client,
                 model=client_model,
@@ -683,7 +711,7 @@ def execute_session(session_id: str) -> None:
         with _sessions_lock:
             _record_event(state, PipelineStage.NOVELTY_CHECK, "Running novelty checks.")
         try:
-            ideas = check_idea_novelty(
+            ideas = check_idea_novelty_fn(
                 ideas,
                 base_dir=str(base_dir),
                 client=client,
@@ -715,7 +743,14 @@ def execute_session(session_id: str) -> None:
                 f"[{index}/{len(novel_ideas)}] Executing idea '{idea_name}'.",
             )
         try:
-            result_path = _run_single_idea(state, idea, base_dir, results_dir, payload.code_model)
+            result_path = _run_single_idea(
+                state,
+                idea,
+                base_dir,
+                results_dir,
+                payload.code_model,
+                perform_experiments_fn,
+            )
         except Exception as exc:  # pragma: no cover - defensive logging
             with _sessions_lock:
                 _record_event(
