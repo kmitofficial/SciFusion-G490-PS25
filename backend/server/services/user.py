@@ -1,40 +1,45 @@
 from server.core.db import db
-from server.models.user import UserInDB
+from server.models.user import UserInDB, UserCreate
+from server.services.auth import get_password_hash
 
 # Use the ASYNC collection for our async auth function
 users_collection = db.get_users_collection_async()
-STUB_USERNAME = "testuser"
 
 
-async def get_or_create_stub_user() -> UserInDB:
-    """
-    This is our "dummy" user function. It finds "testuser"
-    or creates it if it doesn't exist.
-    This replaces a real login system for now.
-    """
-
-    # 1. Try to find the user
-    user_doc = await users_collection.find_one({"username": STUB_USERNAME})
-
+async def get_user_by_username(username: str) -> UserInDB | None:
+    """Finds a user by their username."""
+    user_doc = await users_collection.find_one({"username": username})
     if user_doc:
-        # Found it. Pydantic will handle the _id alias.
         return UserInDB(**user_doc)
+    return None
 
-    # 2. Not found, so let's create it
-    print(f"Stub user '{STUB_USERNAME}' not found, creating...")
-    new_user_data = {
-        "username": STUB_USERNAME,
-        "email": "test@user.com"
+
+async def get_user_by_email(email: str) -> UserInDB | None:
+    """Finds a user by their email."""
+    user_doc = await users_collection.find_one({"email": email})
+    if user_doc:
+        return UserInDB(**user_doc)
+    return None
+
+
+async def create_db_user(user_in: UserCreate) -> UserInDB:
+    """Creates a new user in the database."""
+    hashed_password = get_password_hash(user_in.password)
+
+    user_doc = {
+        "username": user_in.username,
+        "email": user_in.email,
+        "hashed_password": hashed_password
     }
-    insert_result = await users_collection.insert_one(new_user_data)
 
-    # 3. Fetch the newly created user and return it
-    created_user_doc = await users_collection.find_one(
+    insert_result = await users_collection.insert_one(user_doc)
+
+    created_user = await users_collection.find_one(
         {"_id": insert_result.inserted_id}
     )
 
-    if created_user_doc:
-        return UserInDB(**created_user_doc)
+    if created_user:
+        return UserInDB(**created_user)
 
-    # This should never happen, but it's a safe fallback
-    raise Exception("Failed to create or find stub user.")
+    # This should not happen
+    raise Exception("Failed to create user after insertion.")

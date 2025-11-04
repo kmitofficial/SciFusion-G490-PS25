@@ -1,9 +1,9 @@
 from fastapi import (
-    APIRouter, WebSocket, WebSocketDisconnect, Depends, BackgroundTasks
+    APIRouter, WebSocket, WebSocketDisconnect, Depends
 )
 from server.models.job import ResearchRequest, Job
 from server.models.user import User
-from server.services.auth import get_current_user_stub
+from server.services.auth import get_current_user
 from server.services.websocket import manager
 from server.services import research
 from server.core.db import db
@@ -17,7 +17,7 @@ jobs_collection = db.get_jobs_collection_async()
 async def websocket_endpoint(
         websocket: WebSocket,
         # We use our dummy auth to identify the user
-        current_user: User = Depends(get_current_user_stub)
+        current_user: User = Depends(get_current_user)
 ):
     user_id = str(current_user.id)
     await manager.connect(user_id, websocket)

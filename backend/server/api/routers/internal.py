@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Body
 from server.services.websocket import manager  # <-- Import the manager
-from server.services.auth import get_current_user_stub
+from server.services.auth import get_current_user
 from server.models.user import User
 from server.core.db import db
 from bson import ObjectId

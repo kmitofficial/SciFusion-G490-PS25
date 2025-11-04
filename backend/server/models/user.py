@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr
 from pydantic_mongo import PydanticObjectId
 from typing import Optional
 
@@ -10,7 +10,7 @@ class User(BaseModel):
     """
     id: PydanticObjectId = Field(..., alias="_id")
     username: str
-    email: Optional[str] = None
+    email: EmailStr
 
     class Config:
         json_encoders = {PydanticObjectId: str}
@@ -21,5 +21,21 @@ class UserInDB(User):
     Model for a user as stored in the DB
     (can include sensitive info).
     """
-    # In a real system, this would be hashed_password
-    pass
+    hashed_password: str
+
+
+class UserCreate(BaseModel):
+    """
+    Model for creating a new user (signup).
+    """
+    username: str
+    email: EmailStr
+    password: str
+
+
+class Token(BaseModel):
+    """
+    Model for the JWT access token.
+    """
+    access_token: str
+    token_type: str

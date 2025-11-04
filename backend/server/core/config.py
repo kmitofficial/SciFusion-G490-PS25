@@ -15,6 +15,11 @@ class Settings(BaseSettings):
     MONGODB_URI: str = "mongodb://localhost:27017/"
     DATABASE_NAME: str = "scifusion"
 
+    # --- NEW: Auth Settings ---
+    SECRET_KEY: str = "a-very-secret-key-that-you-must-change"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
+
     class Config:
         env_file = env_path
         env_file_encoding = 'utf-8'
