@@ -20,7 +20,6 @@ class PipelineStage(str, Enum):
     COMPLETE = "complete"
     FAILED = "failed"
 
-
 class SessionCreateRequest(BaseModel):
     """Inbound payload describing how to launch an AutoAD session."""
 

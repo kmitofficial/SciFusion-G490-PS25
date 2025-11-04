@@ -1,7 +1,9 @@
 """REST endpoints for orchestrating AutoAD pipeline sessions."""
+import asyncio
 from typing import List
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, status
+from fastapi.responses import StreamingResponse
 
 from app.models.session import (
     PipelineStage,
@@ -69,3 +71,35 @@ async def get_session_events(session_id: str) -> List[SessionEvent]:
     except SessionNotFoundError as exc:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
     return status_snapshot.events
+
+
+@router.get(
+    "/{session_id}/events/stream",
+    summary="Server-sent event stream of session updates",
+)
+async def stream_session_events(session_id: str) -> StreamingResponse:
+    """Yield session events as they are recorded for live frontends."""
+
+    try:
+        queue = session_service.subscribe_to_event_stream(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+
+    async def event_generator():
+        try:
+            while True:
+                event = await queue.get()
+                yield f"data: {event.model_dump_json()}\n\n"
+        except asyncio.CancelledError:  # pragma: no cover - client disconnected
+            raise
+        finally:
+            session_service.unsubscribe_from_event_stream(session_id, queue)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        },
+    )

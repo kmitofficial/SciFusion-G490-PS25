@@ -210,4 +210,4 @@ __marimo__/
 #Webstorm
 .idea
 
-/node_modules
+code/node_modules

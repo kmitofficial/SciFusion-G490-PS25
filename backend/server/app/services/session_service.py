@@ -1,11 +1,16 @@
 """Service layer for launching AutoAD sessions and streaming pipeline events."""
 from __future__ import annotations
 
+import asyncio
+import io
 import json
 import logging
 import os
 import shutil
+import sys
 import threading
+from collections import defaultdict
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -65,6 +70,8 @@ _sessions_lock = threading.Lock()
 
 logger = logging.getLogger("uvicorn.error").getChild("session_service")
 logger.setLevel(logging.INFO)
+
+_event_listeners: Dict[str, List[asyncio.Queue[SessionEvent]]] = defaultdict(list)
 
 MONGODB_URI = os.environ.get("MONGODB_URI", "mongodb://127.0.0.1:27017")
 MONGODB_DB = os.environ.get("MONGODB_DB", "autoad")
@@ -193,6 +200,108 @@ def _load_status_from_store(session_id: str) -> Optional[SessionStatus]:
     return _document_to_status(document)
 
 
+def _emit_log_event(state: SessionState, stage: PipelineStage, message: str, metadata: Optional[dict] = None) -> None:
+    """Emit a log-flavored session event for streaming subscribers."""
+
+    meta: dict = {"type": "log"}
+    if metadata:
+        meta.update(metadata)
+    with _sessions_lock:
+        _record_event(state, stage, message, meta)
+
+
+class _SessionLogWriter(io.TextIOBase):
+    """File-like wrapper that forwards writes and streams newlines as session events."""
+
+    def __init__(self, state: SessionState, stage: PipelineStage, original: io.TextIOBase) -> None:
+        self._state = state
+        self._stage = stage
+        self._original = original
+        self._buffer: str = ""
+
+    def write(self, data: str) -> int:  # type: ignore[override]
+        if not data:
+            return 0
+        self._original.write(data)
+        text = data.replace("\r", "")
+        self._buffer += text
+        while "\n" in self._buffer:
+            line, self._buffer = self._buffer.split("\n", 1)
+            stripped = line.strip()
+            if stripped:
+                _emit_log_event(self._state, self._stage, stripped)
+        return len(data)
+
+    def flush(self) -> None:  # type: ignore[override]
+        self._original.flush()
+
+    def close(self) -> None:  # type: ignore[override]
+        if self._buffer.strip():
+            _emit_log_event(self._state, self._stage, self._buffer.strip())
+        self._buffer = ""
+        super().close()
+
+
+@contextmanager
+def _capture_session_output(state: SessionState, stage: PipelineStage):
+    """Capture stdout/stderr during a pipeline stage and stream them as events."""
+
+    original_stdout = sys.stdout
+    original_stderr = sys.stderr
+    stdout_wrapper = _SessionLogWriter(state, stage, original_stdout)
+    stderr_wrapper = _SessionLogWriter(state, stage, original_stderr)
+    sys.stdout = stdout_wrapper  # type: ignore[assignment]
+    sys.stderr = stderr_wrapper  # type: ignore[assignment]
+    try:
+        yield
+    finally:
+        stdout_wrapper.close()
+        stderr_wrapper.close()
+        sys.stdout = original_stdout  # type: ignore[assignment]
+        sys.stderr = original_stderr  # type: ignore[assignment]
+
+
+def subscribe_to_event_stream(session_id: str) -> asyncio.Queue[SessionEvent]:
+    """Return an asyncio queue that will receive live session events."""
+
+    queue: asyncio.Queue[SessionEvent] = asyncio.Queue()
+
+    history: Optional[List[SessionEvent]] = None
+    with _sessions_lock:
+        state = _sessions.get(session_id)
+        if state is not None:
+            history = list(state.events)
+    if history is None:
+        status = _load_status_from_store(session_id)
+        if status is not None:
+            history = list(status.events)
+        else:
+            raise SessionNotFoundError(f"Session '{session_id}' not found.")
+
+    for event in history:
+        queue.put_nowait(event)
+
+    with _sessions_lock:
+        _event_listeners[session_id].append(queue)
+
+    return queue
+
+
+def unsubscribe_from_event_stream(session_id: str, queue: asyncio.Queue[SessionEvent]) -> None:
+    """Detach an event queue once the client disconnects."""
+
+    with _sessions_lock:
+        listeners = _event_listeners.get(session_id)
+        if not listeners:
+            return
+        try:
+            listeners.remove(queue)
+        except ValueError:  # pragma: no cover - best-effort cleanup
+            return
+        if not listeners:
+            _event_listeners.pop(session_id, None)
+
+
 def _now() -> datetime:
     """Return a timezone-naive UTC timestamp."""
 
@@ -227,6 +336,16 @@ def _record_event(
             event.message,
             meta_suffix,
         )
+    listeners = _event_listeners.get(state.session_id)
+    if listeners:
+        for queue in list(listeners):
+            try:
+                queue.put_nowait(event)
+            except asyncio.QueueFull:  # pragma: no cover - defensive guard
+                logger.warning(
+                    "Dropping session event for %s due to backpressure.",
+                    state.session_id,
+                )
     _persist_state(state)
 
 
@@ -342,6 +461,7 @@ def _write_idea_notes(folder: Path, idea: dict, baseline_results: Dict[str, List
 
 
 def _run_single_idea(
+    state: SessionState,
     idea: dict,
     base_dir: Path,
     results_dir: Path,
@@ -374,7 +494,8 @@ def _run_single_idea(
         edit_format="diff",
     )
 
-    success = perform_experiments(idea, str(folder), coder, baseline_results)
+    with _capture_session_output(state, PipelineStage.EXECUTION):
+        success = perform_experiments(idea, str(folder), coder, baseline_results)
     if success:
         return str(folder)
     return None
@@ -481,14 +602,15 @@ def execute_session(session_id: str) -> None:
         with _sessions_lock:
             _record_event(state, PipelineStage.RETRIEVAL, f"Collecting literature for topic '{topic}'.")
         try:
-            paper_bank, total_cost, all_queries = collect_papers(
-                topic,
-                client,
-                client_model,
-                getattr(project, "seed", 2025),
-                project.rag_memory_papers,
-                project.rag_max_papers,
-            )
+            with _capture_session_output(state, PipelineStage.RETRIEVAL):
+                paper_bank, total_cost, all_queries = collect_papers(
+                    topic,
+                    client,
+                    client_model,
+                    getattr(project, "seed", 2025),
+                    project.rag_memory_papers,
+                    project.rag_max_papers,
+                )
             payload_dict = {
                 "topic_description": topic,
                 "all_queries": all_queries,
@@ -496,6 +618,17 @@ def execute_session(session_id: str) -> None:
             }
             with rag_path.open("w", encoding="utf-8") as handle:
                 json.dump(payload_dict, handle, indent=4)
+            with _sessions_lock:
+                _record_event(
+                    state,
+                    PipelineStage.RETRIEVAL,
+                    f"Collected {len(paper_bank)} papers for topic '{topic}'.",
+                    metadata={
+                        "paper_count": len(paper_bank),
+                        "total_cost": total_cost,
+                        "papers": paper_bank,
+                    },
+                )
         except Exception as exc:
             with _sessions_lock:
                 _mark_failure(state, f"RAG collection failed: {exc}")
@@ -519,20 +652,21 @@ def execute_session(session_id: str) -> None:
     with _sessions_lock:
         _record_event(state, PipelineStage.IDEA_GENERATION, "Generating candidate ideas.")
     try:
-        ideas = generate_ideas(
-            str(base_dir),
-            client=client,
-            model=client_model,
-            skip_generation=payload.skip_idea_generation,
-            max_num_generations=payload.num_ideas,
-            num_reflections=NUM_REFLECTIONS,
-            rag=use_rag,
-            rag_path=str(rag_path),
-            check_independence=payload.check_similarity,
-            embedding_model=payload.embedding_model,
-            round=payload.round,
-            exp_base_file_list=exp_base_file_list,
-        )
+        with _capture_session_output(state, PipelineStage.IDEA_GENERATION):
+            ideas = generate_ideas(
+                str(base_dir),
+                client=client,
+                model=client_model,
+                skip_generation=payload.skip_idea_generation,
+                max_num_generations=payload.num_ideas,
+                num_reflections=NUM_REFLECTIONS,
+                rag=use_rag,
+                rag_path=str(rag_path),
+                check_independence=payload.check_similarity,
+                embedding_model=payload.embedding_model,
+                round=payload.round,
+                exp_base_file_list=exp_base_file_list,
+            )
     except Exception as exc:
         with _sessions_lock:
             _mark_failure(state, f"Idea generation failed: {exc}")
@@ -581,7 +715,7 @@ def execute_session(session_id: str) -> None:
                 f"[{index}/{len(novel_ideas)}] Executing idea '{idea_name}'.",
             )
         try:
-            result_path = _run_single_idea(idea, base_dir, results_dir, payload.code_model)
+            result_path = _run_single_idea(state, idea, base_dir, results_dir, payload.code_model)
         except Exception as exc:  # pragma: no cover - defensive logging
             with _sessions_lock:
                 _record_event(
