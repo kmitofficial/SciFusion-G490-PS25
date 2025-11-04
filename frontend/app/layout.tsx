@@ -4,8 +4,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"]});
 
 export const metadata: Metadata = {
     title: "SciFusion",
@@ -28,6 +29,7 @@ export default function RootLayout({
                 disableTransitionOnChange
             >
                 {children}
+                <Toaster /> {/* Add Toaster here */}
             </ThemeProvider>
         </AuthProvider>
         </body>

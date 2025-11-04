@@ -1,79 +1,65 @@
-from fastapi import APIRouter, BackgroundTasks, HTTPException, status, Depends
-from server.services import research
-from server.models.job import ResearchRequest, Job
-from server.models.user import User  # To type-hint our user
-from server.core.db import db
-from server.services.auth import get_current_user_stub  # <-- OUR DUMMY AUTH!
+# Location: backend/server/api/routers/jobs.py
+from fastapi import APIRouter, Depends, BackgroundTasks, HTTPException, status
 from pydantic_mongo import PydanticObjectId
-from typing import List
+
+from server.models.user import User
+from server.models.job import ResearchRequest, Job
+from server.services.auth import get_current_user
+from server.services import research
+from server.core.db import db
+from motor.motor_asyncio import AsyncIOMotorCollection
 
 router = APIRouter()
-jobs_collection = db.get_jobs_collection_async()
+jobs_collection: AsyncIOMotorCollection = db.get_jobs_collection_async()
 
 
-@router.post("/", response_model=Job, status_code=status.HTTP_201_CREATED, tags=["Jobs"])
-async def create_job(
-        req: ResearchRequest,
+@router.post(
+    "/",
+    response_model=dict,
+    status_code=status.HTTP_201_CREATED
+)
+async def create_new_job(
+        request: ResearchRequest,
         background_tasks: BackgroundTasks,
-        # This 'Depends' runs our dummy auth function and gives
-        # us the 'testuser' object.
-        current_user: User = Depends(get_current_user_stub)
+        current_user: User = Depends(get_current_user)
 ):
     """
-    Creates a new research job, linked to our stub user.
-    """
-
-    # Create the job, now linking it to the logged-in user
-    new_job = Job(request=req, status="pending", user_id=current_user.id)
-
-    insert_result = await jobs_collection.insert_one(
-        new_job.model_dump(by_alias=True)
-    )
-    job_id = str(insert_result.inserted_id)
-
-    background_tasks.add_task(research.run_research_task, job_id, req)
-
-    created_job_doc = await jobs_collection.find_one(
-        {"_id": insert_result.inserted_id}
-    )
-    if created_job_doc:
-        return Job(**created_job_doc)
-    raise HTTPException(status_code=500, detail="Failed to create job")
-
-
-@router.get("/{job_id}", response_model=Job, tags=["Jobs"])
-async def get_job_status(
-        job_id: str,
-        current_user: User = Depends(get_current_user_stub)
-):
-    """
-    Gets the status for a *specific* job.
-    Checks that the job belongs to our stub user.
+    Creates and starts a new research job for the authenticated user.
     """
     try:
-        job_oid = PydanticObjectId(job_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid Job ID format")
+        # 1. Create the job document
+        new_job = Job(
+            request=request,
+            status="pending",
+            user_id=current_user.id  # Link the job to the user
+        )
 
-    job_doc = await jobs_collection.find_one({"_id": job_oid})
+        # 2. Insert into the database
+        insert_result = await jobs_collection.insert_one(
+            new_job.model_dump(by_alias=True)
+        )
+        job_id = str(insert_result.inserted_id)
 
-    if not job_doc:
-        raise HTTPException(status_code=404, detail=f"Job {job_id} not found")
+        # 3. Add the research task to run in the background
+        background_tasks.add_task(research.run_research_task, job_id, request)
 
-    # Check if the job's user_id matches the current user's id
-    if job_doc["user_id"] != current_user.id:
-        raise HTTPException(status_code=404, detail="Job not found")
+        # 4. Return the new job ID to the client
+        return {"job_id": job_id}
 
-    return Job(**job_doc)
+    except Exception as e:
+        print(f"Failed to create job: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to start job: {str(e)}"
+        )
 
 
-@router.get("/", response_model=List[Job], tags=["Jobs"])
-async def get_all_jobs_for_user(
-        current_user: User = Depends(get_current_user_stub)
+@router.get("/")
+async def get_all_jobs(
+        current_user: User = Depends(get_current_user),
 ):
     """
-    Gets a list of all jobs created by our stub user.
+    (Placeholder for Stage 4)
+    Gets all jobs for the current user.
     """
-    jobs_cursor = jobs_collection.find({"user_id": current_user.id})
-    jobs_list = await jobs_cursor.to_list(length=100)
-    return [Job(**job) for job in jobs_list]
+    return {"message": f"Hello {current_user.username}, your jobs will be here in Stage 4."}

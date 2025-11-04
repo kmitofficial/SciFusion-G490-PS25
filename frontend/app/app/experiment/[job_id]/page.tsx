@@ -1,145 +1,216 @@
-"use client"
+// Location: frontend/app/app/experiment/[job_id]/page.tsx
+"use client";
 
-import { useEffect, useState, useRef } from "react"
-import { useParams } from "next/navigation"
-import { Card } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import LogFeed from "../components/log-feed"
-import PaperDisplay from "../components/paper-display"
-import IdeaDisplay from "../components/idea-display"
-import ExperimentResultDisplay from "../components/result-display"
-
-interface ExperimentState {
-  status: string
-  current_stage: string
-  papers: any[]
-  ideas: any[]
-  results: any[]
-}
+import { useState, useCallback, useMemo } from "react";
+import { useParams } from "next/navigation";
+import { useWebSocket } from "@/hooks/useWebSocket";
+import {
+    LogEntry,
+    PaperBank,
+    Idea,
+    ExperimentResult,
+    GroupedExperiment,
+} from "@/lib/types";
+import { useToast } from "@/hooks/use-toast";
+import { LogFeed } from "@/components/LogFeed";
+import { PaperCard } from "@/components/PaperCard"; // We still use this
+import { JobProgressBar } from "@/components/JobProgressBar";
+import { GroupedExperimentCard } from "@/components/GroupedExperimentCard";
+import { Loader } from "lucide-react";
 
 export default function ExperimentPage() {
-  const params = useParams()
-  const jobId = params.job_id as string
-  const [state, setState] = useState<ExperimentState>({
-    status: "initializing",
-    current_stage: "setup",
-    papers: [],
-    ideas: [],
-    results: [],
-  })
-  const [logs, setLogs] = useState<string[]>([])
-  const wsRef = useRef<WebSocket | null>(null)
+    const params = useParams();
+    const { toast } = useToast();
+    const jobId = Array.isArray(params.job_id) ? params.job_id[0] : params.job_id;
 
-  useEffect(() => {
-    const token = localStorage.getItem("auth_token")
-    const wsUrl = `${process.env.NEXT_PUBLIC_API_URL?.replace("http", "ws")}/ws/${jobId}?token=${token}`
+    // --- State Management from your Sample ---
+    const [logFeed, setLogFeed] = useState<LogEntry[]>([]);
+    const [papers, setPapers] = useState<PaperBank | null>(null);
+    const [baselineScore, setBaselineScore] = useState<number | null>(null);
+    const [novelIdeas, setNovelIdeas] = useState<Idea[]>([]);
+    const [totalExperiments, setTotalExperiments] = useState(0);
+    const [allRunResults, setAllRunResults] = useState<ExperimentResult[]>([]);
+    const [jobStatus, setJobStatus] = useState("running");
+    // ---
 
-    const ws = new WebSocket(wsUrl)
-    wsRef.current = ws
+    // Helper to add logs, ensuring most recent is at the top
+    const addLog = useCallback(
+        (message: string, log_type: LogEntry["log_type"] = "system") => {
+            const newLog: LogEntry = {
+                id: crypto.randomUUID(),
+                message,
+                log_type,
+                timestamp: new Date().toLocaleTimeString(),
+            };
+            // Add to the start of the array
+            setLogFeed((prevLogs) => [newLog, ...prevLogs.slice(0, 200)]);
+        },
+        [],
+    );
 
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data)
+    const handleMessage = useCallback(
+        (message: any) => {
+            const { type, data } = message;
 
-      if (message.type === "log") {
-        setLogs((prev) => [...prev, message.content])
-      } else if (message.type === "state_update") {
-        setState((prev) => ({
-          ...prev,
-          ...message.state,
-        }))
-      } else if (message.type === "paper") {
-        setState((prev) => ({
-          ...prev,
-          papers: [...prev.papers, message.data],
-        }))
-      } else if (message.type === "idea") {
-        setState((prev) => ({
-          ...prev,
-          ideas: [...prev.ideas, message.data],
-        }))
-      } else if (message.type === "result") {
-        setState((prev) => ({
-          ...prev,
-          results: [...prev.results, message.data],
-        }))
-      }
-    }
+            switch (type) {
+                case "JOB_STATUS_UPDATE":
+                    setJobStatus(data.status);
+                    if (data.status === "complete" || data.status === "failed") {
+                        addLog(`Job ${data.status}.`, "success");
+                    }
+                    break;
 
-    return () => {
-      ws.close()
-    }
-  }, [jobId])
+                case "AIDER_LOG":
+                    addLog(data.message, data.log_type);
+                    break;
 
-  return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Experiment Monitor</h1>
-        <div className="flex items-center gap-4">
-          <div
-            className={`px-3 py-1 rounded-full text-sm font-semibold ${
-              state.status === "running"
-                ? "bg-green-500/20 text-green-300"
-                : state.status === "completed"
-                  ? "bg-blue-500/20 text-blue-300"
-                  : "bg-yellow-500/20 text-yellow-300"
-            }`}
-          >
-            {state.status.charAt(0).toUpperCase() + state.status.slice(1)}
-          </div>
-          <span className="text-gray-400">Stage: {state.current_stage}</span>
+                case "PAPERS_UPDATED":
+                    setPapers(data as PaperBank);
+                    addLog("Research papers have been collected.", "info");
+                    // Attempt to find a baseline score
+                    // THIS IS A GUESS. Your backend must send this.
+                    const baseline =
+                        data.baseline_score || 0.9105; // Fallback to your sample
+                    setBaselineScore(baseline);
+                    addLog(`Baseline score set to: ${baseline.toFixed(4)}`, "system");
+                    break;
+
+                // This is the initial list, which we don't use for cards
+                case "IDEAS_UPDATED":
+                    addLog(`Generated ${data.length} initial ideas.`, "info");
+                    break;
+
+                // This is the FINAL list of ideas to run
+                case "NOVEL_IDEAS_UPDATED":
+                    const novel: Idea[] = data;
+                    addLog(
+                        `Novelty check complete. ${novel.length} ideas will be run.`,
+                        "success",
+                    );
+                    setNovelIdeas(novel);
+                    setTotalExperiments(novel.length);
+                    break;
+
+                // This receives one run at a time
+                case "EXPERIMENT_RESULT":
+                    const newResult: ExperimentResult = data;
+                    setAllRunResults((prevResults) => [...prevResults, newResult]);
+                    addLog(
+                        `Run ${newResult.run_number} finished for: ${newResult.idea_name}`,
+                        "info",
+                    );
+                    break;
+
+                case "ERROR":
+                    addLog(data, "error");
+                    setJobStatus("failed");
+                    break;
+            }
+        },
+        [addLog],
+    );
+
+    const handleError = useCallback(
+        (error: string) => {
+            toast({
+                title: "WebSocket Error",
+                description: error,
+                variant: "destructive",
+            });
+            addLog(error, "error");
+        },
+        [toast, addLog],
+    );
+
+    const { isConnected } = useWebSocket(handleMessage, handleError);
+
+    // --- Memoized Grouping Logic ---
+    const groupedExperiments = useMemo(() => {
+        const groups: Map<string, GroupedExperiment> = new Map();
+        novelIdeas.forEach((idea) => {
+            // Use 'Name' from your sample code
+            const ideaKey = idea.Name || idea.id;
+            groups.set(ideaKey, {
+                idea: idea,
+                runs: [],
+            });
+        });
+
+        allRunResults.forEach((runResult) => {
+            const group = groups.get(runResult.idea_name);
+            if (group) {
+                const newRuns = [
+                    ...group.runs.filter(
+                        (r) => r.run_number !== runResult.run_number,
+                    ),
+                    runResult,
+                ];
+                newRuns.sort((a, b) => a.run_number - b.run_number);
+                group.runs = newRuns;
+            }
+        });
+        return novelIdeas.map((idea) => groups.get(idea.Name || idea.id)!);
+    }, [novelIdeas, allRunResults]);
+
+    // For the main progress bar
+    const ideasProcessed = useMemo(() => {
+        return groupedExperiments.filter((g) => g.runs.length > 0).length;
+    }, [groupedExperiments]);
+
+    return (
+        <div className="flex h-full">
+            {/* Main Content Area (Chat UI) */}
+            <div className="flex-1 p-6 overflow-y-auto">
+                <h1 className="text-3xl font-bold mb-2">Experiment</h1>
+                <p className="text-muted-foreground mb-6">
+                    Job ID: <span className="font-mono">{jobId}</span>
+                </p>
+
+                {!isConnected && jobStatus !== "complete" && (
+                    <div className="flex items-center justify-center p-12">
+                        <Loader className="h-8 w-8 animate-spin mr-2" />
+                        <span className="text-lg text-muted-foreground">
+              {jobStatus === "failed" ? "Connection lost" : "Connecting to live feed..."}
+            </span>
+                    </div>
+                )}
+
+                <div className="flex flex-col gap-6 max-w-4xl mx-auto">
+                    {/* 1. Main Progress Bar */}
+                    <JobProgressBar
+                        completed={ideasProcessed}
+                        total={totalExperiments}
+                    />
+
+                    {/* 2. Experiment Results */}
+                    <div className="flex flex-col gap-4">
+                        {groupedExperiments.map((groupedExp) => (
+                            <GroupedExperimentCard
+                                key={groupedExp.idea.Name || groupedExp.idea.id}
+                                groupedExp={groupedExp}
+                                baseline={baselineScore}
+                            />
+                        ))}
+                    </div>
+
+                    {/* 3. Paper Bank */}
+                    {papers && (
+                        <div className="flex flex-col gap-4">
+                            <h2 className="text-2xl font-semibold">
+                                Found {papers.paper_bank.length} Relevant Papers
+                            </h2>
+                            {papers.paper_bank.map((paper) => (
+                                <PaperCard key={paper.id} paper={paper} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Right Sidebar (Log Feed) */}
+            <aside className="w-96 border-l h-full">
+                <LogFeed logs={logFeed} />
+            </aside>
         </div>
-      </div>
-
-      <Tabs defaultValue="logs" className="space-y-4">
-        <TabsList className="bg-white/10 border-white/10">
-          <TabsTrigger value="logs">Live Logs</TabsTrigger>
-          <TabsTrigger value="papers">Papers ({state.papers.length})</TabsTrigger>
-          <TabsTrigger value="ideas">Ideas ({state.ideas.length})</TabsTrigger>
-          <TabsTrigger value="results">Results ({state.results.length})</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="logs">
-          <Card className="bg-white/5 border-white/10 backdrop-blur p-6">
-            <LogFeed logs={logs} />
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="papers">
-          <div className="grid gap-4">
-            {state.papers.length === 0 ? (
-              <Card className="bg-white/5 border-white/10 backdrop-blur p-6 text-center text-gray-400">
-                No papers discovered yet
-              </Card>
-            ) : (
-              state.papers.map((paper, idx) => <PaperDisplay key={idx} paper={paper} />)
-            )}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="ideas">
-          <div className="grid gap-4">
-            {state.ideas.length === 0 ? (
-              <Card className="bg-white/5 border-white/10 backdrop-blur p-6 text-center text-gray-400">
-                No ideas generated yet
-              </Card>
-            ) : (
-              state.ideas.map((idea, idx) => <IdeaDisplay key={idx} idea={idea} />)
-            )}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="results">
-          <div className="grid gap-4">
-            {state.results.length === 0 ? (
-              <Card className="bg-white/5 border-white/10 backdrop-blur p-6 text-center text-gray-400">
-                No results yet
-              </Card>
-            ) : (
-              state.results.map((result, idx) => <ExperimentResultDisplay key={idx} result={result} />)
-            )}
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
+    );
 }

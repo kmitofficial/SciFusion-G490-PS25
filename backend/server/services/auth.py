@@ -1,9 +1,12 @@
-from fastapi import Depends, HTTPException, status
+# Location: backend/server/services/auth.py
+
+from fastapi import Depends, HTTPException, status, WebSocket
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from pydantic import ValidationError
+import urllib.parse  # Import this
 
 from server.core.config import settings
 from server.models.user import User, UserInDB
@@ -42,11 +45,11 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-# --- NEW: "Get Current User" Dependency ---
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+# --- NEW: Internal Token Validation Logic ---
+async def _get_user_from_token(token: str) -> User:
     """
-    Dependency to get the current user from a JWT token.
-    This replaces get_current_user_stub.
+    Internal function to decode a token and fetch a user.
+    Reusable for both HTTP and WS.
     """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -73,3 +76,38 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
 
     # Return the client-safe User model
     return User(**user_doc)
+
+
+# --- UPDATED: HTTP "Get Current User" Dependency ---
+async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+    """
+    Dependency for HTTP routes. Gets token from Authorization header.
+    """
+    return await _get_user_from_token(token)
+
+
+# --- NEW: WebSocket "Get Current User" Dependency ---
+async def get_current_user_ws(websocket: WebSocket) -> User:
+    """
+    Dependency for WebSocket routes. Gets token from query string.
+    """
+    token = None
+    query_string = websocket.scope.get("query_string", b"").decode("utf-8")
+    query_params = dict(urllib.parse.parse_qsl(query_string))
+
+    token = query_params.get("token")
+
+    if token is None:
+        # If no token, close the connection
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+        # We still raise an exception to stop dependency processing
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing token")
+
+    # Now that we have the token, validate it.
+    try:
+        user = await _get_user_from_token(token)
+        return user
+    except HTTPException:
+        # If token is invalid, close the connection
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+        raise

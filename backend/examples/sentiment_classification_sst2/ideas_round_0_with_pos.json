@@ -7,7 +7,16 @@
         "Experiment": "In this experiment, we compare the performance of different sentiment classification networks, especially considering using group convolution instead of fully connect layer in the attention block in BERT",
         "Summary": "Combine group convolution and BERT to improve the efficiency of BERT",
         "Feasibility": 9,
-        "Novelty": 6,
-        "independence": true
+        "Novelty": 6
+    },
+    {
+        "Name": "sentiment_attention_bert",
+        "Title": "Attention-Driven Integration of Explicit Sentiment Cues for Enhanced BERT Sentiment Classification",
+        "Motivation": "Human sentiment understanding involves dynamically weighing and attending to various linguistic cues (negation, intensity, sentiment words) based on context. While previous methods augment BERT with these features, they often use static fusion. This idea proposes a dynamic, attention-based mechanism where BERT's contextual representations query and learn to attend to explicit sentiment features, allowing for context-aware integration.",
+        "Method": "We propose a novel 'Sentiment Attention Layer' that dynamically integrates external sentiment features with BERT's internal representations. First, distinct embeddings are generated for negation, intensity, and sentiment lexicon features identified in the input text. These sentiment embeddings serve as keys and values. The contextualized token representations from BERT's encoder act as queries. A multi-head attention mechanism is employed, where queries from BERT attend to the sentiment feature embeddings, producing contextually weighted sentiment representations. This attended sentiment representation is then integrated (e.g., via concatenation or a gated mechanism) with the original BERT token embeddings before further processing or output. This allows the model to learn to selectively leverage specific sentiment cues based on the context, leading to more nuanced and robust sentiment classification.",
+        "Experiment": "1. Define distinct word sets for negation, intensity, and sentiment lexicon. 2. Modify `DataPrecessForSentence` to generate separate indicator tensors for each sentiment feature type. 3. In `BertClassifier`, add separate `nn.Embedding` layers for each sentiment feature type. Implement a 'Sentiment Attention Layer' (e.g., using `nn.MultiheadAttention` or a custom implementation) that takes BERT's hidden states as queries and the concatenated sentiment embeddings as keys/values. 4. Modify the `forward` method to pass BERT embeddings through the attention layer, obtain attended sentiment features, and integrate them with the original BERT embeddings. 5. Train and evaluate the model, comparing its performance (accuracy, AUC) against the baseline BERT and previous augmentation methods.",
+        "Summary": "Enhance BERT for sentiment classification by using an attention mechanism where BERT's representations query and dynamically integrate explicit sentiment features.",
+        "Feasibility": 8,
+        "Novelty": 9
     }
 ]

@@ -1,134 +1,178 @@
-from fastapi import APIRouter, Depends, Body
-from server.services.websocket import manager  # <-- Import the manager
-from server.services.auth import get_current_user
+# Location: backend/server/api/routers/internal.py
+
+from fastapi import APIRouter, Depends, Body, Path, HTTPException, status, Request
+from pydantic_mongo import PydanticObjectId
+from typing import Dict, Any, List
+
 from server.models.user import User
+from server.services.auth import get_current_user
+from server.services.websocket import manager
 from server.core.db import db
-from bson import ObjectId
-from typing import List, Dict, Any
+from motor.motor_asyncio import AsyncIOMotorCollection
 
-router = APIRouter()
-jobs_collection = db.get_jobs_collection_async()
+router = APIRouter(
+    prefix="/_internal",
+    tags=["_Internal"],
+    include_in_schema=False
+)
 
-
-# --- NEW: Helper function ---
-async def get_user_id_for_job(job_id: str) -> str | None:
-    """Finds the user_id associated with a given job_id."""
-    try:
-        # Ensure job_id is a valid ObjectId
-        if not ObjectId.is_valid(job_id):
-            print(f"Invalid job_id format: {job_id}")
-            return None
-
-        job = await jobs_collection.find_one({"_id": ObjectId(job_id)})
-        if job and "user_id" in job:
-            return str(job["user_id"])
-    except Exception as e:
-        print(f"Error finding user for job {job_id}: {e}")
-    return None
+jobs_collection: AsyncIOMotorCollection = db.get_jobs_collection_async()
 
 
-@router.post("/_internal/update-job-status/{job_id}")
-async def update_job_status(job_id: str, status_data: Dict[str, str] = Body(...)):
-    status = status_data.get("status", "unknown")
+async def get_job_and_user_id(job_id: PydanticObjectId) -> str:
+    """Helper to find the user_id for a given job_id."""
+    job_doc = await jobs_collection.find_one(
+        {"_id": job_id},
+        {"user_id": 1}
+    )
+    if not job_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Job not found"
+        )
+    return str(job_doc["user_id"])
+
+
+@router.post("/update-job-status/{job_id}")
+async def update_job_status(
+        job_id: PydanticObjectId,
+        status: str = Body(..., embed=True),
+):
+    """
+    Internal endpoint for the research script to update its own status.
+    """
+    user_id = await get_job_and_user_id(job_id)
     await jobs_collection.update_one(
-        {"_id": ObjectId(job_id)},
+        {"_id": job_id},
         {"$set": {"status": status}}
     )
+    await manager.send_json(user_id, {
+        "type": "JOB_STATUS_UPDATE",
+        "data": {"status": status, "job_id": str(job_id)}
+    })
+    return {"status": "ok", "job_id": str(job_id), "new_status": status}
 
-    # --- WebSocket Push ---
-    user_id = await get_user_id_for_job(job_id)
-    if user_id:
+
+@router.post("/push-log/{job_id}")
+async def push_log(
+        job_id: PydanticObjectId,
+        request: Request
+):
+    """
+    Internal endpoint for the research script to send a log message.
+    This now accepts any valid JSON and figures out what to do.
+    """
+    user_id = await get_job_and_user_id(job_id)
+
+    try:
+        data = await request.json()
+    except Exception as e:
+        print(f"--- LOG PARSE ERROR ---: Could not parse log body: {e}")
         await manager.send_json(user_id, {
-            "type": "JOB_STATUS_UPDATE",
-            "data": {"status": status}
+            "type": "AIDER_LOG",
+            "data": {"message": f"!!! FAILED TO PARSE LOG: {e} !!!", "log_type": "error"}
         })
-    return {"message": "Status updated"}
+        raise HTTPException(status_code=400, detail="Invalid JSON body")
+
+    log_message = ""
+    if isinstance(data, str):
+        log_message = data
+    elif isinstance(data, dict) and "message" in data:
+        log_message = data["message"]
+    elif isinstance(data, dict) and "log_message" in data:
+        log_message = data["log_message"]
+    elif isinstance(data, dict) and "log" in data:
+        log_message = data["log"]
+    else:
+        log_message = f"[UNRECOGNIZED LOG FORMAT]: {str(data)}"
+
+    log_type = "info"
+    if "error" in log_message.lower():
+        log_type = "error"
+    elif "fail" in log_message.lower():
+        log_type = "fail"
+    elif "success" in log_message.lower():
+        log_type = "success"
+
+    await manager.send_json(user_id, {
+        "type": "AIDER_LOG",
+        "data": {
+            "message": log_message,
+            "log_type": log_type
+        }
+    })
+    return {"status": "log pushed"}
 
 
-@router.post("/_internal/update-papers/{job_id}")
-async def update_papers(job_id: str, papers_data: Dict[str, Any] = Body(...)):
+@router.post("/update-papers/{job_id}")
+async def update_papers(
+        job_id: PydanticObjectId,
+        papers_data: Dict[str, Any] = Body(...)
+):
+    """
+    Internal endpoint for the research script to post the paper bank.
+    """
+    user_id = await get_job_and_user_id(job_id)
     await jobs_collection.update_one(
-        {"_id": ObjectId(job_id)},
+        {"_id": job_id},
         {"$set": {"papers": papers_data}}
     )
-
-    # --- WebSocket Push ---
-    user_id = await get_user_id_for_job(job_id)
-    if user_id:
-        await manager.send_json(user_id, {
-            "type": "PAPERS_UPDATED",
-            "data": papers_data
-        })
-    return {"message": "Papers updated"}
+    await manager.send_json(user_id, {
+        "type": "PAPERS_UPDATED",
+        "data": papers_data
+    })
+    return {"status": "papers updated"}
 
 
-@router.post("/_internal/update-ideas/{job_id}")
-async def update_ideas(job_id: str, ideas_list: List[Dict[str, Any]] = Body(...)):
+# --- FIX: Renamed route from '/update-ideas' to '/update-novel-ideas' ---
+@router.post("/update-novel-ideas/{job_id}")
+async def update_novel_ideas(
+        job_id: PydanticObjectId,
+        ideas_data: List[Dict[str, Any]] = Body(...)
+):
+    # --- END FIX ---
+    """
+    Internal endpoint for the research script to post the novel ideas.
+    (This is the FINAL list of ideas to be run)
+    """
+    user_id = await get_job_and_user_id(job_id)
+
+    # 1. Update the DB
     await jobs_collection.update_one(
-        {"_id": ObjectId(job_id)},
-        {"$set": {"ideas": ideas_list}}
+        {"_id": job_id},
+        {"$set": {"ideas": ideas_data}}
     )
 
-    # --- WebSocket Push ---
-    user_id = await get_user_id_for_job(job_id)
-    if user_id:
-        await manager.send_json(user_id, {
-            "type": "IDEAS_UPDATED",
-            "data": ideas_list
-        })
-    return {"message": "Ideas updated"}
+    # 2. Push to client
+    await manager.send_json(user_id, {
+        "type": "NOVEL_IDEAS_UPDATED",
+        "data": ideas_data
+    })
+    return {"status": "novel ideas updated"}
 
 
-@router.post("/_internal/update-novel-ideas/{job_id}")
-async def update_novel_ideas(job_id: str, ideas_list: List[Dict[str, Any]] = Body(...)):
+# --- FIX: Renamed route from '/push-experiment-result' to '/push-result' ---
+@router.post("/push-result/{job_id}")
+async def push_result(
+        job_id: PydanticObjectId,
+        result_data: Dict[str, Any] = Body(...)
+):
+    # --- END FIX ---
     """
-    Receives the FINAL list of novel ideas that will be run.
-    This is used to set the 'total' for the progress bar.
+    Internal endpoint for the research script to post a SINGLE run result.
+    The body is expected to be the ExperimentResult object.
     """
-    # We don't necessarily need to save this to the DB,
-    # but we MUST broadcast it.
+    user_id = await get_job_and_user_id(job_id)
 
-    # --- WebSocket Push ---
-    user_id = await get_user_id_for_job(job_id)
-    if user_id:
-        await manager.send_json(user_id, {
-            "type": "NOVEL_IDEAS_UPDATED",
-            "data": ideas_list
-        })
-    return {"message": "Novel ideas list broadcasted"}
-
-
-@router.post("/_internal/push-result/{job_id}")
-async def push_experiment_result(job_id: str, result_data: Dict[str, Any] = Body(...)):
+    # 1. Push this single result to the 'experiment_results' array in DB
     await jobs_collection.update_one(
-        {"_id": ObjectId(job_id)},
+        {"_id": job_id},
         {"$push": {"experiment_results": result_data}}
     )
 
-    # --- WebSocket Push ---
-    user_id = await get_user_id_for_job(job_id)
-    if user_id:
-        await manager.send_json(user_id, {
-            "type": "EXPERIMENT_RESULT",
-            "data": result_data
-        })
-    return {"message": "Result pushed"}
-
-
-# --- NEW ENDPOINT ---
-@router.post("/_internal/push-log/{job_id}")
-async def push_log_message(job_id: str, log_data: Dict[str, str] = Body(...)):
-    # You could optionally save logs to the DB here if you want
-    # await jobs_collection.update_one(
-    #     {"_id": ObjectId(job_id)},
-    #     {"$push": {"log_feed": log_data}}
-    # )
-
-    # --- WebSocket Push ---
-    user_id = await get_user_id_for_job(job_id)
-    if user_id:
-        await manager.send_json(user_id, {
-            "type": "AIDER_LOG",
-            "data": log_data  # This contains {"message": "...", "log_type": "info"}
-        })
-    return {"message": "Log pushed"}
+    # 2. Push to client
+    await manager.send_json(user_id, {
+        "type": "EXPERIMENT_RESULT",
+        "data": result_data
+    })
+    return {"status": "result pushed"}
