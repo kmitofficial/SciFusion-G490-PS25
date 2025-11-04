@@ -1,107 +1,134 @@
-from fastapi import APIRouter, HTTPException, Body
+from fastapi import APIRouter, Depends, Body
+from server.services.websocket import manager  # <-- Import the manager
+from server.services.auth import get_current_user_stub
+from server.models.user import User
 from server.core.db import db
-from server.services.websocket import manager
-from server.models.job import Job
-from pydantic_mongo import PydanticObjectId
-from typing import Dict, Any, List
+from bson import ObjectId
+from typing import List, Dict, Any
 
 router = APIRouter()
 jobs_collection = db.get_jobs_collection_async()
 
 
-async def get_job_and_user_id(job_id: str):
-    """Helper to find a job and its owner's user_id."""
+# --- NEW: Helper function ---
+async def get_user_id_for_job(job_id: str) -> str | None:
+    """Finds the user_id associated with a given job_id."""
     try:
-        job_oid = PydanticObjectId(job_id)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid Job ID format")
+        # Ensure job_id is a valid ObjectId
+        if not ObjectId.is_valid(job_id):
+            print(f"Invalid job_id format: {job_id}")
+            return None
 
-    job_doc = await jobs_collection.find_one({"_id": job_oid})
-
-    if not job_doc:
-        raise HTTPException(status_code=404, detail=f"Job {job_id} not found")
-
-    return job_doc, str(job_doc["user_id"])
-
-
-async def notify_user_of_update(job_id: str):
-    """
-    Finds a job, finds its owner, and sends them
-    the full updated job document over WebSocket.
-    """
-    job_doc, user_id = await get_job_and_user_id(job_id)
-
-    # Send the full, updated job to the user
-    message = {
-        "type": "JOB_UPDATE",
-        "data": Job(**job_doc).model_dump(mode="json")
-    }
-    await manager.send_json(user_id, message)
+        job = await jobs_collection.find_one({"_id": ObjectId(job_id)})
+        if job and "user_id" in job:
+            return str(job["user_id"])
+    except Exception as e:
+        print(f"Error finding user for job {job_id}: {e}")
+    return None
 
 
-@router.post("/_internal/update-job-status/{job_id}", tags=["_Internal"])
-async def internal_update_job_status(job_id: str, status: str = Body(..., embed=True)):
-    """Called by the script to update the job's high-level status."""
-
-    print(f"[Internal API] Job {job_id} status changed to: {status}")
-
-    job_doc, user_id = await get_job_and_user_id(job_id)
-
+@router.post("/_internal/update-job-status/{job_id}")
+async def update_job_status(job_id: str, status_data: Dict[str, str] = Body(...)):
+    status = status_data.get("status", "unknown")
     await jobs_collection.update_one(
-        {"_id": job_doc["_id"]},
+        {"_id": ObjectId(job_id)},
         {"$set": {"status": status}}
     )
 
-    await notify_user_of_update(job_id)
+    # --- WebSocket Push ---
+    user_id = await get_user_id_for_job(job_id)
+    if user_id:
+        await manager.send_json(user_id, {
+            "type": "JOB_STATUS_UPDATE",
+            "data": {"status": status}
+        })
     return {"message": "Status updated"}
 
 
-@router.post("/_internal/update-papers/{job_id}", tags=["_Internal"])
-async def internal_update_papers(job_id: str, papers: Dict[str, Any] = Body(...)):
-    """Called by the script when papers are found."""
-
-    print(f"[Internal API] Job {job_id} received papers.")
-
-    job_doc, user_id = await get_job_and_user_id(job_id)
-
+@router.post("/_internal/update-papers/{job_id}")
+async def update_papers(job_id: str, papers_data: Dict[str, Any] = Body(...)):
     await jobs_collection.update_one(
-        {"_id": job_doc["_id"]},
-        {"$set": {"papers": papers, "status": "papers_collected"}}
+        {"_id": ObjectId(job_id)},
+        {"$set": {"papers": papers_data}}
     )
 
-    await notify_user_of_update(job_id)
+    # --- WebSocket Push ---
+    user_id = await get_user_id_for_job(job_id)
+    if user_id:
+        await manager.send_json(user_id, {
+            "type": "PAPERS_UPDATED",
+            "data": papers_data
+        })
     return {"message": "Papers updated"}
 
 
-@router.post("/_internal/update-ideas/{job_id}", tags=["_Internal"])
-async def internal_update_ideas(job_id: str, ideas: List[Dict[str, Any]] = Body(...)):
-    """Called by the script when ideas are generated."""
-
-    print(f"[Internal API] Job {job_id} received ideas.")
-
-    job_doc, user_id = await get_job_and_user_id(job_id)
-
+@router.post("/_internal/update-ideas/{job_id}")
+async def update_ideas(job_id: str, ideas_list: List[Dict[str, Any]] = Body(...)):
     await jobs_collection.update_one(
-        {"_id": job_doc["_id"]},
-        {"$set": {"ideas": ideas, "status": "ideas_generated"}}
+        {"_id": ObjectId(job_id)},
+        {"$set": {"ideas": ideas_list}}
     )
 
-    await notify_user_of_update(job_id)
+    # --- WebSocket Push ---
+    user_id = await get_user_id_for_job(job_id)
+    if user_id:
+        await manager.send_json(user_id, {
+            "type": "IDEAS_UPDATED",
+            "data": ideas_list
+        })
     return {"message": "Ideas updated"}
 
 
-@router.post("/_internal/push-result/{job_id}", tags=["_Internal"])
-async def internal_push_experiment_result(job_id: str, result: Dict[str, Any] = Body(...)):
-    """Called by the script after *each* experiment."""
+@router.post("/_internal/update-novel-ideas/{job_id}")
+async def update_novel_ideas(job_id: str, ideas_list: List[Dict[str, Any]] = Body(...)):
+    """
+    Receives the FINAL list of novel ideas that will be run.
+    This is used to set the 'total' for the progress bar.
+    """
+    # We don't necessarily need to save this to the DB,
+    # but we MUST broadcast it.
 
-    print(f"[Internal API] Job {job_id} received an experiment result.")
+    # --- WebSocket Push ---
+    user_id = await get_user_id_for_job(job_id)
+    if user_id:
+        await manager.send_json(user_id, {
+            "type": "NOVEL_IDEAS_UPDATED",
+            "data": ideas_list
+        })
+    return {"message": "Novel ideas list broadcasted"}
 
-    job_doc, user_id = await get_job_and_user_id(job_id)
 
+@router.post("/_internal/push-result/{job_id}")
+async def push_experiment_result(job_id: str, result_data: Dict[str, Any] = Body(...)):
     await jobs_collection.update_one(
-        {"_id": job_doc["_id"]},
-        {"$push": {"experiment_results": result}, "$set": {"status": "experiments_running"}}
+        {"_id": ObjectId(job_id)},
+        {"$push": {"experiment_results": result_data}}
     )
 
-    await notify_user_of_update(job_id)
+    # --- WebSocket Push ---
+    user_id = await get_user_id_for_job(job_id)
+    if user_id:
+        await manager.send_json(user_id, {
+            "type": "EXPERIMENT_RESULT",
+            "data": result_data
+        })
     return {"message": "Result pushed"}
+
+
+# --- NEW ENDPOINT ---
+@router.post("/_internal/push-log/{job_id}")
+async def push_log_message(job_id: str, log_data: Dict[str, str] = Body(...)):
+    # You could optionally save logs to the DB here if you want
+    # await jobs_collection.update_one(
+    #     {"_id": ObjectId(job_id)},
+    #     {"$push": {"log_feed": log_data}}
+    # )
+
+    # --- WebSocket Push ---
+    user_id = await get_user_id_for_job(job_id)
+    if user_id:
+        await manager.send_json(user_id, {
+            "type": "AIDER_LOG",
+            "data": log_data  # This contains {"message": "...", "log_type": "info"}
+        })
+    return {"message": "Log pushed"}

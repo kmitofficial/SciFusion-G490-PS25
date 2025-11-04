@@ -8,7 +8,7 @@ import os
 import time
 import sys
 from dotenv import load_dotenv
-import requests  # <-- NEW IMPORT
+import requests
 
 # --- AUTHENTICATION FIX ---
 print("Loading environment variables from .env...")
@@ -27,7 +27,7 @@ from dolphin_utils.experiments_utils import perform_experiments
 
 NUM_REFLECTIONS = 3
 
-# --- NEW API CALLBACK FUNCTIONS ---
+# --- API CALLBACK FUNCTIONS ---
 
 # The base URL for our internal API
 API_BASE_URL = "http://localhost:8000/api/v1"
@@ -64,7 +64,7 @@ def update_job_papers(job_id, papers_dict):
 
 
 def update_job_ideas(job_id, ideas_list):
-    """Calls the internal API to send the generated ideas."""
+    """Calls the internal API to send the *initial* generated ideas."""
     if not job_id:
         return
     try:
@@ -77,6 +77,28 @@ def update_job_ideas(job_id, ideas_list):
     except Exception as e:
         print(f"[API_CALLBACK ERROR] Failed to send ideas: {e}")
 
+
+# ---
+# --- NEW FUNCTION (FOR PROGRESS BAR) ---
+# ---
+def update_novel_ideas_list(job_id, ideas_list):
+    """Calls the internal API to send the *final* list of novel ideas that will be run."""
+    if not job_id:
+        return
+    try:
+        requests.post(
+            f"{API_BASE_URL}/_internal/update-novel-ideas/{job_id}",  # <-- New Endpoint
+            json=ideas_list,
+            timeout=10
+        )
+        print(f"[API_CALLBACK] Notified server: {len(ideas_list)} novel ideas to be run.")
+    except Exception as e:
+        print(f"[API_CALLBACK ERROR] Failed to send novel ideas list: {e}")
+
+
+# ---
+# --- END NEW FUNCTION
+# ---
 
 def push_experiment_result(job_id, result_dict):
     """Calls the internal API to push a single experiment result."""
@@ -92,6 +114,28 @@ def push_experiment_result(job_id, result_dict):
     except Exception as e:
         print(f"[API_CALLBACK ERROR] Failed to push result: {e}")
 
+
+# ---
+# --- NEW FUNCTION (FOR LOGS) ---
+# ---
+def push_log_message(job_id, message, log_type="info"):
+    """Calls the internal API to push a simple log message."""
+    if not job_id:
+        return
+    try:
+        requests.post(
+            f"{API_BASE_URL}/_internal/push-log/{job_id}",
+            json={"message": message, "log_type": log_type},
+            timeout=5
+        )
+        print(f"[API_CALLBACK] Pushed log: {message}")
+    except Exception as e:
+        print(f"[API_CALLBACK ERROR] Failed to push log: {e}")
+
+
+# ---
+# --- END NEW FUNCTION
+# ---
 
 # --- END API CALLBACK FUNCTIONS ---
 
@@ -126,7 +170,6 @@ def parse_arguments():
     parser.add_argument("--round", type=int, default=0, help="Round of experiments")
     parser.add_argument("--save_name", type=str, default=None, help="Result dir (default: results/exp_name)")
 
-    # --- MODIFIED: Added job-id ---
     parser.add_argument("--job-id", type=str, default="007", help="Job ID for saving results via API callback")
 
     return parser.parse_args()
@@ -142,89 +185,51 @@ def get_available_gpus(gpu_ids=None):
 
 
 def bootstrap_experiment(base_dir, topic):
-    """
-    Checks if a new experiment directory has the required files.
-    If not, it creates default placeholders to prevent errors.
-    """
+    # ... (content is unchanged)
     print(f"[PROCESS] Bootstrapping: Checking project structure in {base_dir}...")
-
     seed_ideas_path = osp.join(base_dir, "seed_ideas.json")
     prompt_path = osp.join(base_dir, "prompt.json")
     experiment_path = osp.join(base_dir, "experiment.py")
     run_0_dir = osp.join(base_dir, "run_0")
     baseline_info_path = osp.join(run_0_dir, "final_info.json")
     baseline_script_path = osp.join(run_0_dir, "experiment.py")
-
     description = topic if topic else "A new AutoAD experiment"
     if topic:
         print(f"[PROCESS] Bootstrapping: Using topic for description: {topic}")
-
     default_experiment_code = (
-        "# This is a placeholder experiment file.\n"
-        "# The AI will modify this file to implement ideas.\n"
-        "import torch\n\n"
-        "def main():\n"
-        "    print('Baseline experiment script.')\n\n"
-        "if __name__ == '__main__':\n"
-        "    main()\n"
-    )
-
-    # Create seed_ideas.json if it's missing
+        "# This is a placeholder experiment file.\n# The AI will modify this file to implement ideas.\nimport torch\n\ndef main():\n    print('Baseline experiment script.')\n\nif __name__ == '__main__':\n    main()\n")
     if not osp.exists(seed_ideas_path):
         print(f"[PROCESS] Bootstrapping: Creating missing file: {seed_ideas_path}")
-        default_seed_ideas = [
-            {
-                "Name": "Baseline",
-                "Title": "Baseline Experiment",
-                "Summary": description,
-                "Experiment": "Establish baseline performance for the task.",
-                "Method": "Baseline implementation."
-            }
-        ]
+        default_seed_ideas = [{"Name": "Baseline", "Title": "Baseline Experiment", "Summary": description,
+                               "Experiment": "Establish baseline performance for the task.",
+                               "Method": "Baseline implementation."}]
         with open(seed_ideas_path, "w") as f:
             json.dump(default_seed_ideas, f, indent=4)
-
-    # Create prompt.json if it's missing
     if not osp.exists(prompt_path):
         print(f"[PROCESS] Bootstrapping: Creating missing file: {prompt_path}")
         default_prompt = {
             "system": "You are an AI research assistant. Your goal is to design novel machine learning algorithms.",
-            "task_description": description
-        }
+            "task_description": description}
         with open(prompt_path, "w") as f:
             json.dump(default_prompt, f, indent=4)
-
-    # Create root experiment.py if it's missing
     if not osp.exists(experiment_path):
         print(f"[PROCESS] Bootstrapping: Creating missing file: {experiment_path}")
         with open(experiment_path, "w") as f:
             f.write(default_experiment_code)
-
-    # Ensure run_0 directory exists
     os.makedirs(run_0_dir, exist_ok=True)
-
-    # Create dummy baseline results in run_0 if missing
     if not osp.exists(baseline_info_path):
         print(f"[PROCESS] Bootstrapping: Creating missing file: {baseline_info_path}")
-        default_baseline_results = {
-            "baseline_metric": {
-                "means": [0.0],
-                "stds": [0.0]
-            }
-        }
+        default_baseline_results = {"baseline_metric": {"means": [0.0], "stds": [0.0]}}
         with open(baseline_info_path, "w") as f:
             json.dump(default_baseline_results, f, indent=4)
-
-    # Create baseline script in run_0 if missing
     if not osp.exists(baseline_script_path):
         print(f"[PROCESS] Bootstrapping: Creating missing file: {baseline_script_path}")
         with open(baseline_script_path, "w") as f:
             f.write(default_experiment_code)
-
     print(f"[PROCESS] Bootstrapping: Check complete. All required files are in place.")
 
 
-# --- MODIFIED: Added job_id parameter ---
+# --- MODIFIED: Arguments list was incorrect, this is now fixed ---
 def worker(queue, base_dir, results_dir, model, client, client_model, writeup, improvement, gpu_id, job_id):
     os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
     print(f"[PROCESS] Worker {gpu_id} started.")
@@ -232,15 +237,27 @@ def worker(queue, base_dir, results_dir, model, client, client_model, writeup, i
         idea = queue.get()
         if idea is None:
             break
-        print(f"[PROCESS] Worker {gpu_id} picked up idea: {idea.get('Name', 'Unnamed Idea')}")
+
+        # --- MODIFICATION ---
+        idea_name_str = idea.get('Name', 'Unnamed Idea')
+        print(f"[PROCESS] Worker {gpu_id} picked up idea: {idea_name_str}")
+        push_log_message(job_id, f"Worker {gpu_id} starting experiment for: {idea_name_str}", "info")
+        # --- END MODIFICATION ---
+
+        # --- FIXED: Pass correct args to do_idea ---
         success = do_idea(
-            base_dir, results_dir, idea, model, client, client_model, writeup, improvement, job_id, log_file=True
+            base_dir, results_dir, idea, model, job_id, log_file=True
         )
-        print(f"[PROCESS] Worker {gpu_id} completed idea: {idea.get('Name', 'Unnamed Idea')}, Success: {success}")
+
+        # --- MODIFICATION ---
+        if not success:
+            push_log_message(job_id, f"Experiment failed for: {idea_name_str}", "fail")
+        # --- END MODIFICATION ---
+
+        print(f"[PROCESS] Worker {gpu_id} completed idea: {idea_name_str}, Success: {success}")
     print(f"[PROCESS] Worker {gpu_id} finished.")
 
 
-# --- MODIFIED: Added job_id parameter ---
 def do_idea(base_dir, results_dir, idea, model, job_id, log_file=False):
     ## CREATE PROJECT FOLDER
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -249,7 +266,6 @@ def do_idea(base_dir, results_dir, idea, model, job_id, log_file=False):
     folder_name = osp.join(results_dir, idea_name)
     print(f"[PROCESS] do_idea: Creating project folder: {folder_name}")
 
-    # Handle potential file name too long error
     if len(folder_name) > 255:
         folder_name = osp.join(results_dir, f"{timestamp}_{idea_name_safe[:50]}")
         print(f"[PROCESS] do_idea: Folder name too long, shortening to: {folder_name}")
@@ -257,6 +273,10 @@ def do_idea(base_dir, results_dir, idea, model, job_id, log_file=False):
     assert not osp.exists(folder_name), f"Folder {folder_name} already exists."
     destination_dir = folder_name
     shutil.copytree(base_dir, destination_dir, dirs_exist_ok=True)
+
+    # --- MODIFICATION ---
+    push_log_message(job_id, f"Preparing environment for idea: {idea.get('Name', 'Unnamed Idea')}", "info")
+    # --- END MODIFICATION ---
 
     print(f"[PROCESS] do_idea: Loading baseline results from {osp.join(base_dir, 'run_0', 'final_info.json')}")
     with open(osp.join(base_dir, "run_0", "final_info.json"), "r") as f:
@@ -315,21 +335,36 @@ def do_idea(base_dir, results_dir, idea, model, job_id, log_file=False):
         print(f"*Starting Experiments*")
         try:
             print(f"[PROCESS] do_idea: Calling perform_experiments...")
-            success = perform_experiments(idea, folder_name, coder, baseline_results)
+            # --- MODIFICATION ---
+            push_log_message(job_id, f"Aider is starting runs for: {idea.get('Name', 'Unnamed Idea')}", "info")
+            # --- PASSING job_id TO perform_experiments ---
+            success = perform_experiments(idea, folder_name, coder, baseline_results, job_id)
+            # --- END MODIFICATION ---
             print(f"[PROCESS] do_idea: perform_experiments finished. Success: {success}")
         except Exception as e:
             print(f"Error during experiments: {e}")
             print(f"Experiments failed for idea {idea_name}")
+            # --- MODIFICATION ---
+            push_log_message(job_id, f"Aider failed for {idea.get('Name', 'Unnamed Idea')}: {e}", "fail")
+            # --- END MODIFICATION ---
             return False
 
         if not success:
             print(f"Experiments failed for idea {idea_name}")
+            # --- MODIFICATION ---
+            push_log_message(job_id, f"Aider failed to complete runs for: {idea.get('Name', 'Unnamed Idea')}", "fail")
+            # --- END MODIFICATION ---
             return False
 
-        # --- MODIFIED: Save result via API callback ---
+        # ---
+        # --- MODIFICATION: This now sends the FINAL result for the idea
+        # --- (perform_experiments is responsible for sending intermediate run results)
+        # ---
         print_time()
-        print(f"*Experiment {idea_name} Succeeded. Saving results to API.*")
+        print(f"*Experiment {idea_name} Succeeded. Saving final result to API.*")
         try:
+            # --- This assumes the *last* run is the *best* run, or that
+            # --- perform_experiments saved the best one to "final_info.json"
             result_path = osp.join(folder_name, "final_info.json")
             if not osp.exists(result_path):
                 print(f"[API_CALLBACK ERROR] final_info.json not found at {result_path}")
@@ -341,18 +376,19 @@ def do_idea(base_dir, results_dir, idea, model, job_id, log_file=False):
                     "idea_name": idea.get("Name", "Unnamed Idea"),
                     "idea_title": idea.get("Title", "Untitled"),
                     "metrics": result_data,
-                    "folder_name": os.path.basename(folder_name)
+                    "folder_name": os.path.basename(folder_name),
+                    "run_number": 99,  # <-- Use a special number for the "final" idea result
                 }
 
-                # Call our new API helper function
                 push_experiment_result(job_id, experiment_result)
+                push_log_message(job_id, f"Idea processing finished for: {idea.get('Name', 'Unnamed Idea')}", "success")
 
         except Exception as e:
             print(f"[API_CALLBACK ERROR] Failed to save experiment result via API: {e}")
         # --- END MODIFICATION ---
 
         print_time()
-        return True  # Explicitly return True
+        return True
 
     except Exception as e:
         print(f"Failed to evaluate idea {idea_name}: {str(e)}")
@@ -377,14 +413,14 @@ if __name__ == "__main__":
 
     # --- MODIFIED: Notify server that script is running ---
     update_job_status(args.job_id, "running")
+    push_log_message(args.job_id, "Job started. Setting up environment and clients.", "info")
     # --- END MODIFICATION ---
 
     print(f"[PROCESS] Checking available GPUs...")
     available_gpus = get_available_gpus(args.gpus)
     if args.parallel > len(available_gpus):
         print(
-            f"Warning: Requested {args.parallel} parallel processes, but only {len(available_gpus)} GPUs available. Adjusting to {len(available_gpus)}."
-        )
+            f"Warning: Requested {args.parallel} parallel processes, but only {len(available_gpus)} GPUs available. Adjusting to {len(available_gpus)}.")
         args.parallel = len(available_gpus)
 
     print(f"[PROCESS] Using GPUs: {available_gpus}")
@@ -462,30 +498,34 @@ if __name__ == "__main__":
         from dolphin_utils.rag_tools.lit_review import collect_papers
 
         assert args.topic is not None, "Topic must be provided for RAG."
+
+        # --- MODIFICATION ---
         print(f"[PROCESS] RAG: Collecting papers for topic: {args.topic}")
+        push_log_message(args.job_id, f"RAG: Collecting papers for topic: {args.topic}", "info")
         paper_bank, total_cost, all_queries = collect_papers(
             args.topic, client, client_model, args.seed, args.memory_papers, args.max_papers
         )
         print(f"[PROCESS] RAG: Collected {len(paper_bank)} papers. Total cost: {total_cost}")
+        push_log_message(args.job_id, f"RAG: Collected {len(paper_bank)} papers.", "success")
+        # --- END MODIFICATION ---
 
         paper_dict = {
             "topic_description": args.topic,
             "all_queries": all_queries,
             "paper_bank": paper_bank
         }
-
-        # --- MODIFIED: Save to file AND send to API ---
         file_path = osp.join(base_dir, f"{args.experiment}_rag_papers.json")
         print(f"[PROCESS] RAG: Saving paper bank to {file_path}")
         with open(file_path, "w") as f:
             json.dump(paper_dict, f, indent=4)
-
         update_job_papers(args.job_id, paper_dict)
-        # --- END MODIFICATION ---
     else:
         print(f"[PROCESS] RAG is disabled.")
 
+    # --- MODIFICATION ---
     print(f"[PROCESS] Calling generate_ideas...")
+    push_log_message(args.job_id, "Generating ideas...", "info")
+    # --- END MODIFICATION ---
     ideas = generate_ideas(
         base_dir,
         client=client,
@@ -501,10 +541,10 @@ if __name__ == "__main__":
         exp_base_file_list=exp_base_file_list,
     )
     print(f"[PROCESS] generate_ideas finished. Found {len(ideas)} ideas.")
-
-    # --- MODIFIED: Send ideas to API ---
-    update_job_ideas(args.job_id, ideas)
+    # --- MODIFICATION ---
+    push_log_message(args.job_id, f"Generated {len(ideas)} ideas. Sending to frontend.", "success")
     # --- END MODIFICATION ---
+    update_job_ideas(args.job_id, ideas)  # This sends the *initial* list
 
     if args.skip_novelty_check:
         print(f"[PROCESS] Skipping novelty check.")
@@ -512,7 +552,10 @@ if __name__ == "__main__":
             idea["novel"] = True
             idea["independence"] = True
     else:
+        # --- MODIFICATION ---
         print(f"[PROCESS] Calling check_idea_novelty...")
+        push_log_message(args.job_id, "Checking idea novelty...", "info")
+        # --- END MODIFICATION ---
         ideas = check_idea_novelty(
             ideas,
             base_dir=base_dir,
@@ -521,11 +564,24 @@ if __name__ == "__main__":
             round=args.round
         )
         print(f"[PROCESS] check_idea_novelty finished.")
+        # --- MODIFICATION ---
+        push_log_message(args.job_id, "Novelty check complete.", "success")
+        # --- END MODIFICATION ---
 
     filter_ideas = [idea for idea in ideas if idea.get('independence', True)]
     print(f"[PROCESS] Filtered for independence: {len(filter_ideas)} ideas remaining.")
     novel_ideas = [idea for idea in filter_ideas if idea.get("novel", False)]
     print(f"Run experiments on {len(novel_ideas)} novel and independent ideas.")
+
+    # ---
+    # --- CRITICAL FIX FOR PROGRESS BAR ---
+    # --- Send the *final* list of ideas to the frontend.
+    # ---
+    push_log_message(args.job_id, f"Starting experiments on {len(novel_ideas)} novel ideas.", "info")
+    update_novel_ideas_list(args.job_id, novel_ideas)
+    # ---
+    # --- END FIX
+    # ---
 
     if args.parallel > 0:
         print(f"[PROCESS] Starting PARALLEL execution with {args.parallel} processes.")
@@ -537,6 +593,9 @@ if __name__ == "__main__":
         for i in range(args.parallel):
             gpu_id = available_gpus[i % len(available_gpus)]
             print(f"[PROCESS] Starting worker {i} on GPU {gpu_id}")
+            # ---
+            # --- BUG FIX: Added missing arguments (client, client_model, writeup, improvement)
+            # ---
             p = multiprocessing.Process(
                 target=worker,
                 args=(
@@ -544,11 +603,15 @@ if __name__ == "__main__":
                     base_dir,
                     results_dir,
                     args.code_model,
-                    # --- MODIFIED: Pass job_id to worker ---
+                    client,  # <-- ADDED
+                    client_model,  # <-- ADDED
+                    None,  # <-- ADDED (writeup)
+                    None,  # <-- ADDED (improvement)
                     gpu_id,
                     args.job_id
                 )
             )
+            # --- END BUG FIX ---
             p.start()
             time.sleep(150)
             processes.append(p)
@@ -564,15 +627,13 @@ if __name__ == "__main__":
         print("[PROCESS] All parallel processes completed.")
     else:
         print(f"[PROCESS] Starting SEQUENTIAL execution.")
-        # --- MODIFIED: Notify server ---
+        push_log_message(args.job_id, "Starting SEQUENTIAL execution.", "info")  # <-- NEW
         update_job_status(args.job_id, "experiments_running")
-        # --- END MODIFICATION ---
 
         for i, idea in enumerate(novel_ideas):
             print(f"[PROCESS] --- Processing idea {i + 1}/{len(novel_ideas)} (Sequential) ---")
             print(f"Processing idea: {idea['Name']}")
             try:
-                # --- MODIFIED: Pass job_id ---
                 success = do_idea(
                     base_dir,
                     results_dir,
@@ -588,6 +649,7 @@ if __name__ == "__main__":
     print("[PROCESS] All ideas evaluated.")
 
     # --- MODIFIED: Notify server of completion ---
+    push_log_message(args.job_id, "All experiments evaluated. Job complete.", "success")
     update_job_status(args.job_id, "complete")
     # --- END MODIFICATION ---
 
