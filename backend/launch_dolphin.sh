@@ -26,5 +26,5 @@ python launch_dolphin.py \
     --rag \
     --num-ideas 1 \
     --round 0 \
-    --save_name thechallenge2 \
+    --save_name userResult \
     | tee launch_dolphin.txt

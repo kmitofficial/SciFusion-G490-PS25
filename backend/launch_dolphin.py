@@ -127,7 +127,7 @@ def parse_arguments():
     parser.add_argument("--save_name", type=str, default=None, help="Result dir (default: results/exp_name)")
 
     # --- MODIFIED: Added job-id ---
-    parser.add_argument("--job-id", type=str, default=None, help="Job ID for saving results via API callback")
+    parser.add_argument("--job-id", type=str, default="007", help="Job ID for saving results via API callback")
 
     return parser.parse_args()
 
