@@ -1,26 +1,41 @@
-// Location: frontend/app/page.tsx
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { HeroSection } from "@/components/hero-section"
+import { DashboardPreview } from "@/components/dashboard-preview"
+import { BentoSection } from "@/components/bento-section"
+import { LargeTestimonial } from "@/components/large-testimonial"
+import { FAQSection } from "@/components/faq-section"
+import { CTASection } from "@/components/cta-section"
+import { FooterSection } from "@/components/footer-section"
+import { AnimatedSection } from "@/components/animated-section"
 
-export default function IntroPage() {
-    return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-8">
-            <div className="text-center space-y-6">
-                <h1 className="text-5xl font-bold">Welcome to SciFusion</h1>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Your AI-powered partner for accelerating scientific discovery.
-                    Automate literature reviews, generate novel ideas, and run experiments
-                    all in one place.
-                </p>
-                <div className="flex justify-center gap-4">
-                    <Button asChild size="lg">
-                        <Link href="/login">Login</Link>
-                    </Button>
-                    <Button asChild size="lg" variant="outline">
-                        <Link href="/signup">Sign Up</Link>
-                    </Button>
-                </div>
-            </div>
-        </div>
-    );
+export default function LandingPage() {
+  return (
+    <div className="min-h-screen bg-background relative overflow-hidden pb-0">
+      <div className="relative z-10">
+        <main className="max-w-[1320px] mx-auto relative">
+          <HeroSection />
+          {/* Dashboard Preview Wrapper */}
+          <div className="absolute bottom-[-150px] md:bottom-[-400px] left-1/2 transform -translate-x-1/2 z-30">
+            <AnimatedSection>
+              <DashboardPreview />
+            </AnimatedSection>
+          </div>
+        </main>
+        <AnimatedSection id="features-section" className="relative z-10 max-w-[1320px] mx-auto mt-16" delay={0.2}>
+          <BentoSection />
+        </AnimatedSection>
+        <AnimatedSection className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-16" delay={0.2}>
+          <LargeTestimonial />
+        </AnimatedSection>
+        <AnimatedSection id="faq-section" className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-16" delay={0.2}>
+          <FAQSection />
+        </AnimatedSection>
+        <AnimatedSection className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-16" delay={0.2}>
+          <CTASection />
+        </AnimatedSection>
+        <AnimatedSection className="relative z-10 max-w-[1320px] mx-auto mt-8 md:mt-16" delay={0.2}>
+          <FooterSection />
+        </AnimatedSection>
+      </div>
+    </div>
+  )
 }
