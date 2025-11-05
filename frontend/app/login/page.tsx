@@ -55,27 +55,33 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 p-4">
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black text-white px-4">
+            <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.25),_transparent_55%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(99,102,241,0.35),_transparent_60%)]" />
+                <div className="absolute -top-32 right-1/4 h-72 w-72 rounded-full bg-cyan-500/30 blur-3xl" />
+                <div className="absolute -bottom-24 left-1/3 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl" />
+            </div>
             <motion.div
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="w-full max-w-sm"
+                transition={{ duration: 0.5 }}
+                className="relative z-10 w-full max-w-md"
             >
-                <Card className="shadow-lg border-border/40 backdrop-blur-sm bg-white/70 dark:bg-gray-900/70">
+                <Card className="border border-white/10 bg-white/5 shadow-2xl backdrop-blur-xl text-white">
                     <form onSubmit={handleSubmit}>
-                        <CardHeader className="text-center">
+                        <CardHeader className="text-center space-y-2">
                             <CardTitle className="text-3xl font-semibold tracking-tight">
                                 Welcome Back
                             </CardTitle>
-                            <CardDescription className="text-sm text-muted-foreground">
+                            <CardDescription className="text-sm text-white/70">
                                 Sign in to continue your research journey.
                             </CardDescription>
                         </CardHeader>
 
                         <CardContent className="grid gap-4">
                             {error && (
-                                <p className="text-center text-sm font-medium text-destructive">
+                                <p className="text-center text-sm font-medium text-red-400">
                                     {error}
                                 </p>
                             )}
@@ -90,7 +96,7 @@ export default function LoginPage() {
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     disabled={isLoading}
-                                    className="focus:ring-2 focus:ring-primary/50 transition"
+                                    className="bg-white/10 border-white/20 text-white placeholder-white/60 focus:border-primary focus:ring-2 focus:ring-primary/60"
                                 />
                             </div>
 
@@ -103,14 +109,14 @@ export default function LoginPage() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     disabled={isLoading}
-                                    className="focus:ring-2 focus:ring-primary/50 transition"
+                                    className="bg-white/10 border-white/20 text-white placeholder-white/60 focus:border-primary focus:ring-2 focus:ring-primary/60"
                                 />
                             </div>
                         </CardContent>
 
                         <CardFooter className="flex flex-col gap-4">
                             <Button
-                                className="w-full font-medium"
+                                className="w-full font-medium bg-gradient-to-r from-sky-500 to-indigo-500 text-white shadow-lg shadow-sky-500/30 border-0"
                                 type="submit"
                                 disabled={isLoading}
                             >
@@ -123,11 +129,11 @@ export default function LoginPage() {
                                     "Sign In"
                                 )}
                             </Button>
-                            <div className="text-center text-sm text-muted-foreground">
+                            <div className="text-center text-sm text-white/70">
                                 Don&apos;t have an account?{" "}
                                 <Link
                                     href="/signup"
-                                    className="text-primary hover:underline font-medium"
+                                    className="text-sky-300 hover:text-sky-200 hover:underline font-medium"
                                 >
                                     Sign up
                                 </Link>

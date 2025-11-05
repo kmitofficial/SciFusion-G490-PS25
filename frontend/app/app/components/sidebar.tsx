@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { api } from "@/lib/api";
-import { Job } from "@/lib/types";
+import { JobSidebarItem } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -25,24 +25,55 @@ const formatDate = (isoString: string) => {
 export default function Sidebar() {
     const { user, logout, token } = useAuth();
     const pathname = usePathname();
-    const [jobs, setJobs] = useState<Job[]>([]);
+    const [jobs, setJobs] = useState<JobSidebarItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [loadError, setLoadError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (token) {
-            setIsLoading(true);
-            api
-                .get("/jobs/", token)
-                .then((data) => {
-                    setJobs(data as Job[]);
-                })
-                .catch((err) => {
-                    console.error("Failed to fetch jobs:", err);
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
+        let isMounted = true;
+
+        if (!token) {
+            setJobs([]);
+            setIsLoading(false);
+            return () => {
+                isMounted = false;
+            };
         }
+
+        const load = async (showSpinner = true) => {
+            if (!isMounted) return;
+            if (showSpinner) {
+                setIsLoading(true);
+            }
+            try {
+                const data = await api.get("/jobs/", token);
+                if (!isMounted) return;
+                if (Array.isArray(data)) {
+                    setJobs(data as JobSidebarItem[]);
+                } else {
+                    setJobs([]);
+                }
+                setLoadError(null);
+            } catch (err) {
+                console.error("Failed to fetch jobs:", err);
+                if (isMounted) {
+                    setLoadError("We couldn’t load your experiment history.");
+                }
+            } finally {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        load();
+
+        const interval = setInterval(() => load(false), 10000);
+
+        return () => {
+            isMounted = false;
+            clearInterval(interval);
+        };
     }, [token]);
 
     return (
@@ -76,17 +107,27 @@ export default function Sidebar() {
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             </div>
                         )}
-                        {!isLoading && jobs.length === 0 && (
+                        {!isLoading && !loadError && jobs.length === 0 && (
                             <p className="text-xs text-muted-foreground p-2">
                                 No experiments run yet.
                             </p>
                         )}
+                        {loadError && (
+                            <p className="text-xs text-destructive p-2">
+                                {loadError}
+                            </p>
+                        )}
                         {jobs.map((job) => {
-                            const isActive = pathname === `/app/experiment/${job._id}`;
+                            const jobId = job._id ?? job.id;
+                            if (!jobId) {
+                                return null;
+                            }
+                            const isActive = pathname === `/app/experiment/${jobId}`;
+                            const topic = job.request?.topic ?? "Untitled experiment";
                             return (
                                 <Link
-                                    key={job._id}
-                                    href={`/app/experiment/${job._id}`}
+                                    key={jobId}
+                                    href={`/app/experiment/${jobId}`}
                                     className={cn(
                                         "block p-2 rounded-md",
                                         isActive
@@ -96,9 +137,9 @@ export default function Sidebar() {
                                 >
                                     <p
                                         className="text-sm font-medium truncate"
-                                        title={job.request.topic}
+                                        title={topic}
                                     >
-                                        {job.request.topic}
+                                        {topic}
                                     </p>
                                     <p
                                         className={cn(
@@ -108,7 +149,9 @@ export default function Sidebar() {
                                                 : "text-muted-foreground"
                                         )}
                                     >
-                                        {formatDate(job.created_at)} - {job.status}
+                                        {job.created_at
+                                            ? `${formatDate(job.created_at)} - ${job.status}`
+                                            : job.status}
                                     </p>
                                 </Link>
                             );

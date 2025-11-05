@@ -237,26 +237,6 @@
             "abstract": "Aspect level sentiment classification is a fine-grained sentiment analysis\ntask. To detect the sentiment towards a particular aspect in a sentence,\nprevious studies have developed various attention-based methods for generating\naspect-specific sentence representations. However, the attention may inherently\nintroduce noise and downgrade the performance. In this paper, we propose\nconstrained attention networks (CAN), a simple yet effective solution, to\nregularize the attention for multi-aspect sentiment analysis, which alleviates\nthe drawback of the attention mechanism. Specifically, we introduce orthogonal\nregularization on multiple aspects and sparse regularization on each single\naspect. Experimental results on two public datasets demonstrate the\neffectiveness of our approach. We further extend our approach to multi-task\nsettings and outperform the state-of-the-art methods.",
             "tldr": null,
             "score": 0
-        },
-        {
-            "id": "2501.08085v1",
-            "paperId": "2501.08085v1",
-            "title": "Dynamic Multimodal Sentiment Analysis: Leveraging Cross-Modal Attention\n  for Enabled Classification",
-            "year": "2025",
-            "citationCount": 0,
-            "abstract": "This paper explores the development of a multimodal sentiment analysis model\nthat integrates text, audio, and visual data to enhance sentiment\nclassification. The goal is to improve emotion detection by capturing the\ncomplex interactions between these modalities, thereby enabling more accurate\nand nuanced sentiment interpretation. The study evaluates three feature fusion\nstrategies -- late stage fusion, early stage fusion, and multi-headed attention\n-- within a transformer-based architecture. Experiments were conducted using\nthe CMU-MOSEI dataset, which includes synchronized text, audio, and visual\ninputs labeled with sentiment scores. Results show that early stage fusion\nsignificantly outperforms late stage fusion, achieving an accuracy of 71.87\\%,\nwhile the multi-headed attention approach offers marginal improvement, reaching\n72.39\\%. The findings suggest that integrating modalities early in the process\nenhances sentiment classification, while attention mechanisms may have limited\nimpact within the current framework. Future work will focus on refining feature\nfusion techniques, incorporating temporal data, and exploring dynamic feature\nweighting to further improve model performance.",
-            "tldr": null,
-            "score": 0
-        },
-        {
-            "id": "2507.12695v1",
-            "paperId": "2507.12695v1",
-            "title": "AdaptiSent: Context-Aware Adaptive Attention for Multimodal Aspect-Based\n  Sentiment Analysis",
-            "year": "2025",
-            "citationCount": 0,
-            "abstract": "We introduce AdaptiSent, a new framework for Multimodal Aspect-Based\nSentiment Analysis (MABSA) that uses adaptive cross-modal attention mechanisms\nto improve sentiment classification and aspect term extraction from both text\nand images. Our model integrates dynamic modality weighting and\ncontext-adaptive attention, enhancing the extraction of sentiment and\naspect-related information by focusing on how textual cues and visual context\ninteract. We tested our approach against several baselines, including\ntraditional text-based models and other multimodal methods. Results from\nstandard Twitter datasets show that AdaptiSent surpasses existing models in\nprecision, recall, and F1 score, and is particularly effective in identifying\nnuanced inter-modal relationships that are crucial for accurate sentiment and\naspect term extraction. This effectiveness comes from the model's ability to\nadjust its focus dynamically based on the context's relevance, improving the\ndepth and accuracy of sentiment analysis across various multimodal data sets.\nAdaptiSent sets a new standard for MABSA, significantly outperforming current\nmethods, especially in understanding complex multimodal information.",
-            "tldr": null,
-            "score": 0
         }
     ]
 }

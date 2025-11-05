@@ -62,8 +62,8 @@ export interface ResearchRequest {
     rag: boolean;
     check_similarity: boolean;
     skip_novelty_check: boolean;
-    round: number;
-    save_name: string;
+    round?: number;
+    save_name?: string;
 }
 
 export interface Job {
@@ -77,4 +77,14 @@ export interface Job {
     experiment_results: ExperimentResult[];
     log: string | null;
     error_log: string | null;
+}
+
+export interface JobSidebarItem {
+    _id?: string;
+    id?: string;
+    created_at: string;
+    status: string;
+    request?: {
+        topic?: string;
+    };
 }
