@@ -24,6 +24,7 @@ class ArtifactFolder(BaseModel):
     idea_title: Optional[str] = None
     folder_name: str
     folder_path: str
+    is_root: bool = False
 
 
 class ArtifactNode(BaseModel):
@@ -107,6 +108,20 @@ def _resolve_folder_path(job_doc: dict, job_id: str, folder_identifier: str) -> 
     for candidate in candidate_paths:
         if candidate.exists() and candidate.is_dir():
             return candidate
+
+    return None
+
+
+def _path_to_identifier(path: Path, results_dir: Path, sample_dir: Path) -> Optional[str]:
+    try:
+        return path.resolve().relative_to(results_dir.resolve()).as_posix()
+    except ValueError:
+        pass
+
+    try:
+        return path.resolve().relative_to(sample_dir.resolve()).as_posix()
+    except ValueError:
+        pass
 
     return None
 
@@ -251,8 +266,40 @@ async def list_job_artifacts(
     job_id_str = str(job_id)
     experiment_results = job_doc.get("experiment_results", []) or []
 
+    results_dir = Path(settings.RESULTS_DIR)
+    sample_dir = Path(settings.RESULTS_SAMPLE_DIR)
+
     seen_folders = set()
     folders: List[ArtifactFolder] = []
+
+    request_section = job_doc.get("request", {})
+    save_name = request_section.get("save_name") if isinstance(request_section, dict) else getattr(request_section, "save_name", None)
+
+    root_candidates: List[Path] = []
+    if save_name:
+        root_candidates.append(results_dir / save_name)
+        root_candidates.append(sample_dir / save_name)
+
+    root_candidates.append(results_dir / f"api_job_{job_id_str}")
+    root_candidates.append(sample_dir / f"api_job_{job_id_str}")
+
+    for candidate in root_candidates:
+        if not candidate.exists() or not candidate.is_dir():
+            continue
+
+        identifier = _path_to_identifier(candidate, results_dir, sample_dir)
+        if not identifier or identifier in seen_folders:
+            continue
+
+        seen_folders.add(identifier)
+        folders.append(
+            ArtifactFolder(
+                folder_name="All artifacts",
+                folder_path=identifier,
+                is_root=True
+            )
+        )
+        break
 
     for result in experiment_results:
         print("experiment results:", experiment_results)

@@ -79,3 +79,16 @@ def test_safe_resolve_prevents_escape(temp_results_dirs):
 
     with pytest.raises(jobs.HTTPException):
         jobs._safe_resolve_path(base, base.parent.parent / "evil.txt")
+
+
+def test_resolve_job_root_directory(temp_results_dirs):
+    results_dir, _ = temp_results_dirs
+    job_id = "job999"
+    job_root = results_dir / f"api_job_{job_id}"
+    (job_root / "idea_folder").mkdir(parents=True)
+
+    job_doc = {"request": {}, "experiment_results": []}
+
+    resolved = jobs._resolve_folder_path(job_doc, job_id, f"api_job_{job_id}")
+
+    assert resolved == job_root.resolve()

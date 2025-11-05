@@ -22,13 +22,6 @@ import { PaperCard } from "@/components/PaperCard";
 import { JobProgressBar } from "@/components/JobProgressBar";
 import { GroupedExperimentCard } from "@/components/GroupedExperimentCard";
 import { Button } from "@/components/ui/button";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { Loader, AlertTriangle, Code2 } from "lucide-react";
 import { api } from "@/lib/api"; // Import api
 import { useAuth } from "@/hooks/useAuth"; // Import useAuth
@@ -195,14 +188,6 @@ export default function ExperimentPage() {
         [loadFileContent, selectedFilePath, selectedFolderPath],
     );
 
-    const handleFolderChange = useCallback((folderPath: string) => {
-        setSelectedFolderPath(folderPath);
-        setArtifactTree(null);
-        setTreeExpandedPaths(new Set());
-        setSelectedFilePath(null);
-        setFileContent("// Select a file to preview");
-    }, []);
-
     useEffect(() => {
         if (!selectedFolderPath) {
             setActiveIdeaLabel(null);
@@ -211,7 +196,11 @@ export default function ExperimentPage() {
 
         const matchingFolder = artifactFolders.find((folder) => folder.folder_path === selectedFolderPath);
         if (matchingFolder) {
-            setActiveIdeaLabel(matchingFolder.idea_title || matchingFolder.idea_name || matchingFolder.folder_name);
+            if (matchingFolder.is_root) {
+                setActiveIdeaLabel("All artifacts");
+            } else {
+                setActiveIdeaLabel(matchingFolder.idea_title || matchingFolder.idea_name || matchingFolder.folder_name);
+            }
         } else {
             setActiveIdeaLabel(selectedFolderPath);
         }
@@ -231,6 +220,10 @@ export default function ExperimentPage() {
                 setSelectedFolderPath((prev) => {
                     if (prev && folders.some((folder) => folder.folder_path === prev)) {
                         return prev;
+                    }
+                    const rootFolder = folders.find((folder) => folder.is_root);
+                    if (rootFolder) {
+                        return rootFolder.folder_path;
                     }
                     return folders.length > 0 ? folders[0].folder_path : null;
                 });
@@ -563,25 +556,7 @@ export default function ExperimentPage() {
                                     {activeIdeaLabel ? `Reviewing: ${activeIdeaLabel}` : "Select an experiment to inspect its generated code."}
                                 </p>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <Select
-                                    value={selectedFolderPath ?? undefined}
-                                    onValueChange={handleFolderChange}
-                                    disabled={artifactFolders.length <= 1}
-                                >
-                                    <SelectTrigger className="w-56">
-                                        <SelectValue placeholder="Choose experiment run" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {artifactFolders.map((folder) => (
-                                            <SelectItem key={folder.folder_path} value={folder.folder_path}>
-                                                {folder.idea_title || folder.idea_name || folder.folder_name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <Button variant="outline" onClick={() => setViewMode("overview")}>Return to Summary</Button>
-                            </div>
+                            <Button variant="outline" onClick={() => setViewMode("overview")}>Return to Summary</Button>
                         </div>
 
                         <div className="flex-1 overflow-hidden rounded-xl border border-border/60 bg-background shadow-inner">

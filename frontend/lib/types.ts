@@ -96,6 +96,7 @@ export interface ArtifactFolder {
     idea_title?: string;
     folder_name: string;
     folder_path: string;
+    is_root?: boolean;
 }
 
 export interface ArtifactNode {
