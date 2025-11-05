@@ -1,5 +1,9 @@
 # Location: backend/server/api/routers/jobs.py
+import io
+import zipfile
+
 from fastapi import APIRouter, Depends, BackgroundTasks, HTTPException, status, Query
+from fastapi.responses import StreamingResponse
 from pydantic_mongo import PydanticObjectId
 from typing import List, Optional, Literal
 from pathlib import Path
@@ -412,3 +416,49 @@ async def get_artifact_file(
 
     rel_path = target.relative_to(base_path).as_posix()
     return ArtifactFile(path=rel_path, content=content)
+
+
+@router.get(
+    "/{job_id}/artifacts/download"
+)
+async def download_artifact_folder(
+        job_id: PydanticObjectId,
+        folder: str = Query(..., description="Folder identifier to download"),
+        current_user: User = Depends(get_current_user),
+):
+    job_doc = await jobs_collection.find_one(
+        {"_id": job_id, "user_id": current_user.id}
+    )
+
+    if not job_doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job {job_id} not found or you do not have permission to view it."
+        )
+
+    job_id_str = str(job_id)
+    base_path = _resolve_folder_path(job_doc, job_id_str, folder)
+    if not base_path:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Artifacts for folder '{folder}' could not be located."
+        )
+
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+        for file_path in base_path.rglob("*"):
+            arcname = file_path.relative_to(base_path).as_posix()
+            if not arcname:
+                continue
+            if file_path.is_dir():
+                zip_file.writestr(f"{arcname.rstrip('/')}/", "")
+            else:
+                zip_file.write(file_path, arcname)
+
+    buffer.seek(0)
+    filename = f"{base_path.name}.zip"
+    headers = {
+        "Content-Disposition": f"attachment; filename=\"{filename}\""
+    }
+
+    return StreamingResponse(buffer, media_type="application/zip", headers=headers)

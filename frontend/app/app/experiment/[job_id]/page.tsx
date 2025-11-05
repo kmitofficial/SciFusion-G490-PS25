@@ -22,7 +22,7 @@ import { PaperCard } from "@/components/PaperCard";
 import { JobProgressBar } from "@/components/JobProgressBar";
 import { GroupedExperimentCard } from "@/components/GroupedExperimentCard";
 import { Button } from "@/components/ui/button";
-import { Loader, AlertTriangle, Code2 } from "lucide-react";
+import { Loader, AlertTriangle, Code2, Download, ClipboardCopy } from "lucide-react";
 import { api } from "@/lib/api"; // Import api
 import { useAuth } from "@/hooks/useAuth"; // Import useAuth
 import { FileTree } from "@/components/FileTree";
@@ -134,6 +134,7 @@ export default function ExperimentPage() {
     const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
     const [fileContent, setFileContent] = useState<string>("// Select a file to preview");
     const [fileLoading, setFileLoading] = useState(false);
+    const [downloadLoading, setDownloadLoading] = useState(false);
 
     const loadFileContent = useCallback(
         (folderPath: string, filePathValue: string) => {
@@ -459,6 +460,66 @@ export default function ExperimentPage() {
 
     const previewDisabled = useMemo(() => jobStatus !== "complete", [jobStatus]);
 
+    const handleDownloadFolder = useCallback(async () => {
+        if (!selectedFolderPath || !token || !jobId) {
+            toast({
+                title: "Download unavailable",
+                description: "Select a folder to download and ensure you are signed in.",
+                variant: "destructive",
+            });
+            return;
+        }
+
+        try {
+            setDownloadLoading(true);
+            const blob = await api.download(`/jobs/${jobId}/artifacts/download?folder=${encodeURIComponent(selectedFolderPath)}`, token);
+            const objectUrl = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            const folderSegments = selectedFolderPath.split("/").filter(Boolean);
+            const lastSegment = folderSegments[folderSegments.length - 1] || "artifacts";
+            link.href = objectUrl;
+            link.download = `${lastSegment}.zip`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(objectUrl);
+        } catch (err: any) {
+            console.error("Failed to download artifacts:", err);
+            toast({
+                title: "Download failed",
+                description: err?.message || "Unable to download artifacts.",
+                variant: "destructive",
+            });
+        } finally {
+            setDownloadLoading(false);
+        }
+    }, [jobId, selectedFolderPath, token, toast]);
+
+    const handleCopyFile = useCallback(async () => {
+        if (!selectedFilePath || !fileContent || fileContent.startsWith("// Select a file")) {
+            toast({
+                title: "No file selected",
+                description: "Choose a file in the tree before copying.",
+            });
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(fileContent);
+            toast({
+                title: "Copied",
+                description: `${selectedFilePath} copied to clipboard.`,
+            });
+        } catch (err) {
+            console.error("Clipboard copy failed:", err);
+            toast({
+                title: "Copy failed",
+                description: "Your browser blocked clipboard access.",
+                variant: "destructive",
+            });
+        }
+    }, [fileContent, selectedFilePath, toast]);
+
     // --- Render Logic ---
     if (pageLoading) {
         return (
@@ -556,7 +617,31 @@ export default function ExperimentPage() {
                                     {activeIdeaLabel ? `Reviewing: ${activeIdeaLabel}` : "Select an experiment to inspect its generated code."}
                                 </p>
                             </div>
-                            <Button variant="outline" onClick={() => setViewMode("overview")}>Return to Summary</Button>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={handleDownloadFolder}
+                                    disabled={!selectedFolderPath || downloadLoading}
+                                    aria-label="Download folder"
+                                >
+                                    {downloadLoading ? (
+                                        <Loader className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <Download className="h-4 w-4" />
+                                    )}
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={handleCopyFile}
+                                    disabled={!selectedFilePath || fileLoading}
+                                    aria-label="Copy file contents"
+                                >
+                                    <ClipboardCopy className="h-4 w-4" />
+                                </Button>
+                                <Button variant="outline" onClick={() => setViewMode("overview")}>Return to Summary</Button>
+                            </div>
                         </div>
 
                         <div className="flex-1 overflow-hidden rounded-xl border border-border/60 bg-background shadow-inner">

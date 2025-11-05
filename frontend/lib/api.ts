@@ -71,4 +71,31 @@ export const api = {
             throw new ApiError("A network error occurred.", 500, null);
         }
     },
+
+    async download(endpoint: string, token?: string) {
+        const headers = new Headers();
+        if (token) {
+            headers.set("Authorization", `Bearer ${token}`);
+        }
+
+        const url = `${getApiUrl()}${endpoint}`;
+
+        try {
+            const response = await fetch(url, { headers });
+
+            if (!response.ok) {
+                const errorText = await response.text().catch(() => "");
+                const errorMessage = errorText || `HTTP error! status: ${response.status}`;
+                throw new ApiError(errorMessage, response.status, errorText);
+            }
+
+            return await response.blob();
+        } catch (error) {
+            console.error("API download failed:", error);
+            if (error instanceof ApiError) {
+                throw error;
+            }
+            throw new ApiError("A network error occurred.", 500, null);
+        }
+    },
 };

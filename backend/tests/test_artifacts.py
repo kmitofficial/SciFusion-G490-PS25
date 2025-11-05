@@ -92,3 +92,14 @@ def test_resolve_job_root_directory(temp_results_dirs):
     resolved = jobs._resolve_folder_path(job_doc, job_id, f"api_job_{job_id}")
 
     assert resolved == job_root.resolve()
+
+
+def test_path_to_identifier_prefers_results_dir(temp_results_dirs):
+    results_dir, sample_dir = temp_results_dirs
+    job_id = "job777"
+    folder = results_dir / f"api_job_{job_id}" / "run_0"
+    folder.mkdir(parents=True)
+
+    identifier = jobs._path_to_identifier(folder, results_dir, sample_dir)
+
+    assert identifier == f"api_job_{job_id}/run_0"
