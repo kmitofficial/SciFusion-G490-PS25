@@ -332,9 +332,7 @@ export default function DashboardPage() {
                         Novelty Check
                     </FormLabel>
                     <FormDescription className="text-xs text-indigo-300/60">
-                        {isChecked
-                            ? "Novelty check will be done."
-                            : "Novelty check will be disabled."}
+                        Novelty check will be done.
                     </FormDescription>
                 </div>
                 <FormControl>
