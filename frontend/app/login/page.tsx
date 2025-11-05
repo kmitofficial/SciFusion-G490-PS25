@@ -86,7 +86,7 @@ export default function LoginPage() {
                                 </p>
                             )}
 
-                            <div className="grid gap-2">
+                            <div className="grid gap-2 mt-3">
                                 <Label htmlFor="username">Username</Label>
                                 <Input
                                     id="username"
@@ -105,6 +105,7 @@ export default function LoginPage() {
                                 <Input
                                     id="password"
                                     type="password"
+                                    placeholder="Enter your password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -114,9 +115,9 @@ export default function LoginPage() {
                             </div>
                         </CardContent>
 
-                        <CardFooter className="flex flex-col gap-4">
+                        <CardFooter className="flex flex-col gap-4 mt-5">
                             <Button
-                                className="w-full font-medium bg-gradient-to-r from-sky-500 to-indigo-500 text-white shadow-lg shadow-sky-500/30 border-0"
+                                className="w-full font-medium bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/30 border-0  transition-all"
                                 type="submit"
                                 disabled={isLoading}
                             >

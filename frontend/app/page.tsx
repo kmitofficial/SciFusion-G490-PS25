@@ -84,8 +84,8 @@ export default function IntroPage() {
                             Capabilities
                         </Link>
                     </div>
-                    <Button asChild size="sm" className="bg-white text-slate-900 hover:bg-white/90">
-                        <Link href="/signup">Join the beta</Link>
+                    <Button asChild size="lg" className="bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/30 text-white">
+                        <Link href="/login">Sign In</Link>
                     </Button>
                 </header>
 
@@ -109,8 +109,8 @@ export default function IntroPage() {
                             </p>
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                                 <Button asChild size="lg" className="bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500 shadow-lg shadow-indigo-500/30">
-                                    <Link href="/login" className="flex items-center gap-2">
-                                        Launch the app
+                                    <Link href="/signup" className="flex items-center gap-2">
+                                        Get Started
                                         <ArrowRight className="h-5 w-5" />
                                     </Link>
                                 </Button>

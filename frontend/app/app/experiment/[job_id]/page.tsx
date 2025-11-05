@@ -523,54 +523,89 @@ export default function ExperimentPage() {
     // --- Render Logic ---
     if (pageLoading) {
         return (
-            <div className="flex h-full items-center justify-center p-12">
-                <Loader className="h-8 w-8 animate-spin mr-2" />
-                <span className="text-lg text-muted-foreground">Loading Experiment...</span>
+            <div className="relative flex h-full w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white items-center justify-center p-12 overflow-hidden shadow-2xl">
+                {/* Animated background gradient orbs */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-500/10 to-purple-600/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+
+                <div className="relative z-10 flex flex-col items-center justify-center gap-4">
+                    <div className="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 w-20 h-20 rounded-2xl flex items-center justify-center border border-indigo-400/30 shadow-lg">
+                        <Loader className="h-10 w-10 text-indigo-300 animate-spin" />
+                    </div>
+                    <p className="text-lg text-white/70 font-semibold">Loading Experiment...</p>
+                    <div className="flex gap-1.5 mt-2">
+                        <div className="w-2 h-2 bg-indigo-400/50 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-purple-400/50 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-pink-400/50 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                </div>
             </div>
         );
     }
 
     if (pageError) {
         return (
-            <div className="flex h-full flex-col gap-4 items-center justify-center p-12 text-destructive">
-                <AlertTriangle className="h-12 w-12" />
-                <h2 className="text-2xl font-bold">Error Loading Job</h2>
-                <p>{pageError}</p>
+            <div className="relative flex h-full w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white flex-col items-center justify-center p-12 overflow-hidden shadow-2xl gap-4">
+                {/* Animated background gradient orbs */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-500/10 to-purple-600/10 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-0 left-0 w-40 h-40 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+
+                <div className="relative z-10 flex flex-col items-center justify-center gap-4 text-red-400">
+                    <div className="bg-gradient-to-br from-red-500/20 to-pink-500/20 w-20 h-20 rounded-2xl flex items-center justify-center border border-red-400/30 shadow-lg">
+                        <AlertTriangle className="h-10 w-10" />
+                    </div>
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-red-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">Error Loading Job</h2>
+                    <p className="text-sm text-red-300/70">{pageError}</p>
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="flex h-full">
-            <div className={`flex-1 p-6 ${viewMode === "preview" ? "overflow-hidden" : "overflow-y-auto"}`}>
-                <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="relative flex h-full w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white overflow-hidden shadow-2xl">
+            {/* Animated background gradient orbs */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-indigo-500/20 to-purple-600/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute top-32 left-0 w-32 h-32 bg-gradient-to-br from-cyan-500/15 to-blue-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <div className="absolute bottom-32 right-0 w-36 h-36 bg-gradient-to-br from-purple-500/15 to-pink-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+            <div className="absolute bottom-0 left-0 w-44 h-44 bg-gradient-to-br from-violet-500/20 to-fuchsia-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+
+            {/* Subtle gradient overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-indigo-950/10" />
+
+            <div className={`relative z-10 flex-1 p-6 ${viewMode === "preview" ? "overflow-hidden" : "overflow-y-auto"}`}>
+                <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                     <div>
-                        <h1 className="mb-2 text-3xl font-bold">Experiment</h1>
-                        <p className="text-muted-foreground">
+                        <h1 className="mb-2 text-3xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Experiment</h1>
+                        <p className="text-xs text-indigo-300/60 font-medium tracking-wide">
                             Job ID: <span className="font-mono">{jobId}</span>
                         </p>
                     </div>
                     <div className="flex items-center gap-3">
                         {shouldConnect && !isConnected && (
-                            <span className="flex items-center gap-2 text-muted-foreground">
-                                <Loader className="h-4 w-4 animate-spin" />
+                            <span className="flex items-center gap-2 text-indigo-300/70 text-xs font-medium">
+                                <Loader className="h-4 w-4 animate-spin text-indigo-400" />
                                 Connecting...
                             </span>
                         )}
                         {shouldConnect && isConnected && (
-                            <span className="flex items-center gap-2 text-emerald-400">
-                                <div className="h-3 w-3 rounded-full bg-emerald-400 animate-pulse" />
+                            <span className="flex items-center gap-2 text-green-400 text-xs font-medium">
+                                <div className="h-3 w-3 rounded-full bg-green-400 animate-pulse" />
                                 Live
                             </span>
                         )}
                         {jobStatus === "complete" && (
-                            <span className="rounded-md bg-secondary px-3 py-2 font-medium">
+                            <span className="text-xs bg-gradient-to-r from-indigo-500/30 to-purple-500/30 text-indigo-200 px-2.5 py-1 rounded-full font-semibold border border-indigo-400/30">
                                 Status: Complete
                             </span>
                         )}
                         {jobStatus === "complete" && (
                             <Button
-                                variant={viewMode === "preview" ? "default" : "outline"}
+                                variant="ghost"
+                                className={
+                                    viewMode === "preview"
+                                        ? "bg-gradient-to-r from-indigo-500/90 to-purple-600/90 text-white shadow-lg shadow-indigo-500/50 hover:shadow-indigo-500/60 hover:from-indigo-500 hover:to-purple-600 scale-[1.02] border-indigo-400/50"
+                                        : "bg-white/5 text-white/90 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:to-purple-500/20 hover:text-white hover:scale-[1.02] border-white/10 hover:border-indigo-400/40"
+                                }
                                 disabled={previewDisabled && viewMode !== "preview"}
                                 onClick={() => setViewMode(viewMode === "preview" ? "overview" : "preview")}
                             >
@@ -581,7 +616,7 @@ export default function ExperimentPage() {
                 </div>
 
                 {viewMode === "overview" ? (
-                    <div className="mx-auto flex max-w-4xl flex-col gap-6 pb-24">
+                    <div className="mx-auto flex max-w-4xl flex-col gap-6 pb-24 relative z-10">
                         <JobProgressBar completed={ideasProcessed} total={totalExperiments} />
 
                         <div className="flex flex-col gap-4">
@@ -596,7 +631,7 @@ export default function ExperimentPage() {
 
                         {papers && (
                             <div className="flex flex-col gap-4">
-                                <h2 className="text-2xl font-semibold">
+                                <h2 className="text-2xl font-semibold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                                     Found {papers.paper_bank.length} Relevant Papers
                                 </h2>
                                 {papers.paper_bank.map((paper) => (
@@ -606,14 +641,14 @@ export default function ExperimentPage() {
                         )}
                     </div>
                 ) : (
-                    <div className="flex h-full flex-col gap-4">
-                        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/60 px-4 py-3 shadow-sm backdrop-blur">
+                    <div className="flex h-full flex-col gap-4 relative z-10">
+                        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-indigo-500/20 bg-gradient-to-r from-gray-900/80 to-gray-900/60 backdrop-blur-sm px-4 py-3 shadow-sm">
                             <div>
-                                <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary">
+                                <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
                                     <Code2 className="h-4 w-4" />
                                     Code Preview Mode
                                 </div>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm text-indigo-300/60">
                                     {activeIdeaLabel ? `Reviewing: ${activeIdeaLabel}` : "Select an experiment to inspect its generated code."}
                                 </p>
                             </div>
@@ -621,6 +656,7 @@ export default function ExperimentPage() {
                                 <Button
                                     variant="ghost"
                                     size="icon"
+                                    className="bg-white/5 text-white/90 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:to-purple-500/20 hover:text-white hover:scale-[1.02] border-white/10 hover:border-indigo-400/40"
                                     onClick={handleDownloadFolder}
                                     disabled={!selectedFolderPath || downloadLoading}
                                     aria-label="Download folder"
@@ -634,38 +670,45 @@ export default function ExperimentPage() {
                                 <Button
                                     variant="ghost"
                                     size="icon"
+                                    className="bg-white/5 text-white/90 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:to-purple-500/20 hover:text-white hover:scale-[1.02] border-white/10 hover:border-indigo-400/40"
                                     onClick={handleCopyFile}
                                     disabled={!selectedFilePath || fileLoading}
                                     aria-label="Copy file contents"
                                 >
                                     <ClipboardCopy className="h-4 w-4" />
                                 </Button>
-                                <Button variant="outline" onClick={() => setViewMode("overview")}>Return to Summary</Button>
+                                <Button
+                                    variant="ghost"
+                                    className="bg-white/5 text-white/90 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:to-purple-500/20 hover:text-white hover:scale-[1.02] border-white/10 hover:border-indigo-400/40"
+                                    onClick={() => setViewMode("overview")}
+                                >
+                                    Return to Summary
+                                </Button>
                             </div>
                         </div>
 
-                        <div className="flex-1 overflow-hidden rounded-xl border border-border/60 bg-background shadow-inner">
+                        <div className="flex-1 overflow-hidden rounded-xl border border-indigo-500/20 bg-gradient-to-br from-gray-900/80 to-gray-900/60 backdrop-blur-sm shadow-inner">
                             {artifactLoading && !artifactTree ? (
-                                <div className="flex h-full items-center justify-center gap-2 text-muted-foreground">
-                                    <Loader className="h-5 w-5 animate-spin" /> Preparing artifacts...
+                                <div className="flex h-full items-center justify-center gap-2 text-indigo-300/70">
+                                    <Loader className="h-5 w-5 animate-spin text-indigo-400" /> Preparing artifacts...
                                 </div>
                             ) : artifactFolders.length === 0 ? (
-                                <div className="flex h-full items-center justify-center text-center text-sm text-muted-foreground">
+                                <div className="flex h-full items-center justify-center text-center text-sm text-indigo-300/60">
                                     No completed experiment artifacts are available yet.
                                 </div>
                             ) : artifactError ? (
-                                <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-sm text-destructive">
+                                <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-sm text-red-400">
                                     <AlertTriangle className="h-6 w-6" />
                                     {artifactError}
                                 </div>
                             ) : treeLoading && !artifactTree ? (
-                                <div className="flex h-full items-center justify-center gap-2 text-muted-foreground">
-                                    <Loader className="h-5 w-5 animate-spin" /> Loading file tree...
+                                <div className="flex h-full items-center justify-center gap-2 text-indigo-300/70">
+                                    <Loader className="h-5 w-5 animate-spin text-indigo-400" /> Loading file tree...
                                 </div>
                             ) : artifactTree ? (
                                 <PanelGroup direction="horizontal" className="h-full">
-                                    <Panel defaultSize={24} minSize={16} className="flex flex-col border-r border-border/60 bg-muted/20">
-                                        <div className="border-b border-border/60 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                                    <Panel defaultSize={24} minSize={16} className="flex flex-col border-r border-indigo-500/30 bg-indigo-900/20 backdrop-blur-sm">
+                                        <div className="border-b border-indigo-500/30 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-indigo-300/80">
                                             Files
                                         </div>
                                         <div className="flex-1 overflow-auto p-2">
@@ -678,15 +721,15 @@ export default function ExperimentPage() {
                                             />
                                         </div>
                                     </Panel>
-                                    <PanelResizeHandle className="w-[1px] bg-border transition hover:bg-primary/70" />
+                                    <PanelResizeHandle className="w-[1px] bg-indigo-500/30 transition hover:bg-indigo-400/70" />
                                     <Panel defaultSize={76} minSize={30} className="flex flex-col bg-[#0b1120]">
-                                        <div className="border-b border-border/30 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-300">
+                                        <div className="border-b border-indigo-500/30 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-indigo-300/80">
                                             {selectedFilePath || "Select a file"}
                                         </div>
                                         <div className="flex-1 overflow-hidden">
                                             {fileLoading ? (
-                                                <div className="flex h-full items-center justify-center gap-2 text-slate-300/80">
-                                                    <Loader className="h-5 w-5 animate-spin" /> Rendering source...
+                                                <div className="flex h-full items-center justify-center gap-2 text-indigo-300/80">
+                                                    <Loader className="h-5 w-5 animate-spin text-indigo-400" /> Rendering source...
                                                 </div>
                                             ) : (
                                                 <MonacoEditor
@@ -709,7 +752,7 @@ export default function ExperimentPage() {
                                     </Panel>
                                 </PanelGroup>
                             ) : (
-                                <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                                <div className="flex h-full items-center justify-center text-sm text-indigo-300/60">
                                     Select an experiment to explore its generated files.
                                 </div>
                             )}
@@ -718,7 +761,7 @@ export default function ExperimentPage() {
                 )}
             </div>
             {viewMode === "overview" && (
-                <aside className="h-full w-96 border-l">
+                <aside className="relative h-full w-96 border-l border-indigo-500/20 overflow-hidden shadow-2xl">
                     <LogFeed logs={logFeed} />
                 </aside>
             )}

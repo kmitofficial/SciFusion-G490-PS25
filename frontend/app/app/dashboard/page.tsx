@@ -34,6 +34,8 @@ import {
     EXPERIMENT_OPTIONS,
     MODEL_OPTIONS,
 } from "@/lib/constants";
+import { Sparkles, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Define the form schema using Zod, based on ResearchRequest
 const formSchema = z.object({
@@ -107,219 +109,275 @@ export default function DashboardPage() {
     }
 
     return (
-        <div className="max-w-3xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6">Start a New Experiment</h1>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    {/* Topic */}
-                    <FormField
-                        control={form.control}
-                        name="topic"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Research Topic</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        placeholder="e.g., Using transformers for time series forecasting"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormDescription>
-                                    The main research area or question.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+        <div className="relative min-h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white flex items-center justify-center p-6 overflow-hidden">
+            {/* Animated background gradient orbs */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-indigo-500/20 to-purple-600/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute top-32 left-0 w-32 h-32 bg-gradient-to-br from-cyan-500/15 to-blue-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <div className="absolute bottom-32 right-0 w-36 h-36 bg-gradient-to-br from-purple-500/15 to-pink-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+            <div className="absolute bottom-0 left-0 w-44 h-44 bg-gradient-to-br from-violet-500/20 to-fuchsia-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
+            
+            {/* Subtle gradient overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-indigo-950/10" />
 
-                    {/* Experiment Type */}
-                    <FormField
-                        control={form.control}
-                        name="experiment"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Experiment Type</FormLabel>
-                                <Select
-                                    onValueChange={field.onChange}
-                                    defaultValue={field.value}
-                                >
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select an experiment..." />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {EXPERIMENT_OPTIONS.map((opt) => (
-                                            <SelectItem key={opt.value} value={opt.value}>
-                                                {opt.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormDescription>
-                                    The baseline experiment to run against.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    {/* Models */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <FormField
-                            control={form.control}
-                            name="model"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Research Model</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a model..." />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {MODEL_OPTIONS.map((opt) => (
-                                                <SelectItem key={opt.value} value={opt.value}>
-                                                    {opt.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormDescription>Used for idea generation.</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="code_model"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Code Model</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a code model..." />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {CODE_MODEL_OPTIONS.map((opt) => (
-                                                <SelectItem key={opt.value} value={opt.value}>
-                                                    {opt.label}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormDescription>Used for code generation.</FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+            <div className="relative z-10 max-w-3xl w-full">
+                {/* Header */}
+                <div className="mb-8 text-center">
+                    <div className="flex items-center justify-center gap-3 mb-3">
+                        <div className="relative">
+                            <Sparkles className="h-7 w-7 text-indigo-400 animate-pulse" />
+                            <div className="absolute inset-0 h-7 w-7 text-indigo-400 blur-sm opacity-50">
+                                <Sparkles className="h-7 w-7" />
+                            </div>
+                        </div>
+                        <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                            Start a New Experiment
+                        </h1>
                     </div>
+                    <p className="text-sm text-indigo-300/60 font-medium tracking-wide">
+                        Configure your research parameters and launch AI-powered experiments
+                    </p>
+                </div>
 
-                    {/* Num Ideas */}
-                    <FormField
-                        control={form.control}
-                        name="num_ideas"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Number of Ideas (1-5)</FormLabel>
-                                <FormControl>
-                                    <div className="flex items-center gap-4">
-                                        <Slider
-                                            min={1}
-                                            max={5}
-                                            step={1}
-                                            value={[field.value]}
-                                            onValueChange={(vals) => field.onChange(vals[0])}
-                                            className="w-full"
-                                        />
-                                        <span className="p-2 w-12 text-center rounded-md bg-secondary">
-                      {field.value}
-                    </span>
-                                    </div>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                {/* Form Card */}
+                <div className="rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-900/80 backdrop-blur-sm p-8 shadow-2xl">
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            {/* Topic */}
+                            <FormField
+                                control={form.control}
+                                name="topic"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-indigo-300 font-semibold">Research Topic</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="e.g., Using transformers for time series forecasting"
+                                                {...field}
+                                                className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-indigo-400/50 transition-all"
+                                            />
+                                        </FormControl>
+                                        <FormDescription className="text-xs text-indigo-300/60">
+                                            The main research area or question.
+                                        </FormDescription>
+                                        <FormMessage className="text-red-400 text-xs" />
+                                    </FormItem>
+                                )}
+                            />
 
-                    {/* Checkboxes */}
-                    <div className="space-y-4">
-                        <FormField
-                            control={form.control}
-                            name="rag"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                                    <div className="space-y-0.5">
-                                        <FormLabel>Enable RAG</FormLabel>
-                                        <FormDescription>
-                                            Use Retrieval-Augmented Generation for better ideas.
+                            {/* Experiment Type */}
+                            <FormField
+                                control={form.control}
+                                name="experiment"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-indigo-300 font-semibold">Experiment Type</FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger className="bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-indigo-400/50">
+                                                    <SelectValue placeholder="Select an experiment..." />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent className="bg-gray-900 border-indigo-500/30 text-white">
+                                                {EXPERIMENT_OPTIONS.map((opt) => (
+                                                    <SelectItem key={opt.value} value={opt.value} className="hover:bg-indigo-500/20">
+                                                        {opt.label}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormDescription className="text-xs text-indigo-300/60">
+                                            The baseline experiment to run against.
                                         </FormDescription>
-                                    </div>
-                                    <FormControl>
-                                        <Checkbox
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="check_similarity"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                                    <div className="space-y-0.5">
-                                        <FormLabel>Check Similarity</FormLabel>
-                                        <FormDescription>
-                                            Ensure generated ideas are novel.
-                                        </FormDescription>
-                                    </div>
-                                    <FormControl>
-                                        <Checkbox
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="skip_novelty_check"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                                    <div className="space-y-0.5">
-                                        <FormLabel>Skip Novelty Check</FormLabel>
-                                        <FormDescription>
-                                            (Debug) Skip the novelty check phase.
-                                        </FormDescription>
-                                    </div>
-                                    <FormControl>
-                                        <Checkbox
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                    </div>
+                                        <FormMessage className="text-red-400 text-xs" />
+                                    </FormItem>
+                                )}
+                            />
 
-                    <Button type="submit" size="lg" disabled={isLoading}>
-                        {isLoading ? "Starting..." : "Start Experiment"}
-                    </Button>
-                </form>
-            </Form>
+                            {/* Models */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <FormField
+                                    control={form.control}
+                                    name="model"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-indigo-300 font-semibold">Research Model</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-indigo-400/50">
+                                                        <SelectValue placeholder="Select a model..." />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent className="bg-gray-900 border-indigo-500/30 text-white">
+                                                    {MODEL_OPTIONS.map((opt) => (
+                                                        <SelectItem key={opt.value} value={opt.value} className="hover:bg-indigo-500/20">
+                                                            {opt.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormDescription className="text-xs text-indigo-300/60">Used for idea generation.</FormDescription>
+                                            <FormMessage className="text-red-400 text-xs" />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="code_model"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-indigo-300 font-semibold">Code Model</FormLabel>
+                                            <Select
+                                                onValueChange={field.onChange}
+                                                defaultValue={field.value}
+                                            >
+                                                <FormControl>
+                                                    <SelectTrigger className="bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-indigo-400/50">
+                                                        <SelectValue placeholder="Select a code model..." />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent className="bg-gray-900 border-indigo-500/30 text-white">
+                                                    {CODE_MODEL_OPTIONS.map((opt) => (
+                                                        <SelectItem key={opt.value} value={opt.value} className="hover:bg-indigo-500/20">
+                                                            {opt.label}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <FormDescription className="text-xs text-indigo-300/60">Used for code generation.</FormDescription>
+                                            <FormMessage className="text-red-400 text-xs" />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            {/* Num Ideas */}
+                            <FormField
+                                control={form.control}
+                                name="num_ideas"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="text-indigo-300 font-semibold">Number of Ideas (1-5)</FormLabel>
+                                        <FormControl>
+                                            <div className="flex items-center gap-4">
+                                                <Slider
+                                                    min={1}
+                                                    max={5}
+                                                    step={1}
+                                                    value={[field.value]}
+                                                    onValueChange={(vals) => field.onChange(vals[0])}
+                                                    className="flex-1"
+                                                />
+                                                <span className="flex h-10 w-12 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-500/30 to-purple-500/30 text-indigo-200 font-bold border border-indigo-400/30 shadow-sm">
+                                                    {field.value}
+                                                </span>
+                                            </div>
+                                        </FormControl>
+                                        <FormMessage className="text-red-400 text-xs" />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* Checkboxes */}
+                            <div className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="rag"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-center justify-between rounded-xl border border-white/10 p-4 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-sm">
+                                            <div className="space-y-0.5">
+                                                <FormLabel className="text-white font-semibold">Enable RAG</FormLabel>
+                                                <FormDescription className="text-xs text-indigo-300/60">
+                                                    Use Retrieval-Augmented Generation for better ideas.
+                                                </FormDescription>
+                                            </div>
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500"
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="check_similarity"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-center justify-between rounded-xl border border-white/10 p-4 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-sm">
+                                            <div className="space-y-0.5">
+                                                <FormLabel className="text-white font-semibold">Check Similarity</FormLabel>
+                                                <FormDescription className="text-xs text-indigo-300/60">
+                                                    Ensure generated ideas are novel.
+                                                </FormDescription>
+                                            </div>
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500"
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="skip_novelty_check"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-center justify-between rounded-xl border border-white/10 p-4 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-sm">
+                                            <div className="space-y-0.5">
+                                                <FormLabel className="text-white font-semibold">Skip Novelty Check</FormLabel>
+                                                <FormDescription className="text-xs text-indigo-300/60">
+                                                    (Debug) Skip the novelty check phase.
+                                                </FormDescription>
+                                            </div>
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className="data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500"
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+
+                            {/* Submit Button */}
+                            <Button
+                                type="submit"
+                                size="lg"
+                                disabled={isLoading}
+                                className={cn(
+                                    "w-full h-12 text-lg font-bold transition-all duration-300",
+                                    isLoading
+                                        ? "bg-gradient-to-r from-indigo-500/50 to-purple-600/50 cursor-not-allowed"
+                                        : "bg-gradient-to-r from-indigo-500/90 to-purple-600/90 hover:from-indigo-500 hover:to-purple-600 shadow-lg shadow-indigo-500/50 hover:shadow-indigo-500/60 hover:scale-[1.02] border border-indigo-400/50"
+                                )}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                        Starting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Sparkles className="mr-2 h-5 w-5" />
+                                        Start Experiment
+                                    </>
+                                )}
+                            </Button>
+                        </form>
+                    </Form>
+                </div>
+            </div>
         </div>
     );
 }
