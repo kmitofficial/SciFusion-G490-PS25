@@ -10,17 +10,5 @@
         "Novelty": 6,
         "independence": true,
         "novel": false
-    },
-    {
-        "Name": "ordered_bert_tiny",
-        "Title": "Curriculum Learning for Efficient BERT Fine-tuning on Limited Data",
-        "Motivation": "Standard fine-tuning with random data shuffling might not be optimal for learning, especially with extremely limited data and training epochs. By ordering training samples from easiest to hardest, the model can build foundational understanding more effectively, leading to better performance within resource constraints.",
-        "Method": "This approach introduces a curriculum learning strategy to fine-tune BERT models. First, a 'warm-up' pass is performed using the model's initial pre-trained weights (before any fine-tuning on the target dataset) to estimate the uncertainty of each training sample. The entropy of the model's predicted probability for the positive class is used as the difficulty metric. Training data is then reordered based on these uncertainty scores, presenting lower-uncertainty (easier) samples before higher-uncertainty (harder) ones. The model is subsequently trained for a single epoch using this ordered data, aiming to improve convergence and accuracy.",
-        "Experiment": "1. Modify the `BertTrainer` class. Within the `train_and_evaluate` method, before the main training loop: a. Create a temporary DataLoader for the training data (`train_df`) with shuffle disabled and a minimal batch size (e.g., 1). b. Instantiate the `BertClassifier` model with its initial weights (as loaded by default). c. Perform a forward pass through this temporary DataLoader using the initial model to obtain prediction probabilities for the positive class. d. Calculate the entropy for each prediction. e. Store the original indices and their corresponding entropy scores. f. Sort the original `train_df` based on these entropy scores (ascending order). g. Create a new `DataPrecessForSentence` instance using this sorted DataFrame. h. The subsequent training loop will then use the DataLoader derived from this reordered dataset. 2. Ensure the rest of the training and evaluation logic (optimizer, scheduler, validation, testing) remains consistent with the original script for a fair comparison.",
-        "Summary": "Employing curriculum learning by ordering training data based on initial model uncertainty to enhance the efficiency and effectiveness of BERT fine-tuning on limited datasets.",
-        "Feasibility": 9,
-        "Novelty": 7,
-        "independence": true,
-        "novel": false
     }
 ]
