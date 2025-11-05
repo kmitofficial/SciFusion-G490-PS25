@@ -1,0 +1,9 @@
+[
+    {
+        "Name": "Baseline",
+        "Title": "Baseline Experiment",
+        "Summary": "Short-Term Temperature Forecasting Using LSTM Networks",
+        "Experiment": "Establish baseline performance for the task.",
+        "Method": "Baseline implementation."
+    }
+]

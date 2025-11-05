@@ -10,7 +10,7 @@ import { JobSidebarItem } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { FilePlus, LayoutDashboard, Loader2, LogOut, Sparkles } from "lucide-react";
+import { FilePlus, Loader2, LogOut, Sparkles } from "lucide-react";
 
 // Helper to format the date
 const formatDate = (isoString: string) => {
@@ -78,18 +78,19 @@ export default function Sidebar() {
 
     return (
         <div className="relative w-72 h-full bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 text-white p-5 flex flex-col border-r border-indigo-500/20 overflow-hidden shadow-2xl">
-            {/* Enhanced animated background with multiple gradient orbs */}
+            {/* Background gradient orbs */}
             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-indigo-500/20 to-purple-600/20 rounded-full blur-3xl animate-pulse" />
             <div className="absolute top-32 left-0 w-32 h-32 bg-gradient-to-br from-cyan-500/15 to-blue-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }} />
             <div className="absolute bottom-32 right-0 w-36 h-36 bg-gradient-to-br from-purple-500/15 to-pink-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
             <div className="absolute bottom-0 left-0 w-44 h-44 bg-gradient-to-br from-violet-500/20 to-fuchsia-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
-            
-            {/* Subtle gradient overlay for depth */}
+
+            {/* Subtle overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-indigo-950/10" />
-            
-            {/* Content with relative positioning */}
+
+            {/* Content */}
             <div className="relative z-10 flex flex-col h-full">
-                {/* Header with enhanced gradient text and glowing effect */}
+
+                {/* Header */}
                 <div className="mb-8 pb-6 border-b border-gradient-to-r from-transparent via-indigo-500/30 to-transparent">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="relative">
@@ -105,7 +106,7 @@ export default function Sidebar() {
                     <p className="text-xs text-indigo-300/60 ml-9 font-medium tracking-wide">Research Intelligence Platform</p>
                 </div>
 
-                {/* Main Navigation with glass morphism effect */}
+                {/* Main Navigation */}
                 <nav className="space-y-3 mb-8">
                     <Button
                         variant="ghost"
@@ -124,19 +125,9 @@ export default function Sidebar() {
                     </Button>
                 </nav>
 
-                {/* Job History with improved header and glass effect */}
-                <div className="flex-1 flex flex-col min-h-0">
-                    <div className="flex items-center justify-between mb-4 px-2">
-                        <h3 className="text-xs font-bold text-transparent bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text uppercase tracking-wider">
-                            Recent Experiments
-                        </h3>
-                        {jobs.length > 0 && (
-                            <span className="text-xs bg-gradient-to-r from-indigo-500/30 to-purple-500/30 text-indigo-200 px-2.5 py-1 rounded-full font-semibold border border-indigo-400/30 shadow-sm">
-                                {jobs.length}
-                            </span>
-                        )}
-                    </div>
-                    <ScrollArea className="flex-1 -mr-2">
+                {/* Job History - Scrollable */}
+                <div className="flex-1 min-h-0">
+                    <ScrollArea className="h-full">
                         <nav className="space-y-2 pr-4">
                             {isLoading && (
                                 <div className="flex flex-col justify-center items-center p-8 gap-3 bg-gradient-to-br from-white/5 to-white/0 rounded-xl border border-white/10">
@@ -149,26 +140,18 @@ export default function Sidebar() {
                                     <div className="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-indigo-400/30">
                                         <FilePlus className="h-8 w-8 text-indigo-300" />
                                     </div>
-                                    <p className="text-sm text-white/70 font-medium mb-1">
-                                        No experiments yet
-                                    </p>
-                                    <p className="text-xs text-white/40">
-                                        Create your first one to get started!
-                                    </p>
+                                    <p className="text-sm text-white/70 font-medium mb-1">No experiments yet</p>
+                                    <p className="text-xs text-white/40">Create your first one to get started!</p>
                                 </div>
                             )}
                             {loadError && (
                                 <div className="p-4 bg-gradient-to-br from-red-500/20 to-red-600/20 border border-red-400/40 rounded-xl backdrop-blur-sm">
-                                    <p className="text-xs text-red-300 font-medium">
-                                        {loadError}
-                                    </p>
+                                    <p className="text-xs text-red-300 font-medium">{loadError}</p>
                                 </div>
                             )}
                             {jobs.map((job) => {
                                 const jobId = job._id ?? job.id;
-                                if (!jobId) {
-                                    return null;
-                                }
+                                if (!jobId) return null;
                                 const isActive = pathname === `/app/experiment/${jobId}`;
                                 const topic = job.request?.topic ?? "Untitled experiment";
                                 return (
@@ -203,14 +186,10 @@ export default function Sidebar() {
                                             <p
                                                 className={cn(
                                                     "text-xs font-medium",
-                                                    isActive
-                                                        ? "text-indigo-200/80"
-                                                        : "text-white/50"
+                                                    isActive ? "text-indigo-200/80" : "text-white/50"
                                                 )}
                                             >
-                                                {job.created_at
-                                                    ? formatDate(job.created_at)
-                                                    : "Recently"}
+                                                {job.created_at ? formatDate(job.created_at) : "Recently"}
                                             </p>
                                             <span
                                                 className={cn(
@@ -232,7 +211,7 @@ export default function Sidebar() {
                     </ScrollArea>
                 </div>
 
-                {/* User Info & Logout with glass morphism design */}
+                {/* User Info & Logout */}
                 {user && (
                     <div className="mt-auto pt-6 border-t border-gradient-to-r from-transparent via-indigo-500/30 to-transparent">
                         <div className="mb-3 p-4 bg-gradient-to-br from-white/10 to-white/5 rounded-xl border border-white/20 hover:bg-gradient-to-br hover:from-white/15 hover:to-white/10 transition-all duration-300 backdrop-blur-sm shadow-lg">

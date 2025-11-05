@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -37,18 +36,16 @@ import {
 import { Sparkles, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Define the form schema using Zod, based on ResearchRequest
+// Updated schema: skip_novelty_check → novelty_check (true = skip)
 const formSchema = z.object({
-    topic: z
-        .string()
-        .min(10, { message: "Topic must be at least 10 characters." }),
-    experiment: z.string({ required_error: "Please select an experiment." }),
-    model: z.string({ required_error: "Please select a model." }),
-    code_model: z.string({ required_error: "Please select a code model." }),
+    topic: z.string().min(10, { message: "Topic must be at least 10 characters." }).optional().or(z.literal("")),
+    experiment: z.string().optional().or(z.literal("")),
+    model: z.string().optional().or(z.literal("")),
+    code_model: z.string().optional().or(z.literal("")),
     num_ideas: z.number().min(1).max(5),
     rag: z.boolean().default(true),
     check_similarity: z.boolean().default(true),
-    skip_novelty_check: z.boolean().default(false),
+    novelty_check: z.boolean().default(false), // true = skip novelty check
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -58,25 +55,24 @@ export default function DashboardPage() {
     const { token } = useAuth();
     const { toast } = useToast();
 
-    // 1. Define your form.
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            topic: "novel attention mechanisms for sentiment classification",
-            experiment: "sentiment_classification_sst2",
-            model: "gemini-2.5-flash-lite",
-            code_model: "flash",
+            topic: "",
+            experiment: "",
+            model: "",
+            code_model: "",
             num_ideas: 3,
             rag: true,
             check_similarity: true,
-            skip_novelty_check: false,
+            novelty_check: false, // unchecked by default
         },
     });
 
     const isLoading = form.formState.isSubmitting;
 
-    // 2. Define a submit handler.
     async function onSubmit(values: FormValues) {
+        console.log("Form Values:", values);
         if (!token) {
             toast({
                 title: "Authentication Error",
@@ -86,23 +82,28 @@ export default function DashboardPage() {
             return;
         }
 
-        try {
-            const response = await api.post("/jobs/", values, token);
-            const { job_id } = response;
+        // Clean empty strings to null for backend
+        const cleanedValues = {
+            ...values,
+            topic: values.topic || null,
+            experiment: values.experiment || null,
+            model: values.model || null,
+            code_model: values.code_model || null,
+        };
 
+        try {
+            const response = await api.post("/jobs/", cleanedValues, token);
+            const { job_id } = response;
             toast({
                 title: "Experiment Started!",
                 description: `Job ${job_id} is now running.`,
             });
-
-            // 3. Navigate to the new experiment page
             router.push(`/app/experiment/${job_id}`);
         } catch (error) {
             console.error("Failed to start job", error);
             toast({
                 title: "Error Starting Job",
-                description:
-                    error instanceof Error ? error.message : "An unknown error occurred.",
+                description: error instanceof Error ? error.message : "An unknown error occurred.",
                 variant: "destructive",
             });
         }
@@ -115,10 +116,9 @@ export default function DashboardPage() {
             <div className="absolute top-32 left-0 w-32 h-32 bg-gradient-to-br from-cyan-500/15 to-blue-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }} />
             <div className="absolute bottom-32 right-0 w-36 h-36 bg-gradient-to-br from-purple-500/15 to-pink-600/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
             <div className="absolute bottom-0 left-0 w-44 h-44 bg-gradient-to-br from-violet-500/20 to-fuchsia-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
-            
+           
             {/* Subtle gradient overlay for depth */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-indigo-950/10" />
-
             <div className="relative z-10 max-w-3xl w-full">
                 {/* Header */}
                 <div className="mb-8 text-center">
@@ -171,10 +171,7 @@ export default function DashboardPage() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="text-indigo-300 font-semibold">Experiment Type</FormLabel>
-                                        <Select
-                                            onValueChange={field.onChange}
-                                            defaultValue={field.value}
-                                        >
+                                        <Select onValueChange={field.onChange} value={field.value}>
                                             <FormControl>
                                                 <SelectTrigger className="bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-indigo-400/50">
                                                     <SelectValue placeholder="Select an experiment..." />
@@ -204,10 +201,7 @@ export default function DashboardPage() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="text-indigo-300 font-semibold">Research Model</FormLabel>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                defaultValue={field.value}
-                                            >
+                                            <Select onValueChange={field.onChange} value={field.value}>
                                                 <FormControl>
                                                     <SelectTrigger className="bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-indigo-400/50">
                                                         <SelectValue placeholder="Select a model..." />
@@ -232,10 +226,7 @@ export default function DashboardPage() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="text-indigo-300 font-semibold">Code Model</FormLabel>
-                                            <Select
-                                                onValueChange={field.onChange}
-                                                defaultValue={field.value}
-                                            >
+                                            <Select onValueChange={field.onChange} value={field.value}>
                                                 <FormControl>
                                                     <SelectTrigger className="bg-white/5 border-white/10 text-white data-[placeholder]:text-white/30 focus:border-indigo-400/50">
                                                         <SelectValue placeholder="Select a code model..." />
@@ -328,26 +319,38 @@ export default function DashboardPage() {
                                     )}
                                 />
                                 <FormField
-                                    control={form.control}
-                                    name="skip_novelty_check"
-                                    render={({ field }) => (
-                                        <FormItem className="flex flex-row items-center justify-between rounded-xl border border-white/10 p-4 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-sm">
-                                            <div className="space-y-0.5">
-                                                <FormLabel className="text-white font-semibold">Skip Novelty Check</FormLabel>
-                                                <FormDescription className="text-xs text-indigo-300/60">
-                                                    (Debug) Skip the novelty check phase.
-                                                </FormDescription>
-                                            </div>
-                                            <FormControl>
-                                                <Checkbox
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                    className="data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500"
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
+    control={form.control}
+    name="novelty_check"
+    render={({ field }) => {
+        // Invert the value for the UI
+        const isChecked = !field.value; // true = skip (checked), false = run (unchecked)
+
+        return (
+            <FormItem className="flex flex-row items-center justify-between rounded-xl border border-white/10 p-4 bg-white/5 hover:bg-white/10 transition-all backdrop-blur-sm">
+                <div className="space-y-0.5">
+                    <FormLabel className="text-white font-semibold">
+                        Novelty Check
+                    </FormLabel>
+                    <FormDescription className="text-xs text-indigo-300/60">
+                        {isChecked
+                            ? "Novelty check will be done."
+                            : "Novelty check will be disabled."}
+                    </FormDescription>
+                </div>
+                <FormControl>
+                    <Checkbox
+                        checked={isChecked}
+                        onCheckedChange={(checked) => {
+                            // Invert back when sending to form state
+                            field.onChange(!checked);
+                        }}
+                        className="data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500 border-white/20"
+                    />
+                </FormControl>
+            </FormItem>
+        );
+    }}
+/>
                             </div>
 
                             {/* Submit Button */}

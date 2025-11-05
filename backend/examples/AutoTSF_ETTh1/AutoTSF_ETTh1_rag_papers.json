@@ -1,0 +1,209 @@
+{
+    "topic_description": "Short-Term Temperature Forecasting Using LSTM Networks",
+    "all_queries": [
+        "Input(\"historical temperature data, time-series features, external factors\")\nOutput(\"predicted temperature for a future short-term period\")",
+        "KeywordQuery(\"LSTM short-term temperature forecasting\")"
+    ],
+    "paper_bank": [
+        {
+            "id": "1811.06341v1",
+            "paperId": "1811.06341v1",
+            "title": "Spatio-temporal Stacked LSTM for Temperature Prediction in Weather\n  Forecasting",
+            "year": "2018",
+            "citationCount": 0,
+            "abstract": "Long Short-Term Memory (LSTM) is a well-known method used widely on sequence\nlearning and time series prediction. In this paper we deployed stacked LSTM\nmodel in an application of weather forecasting. We propose a 2-layer\nspatio-temporal stacked LSTM model which consists of independent LSTM models\nper location in the first LSTM layer. Subsequently, the input of the second\nLSTM layer is formed based on the combination of the hidden states of the first\nlayer LSTM models. The experiments show that by utilizing the spatial\ninformation the prediction performance of the stacked LSTM model improves in\nmost of the cases.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2409.09414v1",
+            "paperId": "2409.09414v1",
+            "title": "Weather Prediction Using CNN-LSTM for Time Series Analysis: A Case Study\n  on Delhi Temperature Data",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "As global climate change intensifies, accurate weather forecasting is\nincreasingly crucial for sectors such as agriculture, energy management, and\nenvironmental protection. Traditional methods, which rely on physical and\nstatistical models, often struggle with complex, nonlinear, and time-varying\ndata, underscoring the need for more advanced techniques. This study explores a\nhybrid CNN-LSTM model to enhance temperature forecasting accuracy for the Delhi\nregion, using historical meteorological data from 1996 to 2017. We employed\nboth direct and indirect methods, including comprehensive data preprocessing\nand exploratory analysis, to construct and train our model. The CNN component\neffectively extracts spatial features, while the LSTM captures temporal\ndependencies, leading to improved prediction accuracy. Experimental results\nindicate that the CNN-LSTM model significantly outperforms traditional\nforecasting methods in terms of both accuracy and stability, with a mean square\nerror (MSE) of 3.26217 and a root mean square error (RMSE) of 1.80615. The\nhybrid model demonstrates its potential as a robust tool for temperature\nprediction, offering valuable insights for meteorological forecasting and\nrelated fields. Future research should focus on optimizing model architecture,\nexploring additional feature extraction techniques, and addressing challenges\nsuch as overfitting and computational complexity. This approach not only\nadvances temperature forecasting but also provides a foundation for applying\ndeep learning to other time series forecasting tasks.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2412.07997v1",
+            "paperId": "2412.07997v1",
+            "title": "Accurate Prediction of Temperature Indicators in Eastern China Using a\n  Multi-Scale CNN-LSTM-Attention model",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "In recent years, the importance of accurate weather forecasting has become\nincreasingly prominent due to the impacts of global climate change and the\nrapid development of data science. Traditional forecasting methods often\nstruggle to handle the complexity and nonlinearity inherent in climate data. To\naddress these challenges, we propose a weather prediction model based on a\nmulti-scale convolutional CNN-LSTM-Attention architecture, specifically\ndesigned for time series forecasting of temperature data in China. The model\nintegrates Convolutional Neural Networks (CNN), Long Short-Term Memory (LSTM)\nnetworks, and attention mechanisms to leverage the strengths of spatial feature\nextraction, temporal sequence modeling, and the ability to focus on important\nfeatures. The development process of the model includes data collection,\npreprocessing, feature extraction, and model building. Experimental results\nshow that the model performs excellently in predicting temperature trends with\nhigh accuracy. The final computed results indicate that the Mean Squared Error\n(MSE) is 1.978295 and the Root Mean Squared Error (RMSE) is 0.8106562. This\nwork marks a significant advancement in applying deep learning techniques to\nmeteorological data, offering a valuable tool for improving weather forecasting\naccuracy and providing essential support for decision-making in areas such as\nurban planning, agriculture, and energy management.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2410.14963v1",
+            "paperId": "2410.14963v1",
+            "title": "Deep Learning for Weather Forecasting: A CNN-LSTM Hybrid Model for\n  Predicting Historical Temperature Data",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "As global climate change intensifies, accurate weather forecasting has become\nincreasingly important, affecting agriculture, energy management, environmental\nprotection, and daily life. This study introduces a hybrid model combining\nConvolutional Neural Networks (CNNs) and Long Short-Term Memory (LSTM) networks\nto predict historical temperature data. CNNs are utilized for spatial feature\nextraction, while LSTMs handle temporal dependencies, resulting in\nsignificantly improved prediction accuracy and stability. By using Mean\nAbsolute Error (MAE) as the loss function, the model demonstrates excellent\nperformance in processing complex meteorological data, addressing challenges\nsuch as missing data and high-dimensionality. The results show a strong\nalignment between the prediction curve and test data, validating the model's\npotential in climate prediction. This study offers valuable insights for fields\nsuch as agriculture, energy management, and urban planning, and lays the\ngroundwork for future applications in weather forecasting under the context of\nglobal climate change.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2510.10702v1",
+            "paperId": "2510.10702v1",
+            "title": "Attention-Enhanced LSTM Modeling for Improved Temperature and Rainfall\n  Forecasting in Bangladesh",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Accurate climate forecasting is vital for Bangladesh, a region highly\nsusceptible to climate change impacts on temperature and rainfall. Existing\nmodels often struggle to capture long-range dependencies and complex temporal\npatterns in climate data. This study introduces an advanced Long Short-Term\nMemory (LSTM) model integrated with an attention mechanism to enhance the\nprediction of temperature and rainfall dynamics. Utilizing comprehensive\ndatasets from 1901-2023, sourced from NASA's POWER Project for temperature and\nthe Humanitarian Data Exchange for rainfall, the model effectively captures\nseasonal and long-term trends. It outperforms baseline models, including\nXGBoost, Simple LSTM, and GRU, achieving a test MSE of 0.2411 (normalized\nunits), MAE of 0.3860 degrees C, R^2 of 0.9834, and NRMSE of 0.0370 for\ntemperature, and MSE of 1283.67 mm^2, MAE of 22.91 mm, R^2 of 0.9639, and NRMSE\nof 0.0354 for rainfall on monthly forecasts. The model demonstrates improved\nrobustness with only a 20 percent increase in MSE under simulated climate\ntrends (compared to an approximately 2.2-fold increase in baseline models\nwithout trend features) and a 50 percent degradation under regional variations\n(compared to an approximately 4.8-fold increase in baseline models without\nenhancements). These results highlight the model's ability to improve\nforecasting precision and offer potential insights into the physical processes\ngoverning climate variability in Bangladesh, supporting applications in\nclimate-sensitive sectors.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2102.02892v1",
+            "paperId": "2102.02892v1",
+            "title": "Using Long Short-Term Memory (LSTM) and Internet of Things (IoT) for\n  localized surface temperature forecasting in an urban environment",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "The rising temperature is one of the key indicators of a warming climate, and\nit can cause extensive stress to biological systems as well as built\nstructures. Due to the heat island effect, it is most severe in urban\nenvironments compared to other landscapes due to the decrease in vegetation\nassociated with a dense human-built environment. It is essential to adequately\nmonitor the local temperature dynamics to mitigate risks associated with\nincreasing temperatures, which can include short term strategy to protect\npeople and animals, to long term strategy to how to build a new structure and\ncope with extreme events. Observed temperature is also a very important input\nfor atmospheric models, and accurate data can lead to better future forecasts.\n  Ambient temperature collected at ground level can have a higher variability\nwhen compared to regional weather forecasts, which fail to capture the local\ndynamics. There remains a clear need for an accurate air temperature prediction\nat the sub-urban scale at high temporal and spatial resolution. This research\nproposed a framework based on Long Short-Term Memory (LSTM) deep learning\nnetwork to generate day-ahead hourly temperature forecast with high spatial\nresolution. A case study is shown which uses historical in-situ observations\nand Internet of Things (IoT) observations for New York City, USA. By leveraging\nthe historical air temperature data from in-situ observations, the LSTM model\ncan be exposed to more historical patterns that might not be present in the IoT\nobservations. Meanwhile, by using IoT observations, the spatial resolution of\nair temperature predictions is significantly improved.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2011.04452v1",
+            "paperId": "2011.04452v1",
+            "title": "Comparison between ARIMA and Deep Learning Models for Temperature\n  Forecasting",
+            "year": "2020",
+            "citationCount": 0,
+            "abstract": "Weather forecasting benefits us in various ways from farmers in cultivation\nand harvesting their crops to airlines to schedule their flights. Weather\nforecasting is a challenging task due to the chaotic nature of the atmosphere.\nTherefore lot of research attention has drawn to obtain the benefits and to\novercome the challenges of weather forecasting. This paper compares ARIMA (Auto\nRegressive Integrated Moving Average) model and deep learning models to\nforecast temperature. The deep learning model consists of one dimensional\nconvolutional layers to extract spatial features and LSTM layers to extract\ntemporal features. Both of these models are applied to hourly temperature data\nset from Szeged, Hungry. According to the experimental results deep learning\nmodel was able to perform better than the traditional ARIMA methodology.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2101.09356v1",
+            "paperId": "2101.09356v1",
+            "title": "Dynamical prediction of two meteorological factors using the deep neural\n  network and the long short term memory $(1)$",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "It is important to calculate and analyze temperature and humidity prediction\naccuracies among quantitative meteorological forecasting. This study\nmanipulates the extant neural network methods to foster the predictive\naccuracy. To achieve such tasks, we analyze and explore the predictive accuracy\nand performance in the neural networks using two combined meteorological\nfactors (temperature and humidity). Simulated studies are performed by applying\nthe artificial neural network (ANN), deep neural network (DNN), extreme\nlearning machine (ELM), long short-term memory (LSTM), and long short-term\nmemory with peephole connections (LSTM-PC) machine learning methods, and the\naccurate prediction value are compared to that obtained from each other\nmethods. Data are extracted from low frequency time-series of ten metropolitan\ncities of South Korea from March 2014 to February 2020 to validate our\nobservations. To test the robustness of methods, the error of LSTM is found to\noutperform that of the other four methods in predictive accuracy. Particularly,\nas testing results, the temperature prediction of LSTM in summer in Tongyeong\nhas a root mean squared error (RMSE) value of 0.866 lower than that of other\nneural network methods, while the mean absolute percentage error (MAPE) value\nof LSTM for humidity prediction is 5.525 in summer in Mokpo, significantly\nbetter than other metropolitan cities.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2301.13774v1",
+            "paperId": "2301.13774v1",
+            "title": "Multi Feature Data Fusion-Based Load Forecasting of Electric Vehicle\n  Charging Stations Using a Deep Learning Model",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "We propose a forecasting technique based on multi-feature data fusion to\nenhance the accuracy of an electric vehicle (EV) charging station load\nforecasting deep-learning model. The proposed method uses multi-feature inputs\nbased on observations of historical weather (wind speed, temperature, and\nhumidity) data as multiple inputs to a Long Short-Term Memory (LSTM) model to\nachieve a robust prediction of charging loads. Weather conditions are\nsignificant influencers of the behavior of EV drivers and their driving\npatterns. These behavioral and driving patterns affect the charging patterns of\nthe drivers. Rather than one prediction (step, model, or variables) made by\nconventional LSTM models, three charging load (energy demand) predictions of\nEVs were made depending on different multi-feature inputs. Data fusion was used\nto combine and optimize the different charging load prediction results. The\nperformance of the final implemented model was evaluated by the mean absolute\nprediction error of the forecast. The implemented model had a prediction error\nof 3.29%. This prediction error was lower than initial prediction results by\nthe LSTM model. The numerical results indicate an improvement in the\nperformance of the EV load forecast, indicating that the proposed model could\nbe used to optimize and improve EV load forecasts for electric vehicle charging\nstations to meet the energy requirements of EVs.",
+            "tldr": null,
+            "score": 4
+        },
+        {
+            "id": "2509.26187v1",
+            "paperId": "2509.26187v1",
+            "title": "Optimizing Indoor Environmental Quality in Smart Buildings Using Deep\n  Learning",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Ensuring optimal Indoor Environmental Quality (IEQ) is vital for occupant\nhealth and productivity, yet it often comes at a high energy cost in\nconventional Heating, Ventilation, and Air Conditioning (HVAC) systems. This\npaper proposes a deep learning driven approach to proactively manage IEQ\nparameters specifically CO2 concentration, temperature, and humidity while\nbalancing building energy efficiency. Leveraging the ROBOD dataset collected\nfrom a net-zero energy academic building, we benchmark three\narchitectures--Long Short-Term Memory (LSTM), Gated Recurrent Units (GRU), and\na hybrid Convolutional Neural Network LSTM (CNN-LSTM)--to forecast IEQ\nvariables across various time horizons. Our results show that GRU achieves the\nbest short-term prediction accuracy with lower computational overhead, whereas\nCNN-LSTM excels in extracting dominant features for extended forecasting\nwindows. Meanwhile, LSTM offers robust long-range temporal modeling. The\ncomparative analysis highlights that prediction reliability depends on data\nresolution, sensor placement, and fluctuating occupancy conditions. These\nfindings provide actionable insights for intelligent Building Management\nSystems (BMS) to implement predictive HVAC control, thereby reducing energy\nconsumption and enhancing occupant comfort in real-world building operations.",
+            "tldr": null,
+            "score": 4
+        },
+        {
+            "id": "2511.00552v1",
+            "paperId": "2511.00552v1",
+            "title": "Temporal Fusion Transformer for Multi-Horizon Probabilistic Forecasting\n  of Weekly Retail Sales",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Accurate multi-horizon retail forecasts are critical for inventory and\npromotions. We present a novel study of weekly Walmart sales (45 stores,\n2010--2012) using a Temporal Fusion Transformer (TFT) that fuses static store\nidentifiers with time-varying exogenous signals (holidays, CPI, fuel price,\ntemperature). The pipeline produces 1--5-week-ahead probabilistic forecasts via\nQuantile Loss, yielding calibrated 90\\% prediction intervals and\ninterpretability through variable-selection networks, static enrichment, and\ntemporal attention. On a fixed 2012 hold-out dataset, TFT achieves an RMSE of\n\\$57.9k USD per store-week and an $R^2$ of 0.9875. Across a 5-fold\nchronological cross-validation, the averages are RMSE = \\$64.6k USD and $R^2$ =\n0.9844, outperforming the XGB, CNN, LSTM, and CNN-LSTM baseline models. These\nresults demonstrate practical value for inventory planning and holiday-period\noptimization, while maintaining model transparency.",
+            "tldr": null,
+            "score": 4
+        },
+        {
+            "id": "2102.09024v1",
+            "paperId": "2102.09024v1",
+            "title": "Deep Learning Approaches for Forecasting Strawberry Yields and Prices\n  Using Satellite Images and Station-Based Soil Parameters",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Computational tools for forecasting yields and prices for fresh produce have\nbeen based on traditional machine learning approaches or time series modelling.\nWe propose here an alternate approach based on deep learning algorithms for\nforecasting strawberry yields and prices in Santa Barbara county, California.\nBuilding the proposed forecasting model comprises three stages: first, the\nstation-based ensemble model (ATT-CNN-LSTM-SeriesNet_Ens) with its compound\ndeep learning components, SeriesNet with Gated Recurrent Unit (GRU) and\nConvolutional Neural Network LSTM with Attention layer (Att-CNN-LSTM), are\ntrained and tested using the station-based soil temperature and moisture data\nof SantaBarbara as input and the corresponding strawberry yields or prices as\noutput. Secondly, the remote sensing ensemble model (SIM_CNN-LSTM_Ens), which\nis an ensemble model of Convolutional NeuralNetwork LSTM (CNN-LSTM) models, is\ntrained and tested using satellite images of the same county as input mapped to\nthe same yields and prices as output. These two ensembles forecast strawberry\nyields and prices with minimal forecasting errors and highest model correlation\nfor five weeks ahead forecasts.Finally, the forecasts of these two models are\nensembled to have a final forecasted value for yields and prices by introducing\na voting ensemble. Based on an aggregated performance measure (AGM), it is\nfound that this voting ensemble not only enhances the forecasting performance\nby 5% compared to its best performing component model but also outperforms the\nDeep Learning (DL) ensemble model found in literature by 33% for forecasting\nyields and 21% for forecasting prices",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2004.10928v2",
+            "paperId": "2004.10928v2",
+            "title": "Recurrent Neural Network Architecture Search for Geophysical Emulation",
+            "year": "2020",
+            "citationCount": 0,
+            "abstract": "Developing surrogate geophysical models from data is a key research topic in\natmospheric and oceanic modeling because of the large computational costs\nassociated with numerical simulation methods. Researchers have started applying\na wide range of machine learning models, in particular neural networks, to\ngeophysical data for forecasting without these constraints. Constructing neural\nnetworks for forecasting such data is nontrivial, however, and often requires\ntrial and error. To address these limitations, we focus on developing\nproper-orthogonal-decomposition-based long short-term memory networks\n(POD-LSTMs). We develop a scalable neural architecture search for generating\nstacked LSTMs to forecast temperature in the NOAA Optimum Interpolation\nSea-Surface Temperature data set. Our approach identifies POD-LSTMs that are\nsuperior to manually designed variants and baseline time-series prediction\nmethods. We also assess the scalability of different architecture search\nstrategies on up to 512 Intel Knights Landing nodes of the Theta supercomputer\nat the Argonne Leadership Computing Facility.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2507.01034v1",
+            "paperId": "2507.01034v1",
+            "title": "Data-driven Insights for Informed Decision-Making: Applying LSTM\n  Networks for Robust Electricity Forecasting in Libya",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Accurate electricity forecasting is crucial for grid stability and energy\nplanning, especially in Benghazi, Libya, where frequent load shedding,\ngeneration deficits, and infrastructure limitations persist. This study\nproposes a data-driven approach to forecast electricity load, generation, and\ndeficits for 2025 using historical data from 2019 (a year marked by\ninstability) and 2023 (a more stable year). Multiple time series models were\napplied, including ARIMA, seasonal ARIMA, dynamic regression ARIMA, exponential\nsmoothing, extreme gradient boosting, and Long Short-Term Memory (LSTM) neural\nnetworks. The dataset was enhanced through missing value imputation, outlier\nsmoothing, and log transformation. Performance was assessed using mean squared\nerror, root mean squared error, mean absolute error, and mean absolute\npercentage error. LSTM outperformed all other models, showing strong\ncapabilities in modeling non-stationary and seasonal patterns. A key\ncontribution of this work is an optimized LSTM framework that integrates\nexogenous factors such as temperature and humidity, offering robust performance\nin forecasting multiple electricity indicators. These results provide practical\ninsights for policymakers and grid operators to enable proactive load\nmanagement and resource planning in data-scarce, volatile regions.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2304.05174v1",
+            "paperId": "2304.05174v1",
+            "title": "Electricity Demand Forecasting with Hybrid Statistical and Machine\n  Learning Algorithms: Case Study of Ukraine",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "This article presents a novel hybrid approach using statistics and machine\nlearning to forecast the national demand of electricity. As investment and\noperation of future energy systems require long-term electricity demand\nforecasts with hourly resolution, our mathematical model fills a gap in energy\nforecasting. The proposed methodology was constructed using hourly data from\nUkraine's electricity consumption ranging from 2013 to 2020. To this end, we\nanalysed the underlying structure of the hourly, daily and yearly time series\nof electricity consumption. The long-term yearly trend is evaluated using\nmacroeconomic regression analysis. The mid-term model integrates temperature\nand calendar regressors to describe the underlying structure, and combines\nARIMA and LSTM ``black-box'' pattern-based approaches to describe the error\nterm. The short-term model captures the hourly seasonality through calendar\nregressors and multiple ARMA models for the residual. Results show that the\nbest forecasting model is composed by combining multiple regression models and\na LSTM hybrid model for residual prediction. Our hybrid model is very effective\nat forecasting long-term electricity consumption on an hourly resolution. In\ntwo years of out-of-sample forecasts with 17520 timesteps, it is shown to be\nwithin 96.83 \\% accuracy.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2112.13681v1",
+            "paperId": "2112.13681v1",
+            "title": "Wholesale Electricity Price Forecasting using Integrated Long-term\n  Recurrent Convolutional Network Model",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Electricity price is a key factor affecting the decision-making for all\nmarket participants. Accurate forecasting of electricity prices is very\nimportant and is also very challenging since electricity price is highly\nvolatile due to various factors. This paper proposes an integrated long-term\nrecurrent convolutional network (ILRCN) model to predict electricity prices\nconsidering the majority contributing attributes to the market price as input.\nThe proposed ILRCN model combines the functionalities of convolutional neural\nnetwork and long short-term memory (LSTM) algorithm along with the proposed\nnovel conditional error correction term. The combined ILRCN model can identify\nthe linear and non-linear behavior within the input data. We have used ERCOT\nwholesale market price data along with load profile, temperature, and other\nfactors for the Houston region to illustrate the proposed model. The\nperformance of the proposed ILRCN electricity price forecasting model is\nverified using performance/evaluation metrics like mean absolute error and\naccuracy. Case studies reveal that the proposed ILRCN model is accurate and\nefficient in electricity price forecasting as compared to the support vector\nmachine (SVM) model, fully-connected neural network model, LSTM model and the\nLRCN model without the conditional error correction stage.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2309.15207v1",
+            "paperId": "2309.15207v1",
+            "title": "Balancing Computational Efficiency and Forecast Error in Machine\n  Learning-based Time-Series Forecasting: Insights from Live Experiments on\n  Meteorological Nowcasting",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Machine learning for time-series forecasting remains a key area of research.\nDespite successful application of many machine learning techniques, relating\ncomputational efficiency to forecast error remains an under-explored domain.\nThis paper addresses this topic through a series of real-time experiments to\nquantify the relationship between computational cost and forecast error using\nmeteorological nowcasting as an example use-case. We employ a variety of\npopular regression techniques (XGBoost, FC-MLP, Transformer, and LSTM) for\nmulti-horizon, short-term forecasting of three variables (temperature, wind\nspeed, and cloud cover) for multiple locations. During a 5-day live experiment,\n4000 data sources were streamed for training and inferencing 144 models per\nhour. These models were parameterized to explore forecast error for two\ncomputational cost minimization methods: a novel auto-adaptive data reduction\ntechnique (Variance Horizon) and a performance-based concept drift-detection\nmechanism. Forecast error of all model variations were benchmarked in real-time\nagainst a state-of-the-art numerical weather prediction model. Performance was\nassessed using classical and novel evaluation metrics. Results indicate that\nusing the Variance Horizon reduced computational usage by more than 50\\%, while\nincreasing between 0-15\\% in error. Meanwhile, performance-based retraining\nreduced computational usage by up to 90\\% while \\emph{also} improving forecast\nerror by up to 10\\%. Finally, the combination of both the Variance Horizon and\nperformance-based retraining outperformed other model configurations by up to\n99.7\\% when considering error normalized to computational usage.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2404.07924v1",
+            "paperId": "2404.07924v1",
+            "title": "A Parsimonious Setup for Streamflow Forecasting using CNN-LSTM",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Significant strides have been made in advancing streamflow predictions,\nnotably with the introduction of cutting-edge machine-learning models.\nPredominantly, Long Short-Term Memories (LSTMs) and Convolution Neural Networks\n(CNNs) have been widely employed in this domain. While LSTMs are applicable in\nboth rainfall-runoff and time series settings, CNN-LSTMs have primarily been\nutilized in rainfall-runoff scenarios. In this study, we extend the application\nof CNN-LSTMs to time series settings, leveraging lagged streamflow data in\nconjunction with precipitation and temperature data to predict streamflow. Our\nresults show a substantial improvement in predictive performance in 21 out of\n32 HUC8 basins in Nebraska, showcasing noteworthy increases in the Kling-Gupta\nEfficiency (KGE) values. These results highlight the effectiveness of CNN-LSTMs\nin time series settings, particularly for spatiotemporal hydrological modeling,\nfor more accurate and robust streamflow predictions.",
+            "tldr": null,
+            "score": 2
+        },
+        {
+            "id": "1812.07699v1",
+            "paperId": "1812.07699v1",
+            "title": "A Comparison of LSTMs and Attention Mechanisms for Forecasting Financial\n  Time Series",
+            "year": "2018",
+            "citationCount": 0,
+            "abstract": "While LSTMs show increasingly promising results for forecasting Financial\nTime Series (FTS), this paper seeks to assess if attention mechanisms can\nfurther improve performance. The hypothesis is that attention can help prevent\nlong-term dependencies experienced by LSTM models. To test this hypothesis, the\nmain contribution of this paper is the implementation of an LSTM with\nattention. Both the benchmark LSTM and the LSTM with attention were compared\nand both achieved reasonable performances of up to 60% on five stocks from\nKaggle's Two Sigma dataset. This comparative analysis demonstrates that an LSTM\nwith attention can indeed outperform standalone LSTMs but further investigation\nis required as issues do arise with such model architectures.",
+            "tldr": null,
+            "score": 2
+        },
+        {
+            "id": "2509.12615v1",
+            "paperId": "2509.12615v1",
+            "title": "Mob-based cattle weight gain forecasting using ML models",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Forecasting mob based cattle weight gain (MB CWG) may benefit large livestock\nfarms, allowing farmers to refine their feeding strategies, make educated\nbreeding choices, and reduce risks linked to climate variability and market\nfluctuations. In this paper, a novel technique termed MB CWG is proposed to\nforecast the one month advanced weight gain of herd based cattle using\nhistorical data collected from the Charles Sturt University Farm. This research\nemploys a Random Forest (RF) model, comparing its performance against Support\nVector Regression (SVR) and Long Short Term Memory (LSTM) models for monthly\nweight gain prediction. Four datasets were used to evaluate the performance of\nmodels, using 756 sample data from 108 herd-based cattle, along with weather\ndata (rainfall and temperature) influencing CWG. The RF model performs better\nthan the SVR and LSTM models across all datasets, achieving an R^2 of 0.973,\nRMSE of 0.040, and MAE of 0.033 when both weather and age factors were\nincluded. The results indicate that including both weather and age factors\nsignificantly improves the accuracy of weight gain predictions, with the RF\nmodel outperforming the SVR and LSTM models in all scenarios. These findings\ndemonstrate the potential of RF as a robust tool for forecasting cattle weight\ngain in variable conditions, highlighting the influence of age and climatic\nfactors on herd based weight trends. This study has also developed an\ninnovative automated pre processing tool to generate a benchmark dataset for MB\nCWG predictive models. The tool is publicly available on GitHub and can assist\nin preparing datasets for current and future analytical research..",
+            "tldr": null,
+            "score": 2
+        }
+    ]
+}
