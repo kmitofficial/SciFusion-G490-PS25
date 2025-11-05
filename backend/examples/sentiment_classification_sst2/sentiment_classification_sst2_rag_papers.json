@@ -5,7 +5,8 @@
         "KeywordQuery(\"novel attention mechanisms sentiment classification\")",
         "PaperQuery(\"1807.04990v1\")",
         "GetReferences(\"1807.04990v1\")",
-        "KeywordQuery(\"attention mechanism sentiment analysis\")"
+        "KeywordQuery(\"attention mechanism sentiment analysis\")",
+        "KeywordQuery(\"graph attention networks sentiment classification\")"
     ],
     "paper_bank": [
         {
@@ -89,6 +90,26 @@
             "score": 7
         },
         {
+            "id": "2002.09685v3",
+            "paperId": "2002.09685v3",
+            "title": "Investigating Typed Syntactic Dependencies for Targeted Sentiment\n  Classification Using Graph Attention Neural Network",
+            "year": "2020",
+            "citationCount": 0,
+            "abstract": "Targeted sentiment classification predicts the sentiment polarity on given\ntarget mentions in input texts. Dominant methods employ neural networks for\nencoding the input sentence and extracting relations between target mentions\nand their contexts. Recently, graph neural network has been investigated for\nintegrating dependency syntax for the task, achieving the state-of-the-art\nresults. However, existing methods do not consider dependency label\ninformation, which can be intuitively useful. To solve the problem, we\ninvestigate a novel relational graph attention network that integrates typed\nsyntactic dependency information. Results on standard benchmarks show that our\nmethod can effectively leverage label information for improving targeted\nsentiment classification performances. Our final model significantly\noutperforms state-of-the-art syntax-based approaches.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2112.03011v1",
+            "paperId": "2112.03011v1",
+            "title": "Isomer: Transfer enhanced Dual-Channel Heterogeneous Dependency\n  Attention Network for Aspect-based Sentiment Classification",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Aspect-based sentiment classification aims to predict the sentiment polarity\nof a specific aspect in a sentence. However, most existing methods attempt to\nconstruct dependency relations into a homogeneous dependency graph with the\nsparsity and ambiguity, which cannot cover the comprehensive contextualized\nfeatures of short texts or consider any additional node types or semantic\nrelation information. To solve those issues, we present a sentiment analysis\nmodel named Isomer, which performs a dual-channel attention on heterogeneous\ndependency graphs incorporating external knowledge, to effectively integrate\nother additional information. Specifically, a transfer-enhanced dual-channel\nheterogeneous dependency attention network is devised in Isomer to model short\ntexts using heterogeneous dependency graphs. These heterogeneous dependency\ngraphs not only consider different types of information but also incorporate\nexternal knowledge. Experiments studies show that our model outperforms recent\nmodels on benchmark datasets. Furthermore, the results suggest that our method\ncaptures the importance of various information features to focus on informative\ncontextual words.",
+            "tldr": null,
+            "score": 7
+        },
+        {
             "id": "2509.11604v2",
             "paperId": "2509.11604v2",
             "title": "Dynamic Span Interaction and Graph-Aware Memory for Entity-Level\n  Sentiment Classification",
@@ -115,6 +136,16 @@
             "year": "2018",
             "citationCount": 0,
             "abstract": "Neural sequence models have achieved great success in sentence-level\nsentiment classification. However, some models are exceptionally complex or\nbased on expensive features. Some other models recognize the value of existed\nlinguistic resource but utilize it insufficiently. This paper proposes a novel\nand general method to incorporate lexicon information, including sentiment\nlexicons(+/-), negation words and intensifiers. Words are annotated in\nfine-grained and coarse-grained labels. The proposed method first encodes the\nfine-grained labels into sentiment embedding and concatenates it with word\nembedding. Second, the coarse-grained labels are utilized to enhance the\nattention mechanism to give large weight on sentiment-related words.\nExperimental results show that our method can increase classification accuracy\nfor neural sequence models on both SST-5 and MR dataset. Specifically, the\nenhanced Bi-LSTM model can even compare with a Tree-LSTM which uses expensive\nphrase-level annotations. Further analysis shows that in most cases the lexicon\nresource can offer the right annotations. Besides, the proposed method is\ncapable of overcoming the effect from inevitably wrong annotations.",
+            "tldr": null,
+            "score": 5
+        },
+        {
+            "id": "1610.06272v2",
+            "paperId": "1610.06272v2",
+            "title": "Lexicon Integrated CNN Models with Attention for Sentiment Analysis",
+            "year": "2016",
+            "citationCount": 0,
+            "abstract": "With the advent of word embeddings, lexicons are no longer fully utilized for\nsentiment analysis although they still provide important features in the\ntraditional setting. This paper introduces a novel approach to sentiment\nanalysis that integrates lexicon embeddings and an attention mechanism into\nConvolutional Neural Networks. Our approach performs separate convolutions for\nword and lexicon embeddings and provides a global view of the document using\nattention. Our models are experimented on both the SemEval'16 Task 4 dataset\nand the Stanford Sentiment Treebank, and show comparative or better results\nagainst the existing state-of-the-art systems. Our analysis shows that lexicon\nembeddings allow to build high-performing models with much smaller word\nembeddings, and the attention mechanism effectively dims out noisy words for\nsentiment analysis.",
             "tldr": null,
             "score": 5
         },
@@ -149,6 +180,16 @@
             "score": 3
         },
         {
+            "id": "2103.03446v1",
+            "paperId": "2103.03446v1",
+            "title": "Enhanced Aspect-Based Sentiment Analysis Models with Progressive\n  Self-supervised Attention Learning",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "In aspect-based sentiment analysis (ABSA), many neural models are equipped\nwith an attention mechanism to quantify the contribution of each context word\nto sentiment prediction. However, such a mechanism suffers from one drawback:\nonly a few frequent words with sentiment polarities are tended to be taken into\nconsideration for final sentiment decision while abundant infrequent sentiment\nwords are ignored by models. To deal with this issue, we propose a progressive\nself-supervised attention learning approach for attentional ABSA models. In\nthis approach, we iteratively perform sentiment prediction on all training\ninstances, and continually learn useful attention supervision information in\nthe meantime. During training, at each iteration, context words with the\nhighest impact on sentiment prediction, identified based on their attention\nweights or gradients, are extracted as words with active/misleading influence\non the correct/incorrect prediction for each instance. Words extracted in this\nway are masked for subsequent iterations. To exploit these extracted words for\nrefining ABSA models, we augment the conventional training objective with a\nregularization term that encourages ABSA models to not only take full advantage\nof the extracted active context words but also decrease the weights of those\nmisleading words. We integrate the proposed approach into three\nstate-of-the-art neural ABSA models. Experiment results and in-depth analyses\nshow that our approach yields better attention results and significantly\nenhances the performance of all three models. We release the source code and\ntrained models at https://github.com/DeepLearnXMU/PSSAttention.",
+            "tldr": null,
+            "score": 3
+        },
+        {
             "id": "1611.04636v1",
             "paperId": "1611.04636v1",
             "title": "When Saliency Meets Sentiment: Understanding How Image Content Invokes\n  Emotion and Sentiment",
@@ -159,16 +200,6 @@
             "score": 2
         },
         {
-            "id": "1909.03477v2",
-            "paperId": "1909.03477v2",
-            "title": "Aspect-based Sentiment Classification with Aspect-specific Graph\n  Convolutional Networks",
-            "year": "2019",
-            "citationCount": 0,
-            "abstract": "Due to their inherent capability in semantic alignment of aspects and their\ncontext words, attention mechanism and Convolutional Neural Networks (CNNs) are\nwidely applied for aspect-based sentiment classification. However, these models\nlack a mechanism to account for relevant syntactical constraints and long-range\nword dependencies, and hence may mistakenly recognize syntactically irrelevant\ncontextual words as clues for judging aspect sentiment. To tackle this problem,\nwe propose to build a Graph Convolutional Network (GCN) over the dependency\ntree of a sentence to exploit syntactical information and word dependencies.\nBased on it, a novel aspect-specific sentiment classification framework is\nraised. Experiments on three benchmarking collections illustrate that our\nproposed model has comparable effectiveness to a range of state-of-the-art\nmodels, and further demonstrate that both syntactical information and\nlong-range word dependencies are properly captured by the graph convolution\nstructure.",
-            "tldr": null,
-            "score": 0
-        },
-        {
             "id": "1805.07043v1",
             "paperId": "1805.07043v1",
             "title": "Aspect Based Sentiment Analysis with Gated Convolutional Networks",
@@ -176,65 +207,15 @@
             "citationCount": 0,
             "abstract": "Aspect based sentiment analysis (ABSA) can provide more detailed information\nthan general sentiment analysis, because it aims to predict the sentiment\npolarities of the given aspects or entities in text. We summarize previous\napproaches into two subtasks: aspect-category sentiment analysis (ACSA) and\naspect-term sentiment analysis (ATSA). Most previous approaches employ long\nshort-term memory and attention mechanisms to predict the sentiment polarity of\nthe concerned targets, which are often complicated and need more training time.\nWe propose a model based on convolutional neural networks and gating\nmechanisms, which is more accurate and efficient. First, the novel Gated\nTanh-ReLU Units can selectively output the sentiment features according to the\ngiven aspect or entity. The architecture is much simpler than attention layer\nused in the existing models. Second, the computations of our model could be\neasily parallelized during training, because convolutional layers do not have\ntime dependency as in LSTM layers, and gating units also work independently.\nThe experiments on SemEval datasets demonstrate the efficiency and\neffectiveness of our models.",
             "tldr": null,
-            "score": 0
+            "score": 2
         },
         {
-            "id": "1610.06272v2",
-            "paperId": "1610.06272v2",
-            "title": "Lexicon Integrated CNN Models with Attention for Sentiment Analysis",
-            "year": "2016",
+            "id": "1909.03477v2",
+            "paperId": "1909.03477v2",
+            "title": "Aspect-based Sentiment Classification with Aspect-specific Graph\n  Convolutional Networks",
+            "year": "2019",
             "citationCount": 0,
-            "abstract": "With the advent of word embeddings, lexicons are no longer fully utilized for\nsentiment analysis although they still provide important features in the\ntraditional setting. This paper introduces a novel approach to sentiment\nanalysis that integrates lexicon embeddings and an attention mechanism into\nConvolutional Neural Networks. Our approach performs separate convolutions for\nword and lexicon embeddings and provides a global view of the document using\nattention. Our models are experimented on both the SemEval'16 Task 4 dataset\nand the Stanford Sentiment Treebank, and show comparative or better results\nagainst the existing state-of-the-art systems. Our analysis shows that lexicon\nembeddings allow to build high-performing models with much smaller word\nembeddings, and the attention mechanism effectively dims out noisy words for\nsentiment analysis.",
-            "tldr": null,
-            "score": 0
-        },
-        {
-            "id": "2103.03446v1",
-            "paperId": "2103.03446v1",
-            "title": "Enhanced Aspect-Based Sentiment Analysis Models with Progressive\n  Self-supervised Attention Learning",
-            "year": "2021",
-            "citationCount": 0,
-            "abstract": "In aspect-based sentiment analysis (ABSA), many neural models are equipped\nwith an attention mechanism to quantify the contribution of each context word\nto sentiment prediction. However, such a mechanism suffers from one drawback:\nonly a few frequent words with sentiment polarities are tended to be taken into\nconsideration for final sentiment decision while abundant infrequent sentiment\nwords are ignored by models. To deal with this issue, we propose a progressive\nself-supervised attention learning approach for attentional ABSA models. In\nthis approach, we iteratively perform sentiment prediction on all training\ninstances, and continually learn useful attention supervision information in\nthe meantime. During training, at each iteration, context words with the\nhighest impact on sentiment prediction, identified based on their attention\nweights or gradients, are extracted as words with active/misleading influence\non the correct/incorrect prediction for each instance. Words extracted in this\nway are masked for subsequent iterations. To exploit these extracted words for\nrefining ABSA models, we augment the conventional training objective with a\nregularization term that encourages ABSA models to not only take full advantage\nof the extracted active context words but also decrease the weights of those\nmisleading words. We integrate the proposed approach into three\nstate-of-the-art neural ABSA models. Experiment results and in-depth analyses\nshow that our approach yields better attention results and significantly\nenhances the performance of all three models. We release the source code and\ntrained models at https://github.com/DeepLearnXMU/PSSAttention.",
-            "tldr": null,
-            "score": 0
-        },
-        {
-            "id": "2207.02424v2",
-            "paperId": "2207.02424v2",
-            "title": "Aspect-Based Sentiment Analysis using Local Context Focus Mechanism with\n  DeBERTa",
-            "year": "2022",
-            "citationCount": 0,
-            "abstract": "Text sentiment analysis, also known as opinion mining, is research on the\ncalculation of people's views, evaluations, attitude and emotions expressed by\nentities. Text sentiment analysis can be divided into text-level sentiment\nanalysis, sen-tence-level sentiment analysis and aspect-level sentiment\nanalysis. Aspect-Based Sentiment Analysis (ABSA) is a fine-grained task in the\nfield of sentiment analysis, which aims to predict the polarity of aspects. The\nresearch of pre-training neural model has significantly improved the\nperformance of many natural language processing tasks. In recent years, pre\ntraining model (PTM) has been applied in ABSA. Therefore, there has been a\nquestion, which is whether PTMs contain sufficient syntactic information for\nABSA. In this paper, we explored the recent DeBERTa model (Decoding-enhanced\nBERT with disentangled attention) to solve Aspect-Based Sentiment Analysis\nproblem. DeBERTa is a kind of neural language model based on transformer, which\nuses self-supervised learning to pre-train on a large number of original text\ncorpora. Based on the Local Context Focus (LCF) mechanism, by integrating\nDeBERTa model, we purpose a multi-task learning model for aspect-based\nsentiment analysis. The experiments result on the most commonly used the laptop\nand restaurant datasets of SemEval-2014 and the ACL twitter dataset show that\nLCF mechanism with DeBERTa has significant improvement.",
-            "tldr": null,
-            "score": 0
-        },
-        {
-            "id": "2004.13150v2",
-            "paperId": "2004.13150v2",
-            "title": "Octa: Omissions and Conflicts in Target-Aspect Sentiment Analysis",
-            "year": "2020",
-            "citationCount": 0,
-            "abstract": "Sentiments in opinionated text are often determined by both aspects and\ntarget words (or targets). We observe that targets and aspects interrelate in\nsubtle ways, often yielding conflicting sentiments. Thus, a naive aggregation\nof sentiments from aspects and targets treated separately, as in existing\nsentiment analysis models, impairs performance.\n  We propose Octa, an approach that jointly considers aspects and targets when\ninferring sentiments. To capture and quantify relationships between targets and\ncontext words, Octa uses a selective self-attention mechanism that handles\nimplicit or missing targets. Specifically, Octa involves two layers of\nattention mechanisms for, respectively, selective attention between targets and\ncontext words and attention over words based on aspects. On benchmark datasets,\nOcta outperforms leading models by a large margin, yielding (absolute) gains in\naccuracy of 1.6% to 4.3%.",
-            "tldr": null,
-            "score": 0
-        },
-        {
-            "id": "2409.05698v1",
-            "paperId": "2409.05698v1",
-            "title": "MANA-Net: Mitigating Aggregated Sentiment Homogenization with News\n  Weighting for Enhanced Market Prediction",
-            "year": "2024",
-            "citationCount": 0,
-            "abstract": "It is widely acknowledged that extracting market sentiments from news data\nbenefits market predictions. However, existing methods of using financial\nsentiments remain simplistic, relying on equal-weight and static aggregation to\nmanage sentiments from multiple news items. This leads to a critical issue\ntermed ``Aggregated Sentiment Homogenization'', which has been explored through\nour analysis of a large financial news dataset from industry practice. This\nphenomenon occurs when aggregating numerous sentiments, causing representations\nto converge towards the mean values of sentiment distributions and thereby\nsmoothing out unique and important information. Consequently, the aggregated\nsentiment representations lose much predictive value of news data. To address\nthis problem, we introduce the Market Attention-weighted News Aggregation\nNetwork (MANA-Net), a novel method that leverages a dynamic market-news\nattention mechanism to aggregate news sentiments for market prediction.\nMANA-Net learns the relevance of news sentiments to price changes and assigns\nvarying weights to individual news items. By integrating the news aggregation\nstep into the networks for market prediction, MANA-Net allows for trainable\nsentiment representations that are optimized directly for prediction. We\nevaluate MANA-Net using the S&P 500 and NASDAQ 100 indices, along with\nfinancial news spanning from 2003 to 2018. Experimental results demonstrate\nthat MANA-Net outperforms various recent market prediction methods, enhancing\nProfit & Loss by 1.1% and the daily Sharpe ratio by 0.252.",
-            "tldr": null,
-            "score": 0
-        },
-        {
-            "id": "1812.10735v2",
-            "paperId": "1812.10735v2",
-            "title": "CAN: Constrained Attention Networks for Multi-Aspect Sentiment Analysis",
-            "year": "2018",
-            "citationCount": 0,
-            "abstract": "Aspect level sentiment classification is a fine-grained sentiment analysis\ntask. To detect the sentiment towards a particular aspect in a sentence,\nprevious studies have developed various attention-based methods for generating\naspect-specific sentence representations. However, the attention may inherently\nintroduce noise and downgrade the performance. In this paper, we propose\nconstrained attention networks (CAN), a simple yet effective solution, to\nregularize the attention for multi-aspect sentiment analysis, which alleviates\nthe drawback of the attention mechanism. Specifically, we introduce orthogonal\nregularization on multiple aspects and sparse regularization on each single\naspect. Experimental results on two public datasets demonstrate the\neffectiveness of our approach. We further extend our approach to multi-task\nsettings and outperform the state-of-the-art methods.",
+            "abstract": "Due to their inherent capability in semantic alignment of aspects and their\ncontext words, attention mechanism and Convolutional Neural Networks (CNNs) are\nwidely applied for aspect-based sentiment classification. However, these models\nlack a mechanism to account for relevant syntactical constraints and long-range\nword dependencies, and hence may mistakenly recognize syntactically irrelevant\ncontextual words as clues for judging aspect sentiment. To tackle this problem,\nwe propose to build a Graph Convolutional Network (GCN) over the dependency\ntree of a sentence to exploit syntactical information and word dependencies.\nBased on it, a novel aspect-specific sentiment classification framework is\nraised. Experiments on three benchmarking collections illustrate that our\nproposed model has comparable effectiveness to a range of state-of-the-art\nmodels, and further demonstrate that both syntactical information and\nlong-range word dependencies are properly captured by the graph convolution\nstructure.",
             "tldr": null,
             "score": 0
         }

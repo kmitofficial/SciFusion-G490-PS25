@@ -44,6 +44,8 @@ export interface ExperimentResult {
     run_number: number;
     metrics: any;
     folder_name: string;
+    results_folder?: string;
+    results_path?: string;
 }
 
 // --- Grouped Type for UI ---
@@ -87,4 +89,23 @@ export interface JobSidebarItem {
     request?: {
         topic?: string;
     };
+}
+
+export interface ArtifactFolder {
+    idea_name?: string;
+    idea_title?: string;
+    folder_name: string;
+    folder_path: string;
+}
+
+export interface ArtifactNode {
+    name: string;
+    path: string;
+    type: "file" | "directory";
+    children?: ArtifactNode[];
+}
+
+export interface ArtifactFile {
+    path: string;
+    content: string;
 }

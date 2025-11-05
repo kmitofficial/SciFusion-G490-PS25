@@ -1,8 +1,10 @@
 from pydantic_settings import BaseSettings
 from pathlib import Path
+from typing import Optional
 
 # Build the path to the .env file (one directory up from 'server/')
-env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+env_path = BASE_DIR / ".env"
 
 
 class Settings(BaseSettings):
@@ -19,6 +21,12 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "a-very-secret-key-that-you-must-change"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
+
+    # --- Job Artifacts ---
+    RESULTS_DIR: str = str((BASE_DIR / "results").resolve())
+    RESULTS_SAMPLE_DIR: str = str((BASE_DIR / "resultsSample").resolve())
+    CORS_ALLOWED_ORIGINS: Optional[str] = None
+    CORS_ALLOW_ORIGIN_REGEX: Optional[str] = None
 
     class Config:
         env_file = env_path

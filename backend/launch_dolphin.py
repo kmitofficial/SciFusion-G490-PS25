@@ -9,6 +9,7 @@ import time
 import sys
 from dotenv import load_dotenv
 import requests
+from pathlib import Path
 
 # --- AUTHENTICATION FIX ---
 print("Loading environment variables from .env...")
@@ -23,7 +24,7 @@ from aider.models import Model
 from aider.io import InputOutput
 from datetime import datetime
 from dolphin_utils.generate_ideas import generate_ideas, check_idea_novelty
-from dolphin_utils.experiments_utils import perform_experiments
+from dolphin_utils.experiments_utils import perform_experiments, _relative_results_path
 
 NUM_REFLECTIONS = 3
 
@@ -372,11 +373,19 @@ def do_idea(base_dir, results_dir, idea, model, job_id, log_file=False):
                 with open(result_path, "r") as f:
                     result_data = json.load(f)
 
+                folder_path = Path(folder_name).resolve()
+                folder_relative_path = _relative_results_path(folder_path)
+                parent_relative_path = _relative_results_path(folder_path.parent)
+
+                folder_basename = folder_path.name
+
                 experiment_result = {
                     "idea_name": idea.get("Name", "Unnamed Idea"),
                     "idea_title": idea.get("Title", "Untitled"),
                     "metrics": result_data,
-                    "folder_name": os.path.basename(folder_name),
+                    "folder_name": folder_basename,
+                    "results_folder": parent_relative_path,
+                    "results_path": folder_relative_path,
                     "run_number": 99,  # <-- Use a special number for the "final" idea result
                 }
 
@@ -475,10 +484,11 @@ if __name__ == "__main__":
     base_dir = osp.join("examples", args.experiment)
     print(f"[PROCESS] Base experiment directory set to: {base_dir}")
 
+    job_results_folder = f"api_job_{args.job_id}"
     if args.save_name:
         results_dir = osp.join("results", args.save_name)
     else:
-        results_dir = osp.join("results", args.experiment)
+        results_dir = osp.join("results", job_results_folder)
     print(f"[PROCESS] Results directory set to: {results_dir}")
 
     os.makedirs(base_dir, exist_ok=True)

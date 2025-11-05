@@ -43,7 +43,7 @@ export function PaperCard({ paper }: PaperCardProps) {
 
                 <Dialog>
                     <DialogTrigger asChild>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" aria-label="View paper summary">
                             <Info className="h-4 w-4" />
                         </Button>
                     </DialogTrigger>
@@ -51,15 +51,14 @@ export function PaperCard({ paper }: PaperCardProps) {
                         <DialogHeader>
                             <DialogTitle>{paper.title}</DialogTitle>
                             <DialogDescription>
-                                <div className="flex gap-4 my-2">
-                                    <Badge variant="outline">Year: {paper.year}</Badge>
-                                    <Badge variant="default">Score: {paper.score}</Badge>
-                                    <Badge variant="secondary">
-                                        Citations: {paper.citationCount}
-                                    </Badge>
-                                </div>
+                                Published in {paper.year} · {paper.citationCount} citations recorded
                             </DialogDescription>
                         </DialogHeader>
+                        <div className="flex flex-wrap gap-2 py-2">
+                            <Badge variant="outline">Year: {paper.year}</Badge>
+                            <Badge variant="default">Score: {paper.score}</Badge>
+                            <Badge variant="secondary">Citations: {paper.citationCount}</Badge>
+                        </div>
                         <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
                             <div className="space-y-1">
                                 <h4 className="font-semibold flex items-center gap-2">

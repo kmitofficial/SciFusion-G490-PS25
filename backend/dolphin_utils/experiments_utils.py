@@ -6,6 +6,7 @@ import sys
 import json
 import re
 import os
+from pathlib import Path
 from dolphin_utils.prompts import *
 import filecmp
 import requests  # <-- NEW IMPORT
@@ -38,6 +39,18 @@ def push_experiment_result(job_id, result_dict):
 # ---
 # --- END NEW
 # ---
+
+
+def _relative_results_path(path: Path) -> str:
+    """Return a path relative to the nearest results/resultsSample directory."""
+    path = path.resolve()
+    for ancestor in path.parents:
+        if ancestor.name in {"results", "resultsSample"}:
+            try:
+                return path.relative_to(ancestor).as_posix()
+            except ValueError:
+                continue
+    return path.name
 
 
 # return (file, line, function, content), message
@@ -105,12 +118,14 @@ def run_experiment(folder_name, run_num, job_id, idea, timeout=18000):
                     # ---
                     if run_idx == run_num:  # Only send the result for the run that *just* finished
                         print(f"[PROCESS] Run {run_num} complete, sending result to API.")
+                        run_folder = Path(folder_name) / f"run_{run_num}"
                         experiment_result = {
-                            "idea_name": idea.get('Name', 'Unnamed Idea'),  # <-- ORIGINAL Name
-                            "idea_title": idea.get('Title', 'Untitled'),  # <-- ORIGINAL Title
-                            "run_number": run_num,  # <-- NEW FIELD
+                            "idea_name": idea.get('Name', 'Unnamed Idea'),
+                            "idea_title": idea.get('Title', 'Untitled'),
+                            "run_number": run_num,
                             "metrics": run_data,
-                            "folder_name": f"{os.path.basename(folder_name)}_run_{run_num}"  # Make a unique ID
+                            "folder_name": f"{os.path.basename(folder_name)}_run_{run_num}",
+                            "results_path": _relative_results_path(run_folder),
                         }
                         push_experiment_result(job_id, experiment_result)
                     # ---
