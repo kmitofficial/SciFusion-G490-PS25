@@ -102,7 +102,7 @@ SciFusion embraces the **agentic paradigm** to replicate the structure of collab
 
 | 👤 Name                  | 🌐 GitHub Profile                                              |
 |--------------------------|---------------------------------------------------------------|
-| Gadarla Ritesh Reddy     | [@Ritesh2006M](https://github.com/Ritesh2006M)               |
+| Gadarla Ritesh Reddy     | [@RiteshGadarla](https://github.com/RiteshGadarla)              |
 | Ellendula Sahasrika      | [@Sahasrika15](https://github.com/Sahasrika15)               |
 | Gajvelli Rohan Rao       | [@rohan6891](https://github.com/rohan6891)                   |
 | Kaspa Karthikeya         | [@Karthikeya0201](https://github.com/Karthikeya0201)         |

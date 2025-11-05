@@ -1,0 +1,22 @@
+[
+    {
+        "Name": "group_convolution_bert",
+        "Title": "Injecting BERT with group convolution",
+        "Motivation": "BERT's attention blocks rely on heavy fully-connected layers, leading to high computational and memory costs. Replacing them with group convolution can reduce parameters and speed up inference without sacrificing representational power.",
+        "Method": "We substitute the projection layers in each self-attention head with group convolutions. Features are split into groups, convolved with small kernels, then fed into the standard attention and normalization pipeline. This reduces parameter count and computation while maintaining accuracy.",
+        "Experiment": "In this experiment, we compare the performance of different sentiment classification networks, especially considering using group convolution instead of fully connect layer in the attention block in BERT",
+        "Summary": "Combine group convolution and BERT to improve the efficiency of BERT",
+        "Feasibility": 9,
+        "Novelty": 6
+    },
+    {
+        "Name": "sentiment_gated_bert",
+        "Title": "Sentiment Gating for Enhanced BERT Representations in Sentiment Classification",
+        "Motivation": "Standard BERT models learn sentiment implicitly from data. However, explicit linguistic cues like sentiment lexicon scores, negation, and intensifiers can provide valuable signals that might be missed or underemphasized by purely data-driven attention. Injecting these cues dynamically into the model's internal representations can lead to more robust and accurate sentiment classification by guiding the model to focus on sentiment-salient tokens and their modifiers.",
+        "Method": "We propose a 'Sentiment Gating' mechanism for BERT. For each input sequence, we first pre-compute token-level sentiment scores using a sentiment lexicon (e.g., VADER). We also identify negation and intensifier words. Based on these linguistic features, we derive a *continuous* 'sentiment gate' value for each token. This gate is designed to be high for tokens with strong positive or negative sentiment scores, and for tokens adjacent to negation or intensifier words, reflecting their amplified sentiment impact. During the forward pass, after each BERT encoder layer processes the input, we apply this sentiment gate to modulate the resulting hidden states. Specifically, the hidden states from each layer are element-wise multiplied by their corresponding sentiment gate values (broadcasted appropriately across the sequence length and hidden dimensions). This gating mechanism allows sentiment-relevant information to be emphasized as it propagates through the network, leading to richer, sentiment-aware representations that are then fed to the classification head.",
+        "Experiment": "1. Data Preprocessing: Implement functions to load a sentiment lexicon (e.g., VADER lexicon), identify negation words (e.g., 'not', 'no', 'never'), and intensifier words (e.g., 'very', 'extremely', 'slightly'). For each input sentence, generate a 'sentiment gate' tensor of shape (batch_size, seq_len). This gate will be derived from token-level sentiment scores (e.g., normalized scores from VADER), and contextual information from negation/intensifier words. For instance, a token's gate value could be a weighted sum of its own sentiment score and the sentiment impact of its surrounding negation/intensifier context. 2. Model Modification: Subclass `BertForSequenceClassification` or modify its `forward` method. Iterate through the `bert.encoder.layer` modules. After obtaining the output hidden states from each layer, apply the pre-computed sentiment gate using element-wise multiplication. The gate values will need to be broadcasted or reshaped to match the sequence length and hidden dimensions of the hidden states. 3. Training: Train the modified model on the SST-2 dataset. The final classification head will operate on the sentiment-gated hidden states. 4. Evaluation: Compare the performance (accuracy, AUC) of the sentiment-gated BERT model against the baseline BERT model. Analyze the impact of gating on the model's internal representations and potentially its attention patterns (though the direct bias on attention is removed in favor of gating hidden states).",
+        "Summary": "Improve BERT sentiment classification by dynamically gating internal hidden states with sentiment-derived linguistic features.",
+        "Feasibility": 8,
+        "Novelty": 7
+    }
+]

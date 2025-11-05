@@ -1,0 +1,24 @@
+[
+    {
+        "Name": "group_convolution_bert",
+        "Title": "Injecting BERT with group convolution",
+        "Motivation": "BERT's attention blocks rely on heavy fully-connected layers, leading to high computational and memory costs. Replacing them with group convolution can reduce parameters and speed up inference without sacrificing representational power.",
+        "Method": "We substitute the projection layers in each self-attention head with group convolutions. Features are split into groups, convolved with small kernels, then fed into the standard attention and normalization pipeline. This reduces parameter count and computation while maintaining accuracy.",
+        "Experiment": "In this experiment, we compare the performance of different sentiment classification networks, especially considering using group convolution instead of fully connect layer in the attention block in BERT",
+        "Summary": "Combine group convolution and BERT to improve the efficiency of BERT",
+        "Feasibility": 9,
+        "Novelty": 6,
+        "novel": false
+    },
+    {
+        "Name": "semantic_attention_gating",
+        "Title": "Semantic Gating for Enhanced Nuance in Transformer Self-Attention",
+        "Motivation": "Human sentiment perception often relies on understanding the semantic relatedness between words, not just their contextual co-occurrence. Standard self-attention mechanisms primarily focus on positional and contextual interactions. This work aims to inject explicit semantic similarity considerations into the attention process itself, allowing transformers to better capture subtle sentiment nuances.",
+        "Method": "We propose a novel 'Semantic Gating' mechanism to augment the self-attention layers in BERT. For each query-key interaction within an attention head, we introduce a gate that modulates the attention score based on the semantic similarity of the tokens represented by the query and key. This similarity can be approximated by a small, learnable network that takes token representations and outputs a similarity score. This score is then used to gate the attention weights (e.g., element-wise multiplication with attention scores). This allows the model to dynamically weigh interactions based on semantic relatedness, improving its ability to discern fine-grained sentiment.",
+        "Experiment": "Modify the `BertClassifier` class to intercept the intermediate representations within the self-attention modules of the BERT layers. Implement a small, learnable 'similarity module' that takes token embeddings and outputs a similarity score for each query-key pair. This score will be used to gate the computed attention weights before the softmax operation. The training and evaluation pipeline will remain largely the same, allowing comparison of performance with and without this semantic gating.",
+        "Summary": "Introduce a learnable semantic similarity gate within the self-attention mechanism of BERT to improve sentiment nuance detection.",
+        "Feasibility": 8,
+        "Novelty": 7,
+        "novel": true
+    }
+]

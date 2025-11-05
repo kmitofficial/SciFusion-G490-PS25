@@ -1,0 +1,232 @@
+{
+    "topic_description": "Emotion-Driven Attention for Sentiment Classification",
+    "all_queries": [
+        "Input(\"text\"), Output(\"sentiment label\")",
+        "KeywordQuery(\"emotion driven attention sentiment classification\")",
+        "PaperQuery(\"2301.09279v2\")",
+        "GetReferences(\"2301.09279v2\")",
+        "KeywordQuery(\"visual sentiment emotion attention\")"
+    ],
+    "paper_bank": [
+        {
+            "id": "2301.09279v2",
+            "paperId": "2301.09279v2",
+            "title": "StockEmotions: Discover Investor Emotions for Financial Sentiment\n  Analysis and Multivariate Time Series",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "There has been growing interest in applying NLP techniques in the financial\ndomain, however, resources are extremely limited. This paper introduces\nStockEmotions, a new dataset for detecting emotions in the stock market that\nconsists of 10,000 English comments collected from StockTwits, a financial\nsocial media platform. Inspired by behavioral finance, it proposes 12\nfine-grained emotion classes that span the roller coaster of investor emotion.\nUnlike existing financial sentiment datasets, StockEmotions presents granular\nfeatures such as investor sentiment classes, fine-grained emotions, emojis, and\ntime series data. To demonstrate the usability of the dataset, we perform a\ndataset analysis and conduct experimental downstream tasks. For financial\nsentiment/emotion classification tasks, DistilBERT outperforms other baselines,\nand for multivariate time series forecasting, a Temporal Attention LSTM model\ncombining price index, text, and emotion features achieves the best performance\nthan using a single feature.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "1611.04636v1",
+            "paperId": "1611.04636v1",
+            "title": "When Saliency Meets Sentiment: Understanding How Image Content Invokes\n  Emotion and Sentiment",
+            "year": "2016",
+            "citationCount": 0,
+            "abstract": "Sentiment analysis is crucial for extracting social signals from social media\ncontent. Due to the prevalence of images in social media, image sentiment\nanalysis is receiving increasing attention in recent years. However, most\nexisting systems are black-boxes that do not provide insight on how image\ncontent invokes sentiment and emotion in the viewers. Psychological studies\nhave confirmed that salient objects in an image often invoke emotions. In this\nwork, we investigate more fine-grained and more comprehensive interaction\nbetween visual saliency and visual sentiment. In particular, we partition\nimages in several primary scene-type dimensions, including: open-closed,\nnatural-manmade, indoor-outdoor, and face-noface. Using state of the art\nsaliency detection algorithm and sentiment classification algorithm, we examine\nhow the sentiment of the salient region(s) in an image relates to the overall\nsentiment of the image. The experiments on a representative image emotion\ndataset have shown interesting correlation between saliency and sentiment in\ndifferent scene types and in turn shed light on the mechanism of visual\nsentiment evocation.",
+            "tldr": null,
+            "score": 2
+        },
+        {
+            "id": "2410.12828v1",
+            "paperId": "2410.12828v1",
+            "title": "GCM-Net: Graph-enhanced Cross-Modal Infusion with a Metaheuristic-Driven\n  Network for Video Sentiment and Emotion Analysis",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Sentiment analysis and emotion recognition in videos are challenging tasks,\ngiven the diversity and complexity of the information conveyed in different\nmodalities. Developing a highly competent framework that effectively addresses\nthe distinct characteristics across various modalities is a primary concern in\nthis domain. Previous studies on combined multimodal sentiment and emotion\nanalysis often overlooked effective fusion for modality integration, intermodal\ncontextual congruity, optimizing concatenated feature spaces, leading to\nsuboptimal architecture. This paper presents a novel framework that leverages\nthe multi-modal contextual information from utterances and applies\nmetaheuristic algorithms to learn the contributing features for utterance-level\nsentiment and emotion prediction. Our Graph-enhanced Cross-Modal Infusion with\na Metaheuristic-Driven Network (GCM-Net) integrates graph sampling and\naggregation to recalibrate the modality features for video sentiment and\nemotion prediction. GCM-Net includes a cross-modal attention module determining\nintermodal interactions and utterance relevance. A harmonic optimization module\nemploying a metaheuristic algorithm combines attended features, allowing for\nhandling both single and multi-utterance inputs. To show the effectiveness of\nour approach, we have conducted extensive evaluations on three prominent\nmulti-modal benchmark datasets, CMU MOSI, CMU MOSEI, and IEMOCAP. The\nexperimental results demonstrate the efficacy of our proposed approach,\nshowcasing accuracies of 91.56% and 86.95% for sentiment analysis on MOSI and\nMOSEI datasets. We have performed emotion analysis for the IEMOCAP dataset\nprocuring an accuracy of 85.66% which signifies substantial performance\nenhancements over existing methods.",
+            "tldr": null,
+            "score": 2
+        },
+        {
+            "id": "1807.07961v2",
+            "paperId": "1807.07961v2",
+            "title": "Twitter Sentiment Analysis via Bi-sense Emoji Embedding and\n  Attention-based LSTM",
+            "year": "2018",
+            "citationCount": 0,
+            "abstract": "Sentiment analysis on large-scale social media data is important to bridge\nthe gaps between social media contents and real world activities including\npolitical election prediction, individual and public emotional status\nmonitoring and analysis, and so on. Although textual sentiment analysis has\nbeen well studied based on platforms such as Twitter and Instagram, analysis of\nthe role of extensive emoji uses in sentiment analysis remains light. In this\npaper, we propose a novel scheme for Twitter sentiment analysis with extra\nattention on emojis. We first learn bi-sense emoji embeddings under positive\nand negative sentimental tweets individually, and then train a sentiment\nclassifier by attending on these bi-sense emoji embeddings with an\nattention-based long short-term memory network (LSTM). Our experiments show\nthat the bi-sense embedding is effective for extracting sentiment-aware\nembeddings of emojis and outperforms the state-of-the-art models. We also\nvisualize the attentions to show that the bi-sense emoji embedding provides\nbetter guidance on the attention mechanism to obtain a more robust\nunderstanding of the semantics and sentiments.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "1905.05812v1",
+            "paperId": "1905.05812v1",
+            "title": "Multi-task Learning for Multi-modal Emotion Recognition and Sentiment\n  Analysis",
+            "year": "2019",
+            "citationCount": 0,
+            "abstract": "Related tasks often have inter-dependence on each other and perform better\nwhen solved in a joint framework. In this paper, we present a deep multi-task\nlearning framework that jointly performs sentiment and emotion analysis both.\nThe multi-modal inputs (i.e., text, acoustic and visual frames) of a video\nconvey diverse and distinctive information, and usually do not have equal\ncontribution in the decision making. We propose a context-level inter-modal\nattention framework for simultaneously predicting the sentiment and expressed\nemotions of an utterance. We evaluate our proposed approach on CMU-MOSEI\ndataset for multi-modal sentiment and emotion analysis. Evaluation results\nsuggest that multi-task learning framework offers improvement over the\nsingle-task framework. The proposed approach reports new state-of-the-art\nperformance for both sentiment analysis and emotion analysis.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "1801.10121v1",
+            "paperId": "1801.10121v1",
+            "title": "Image Captioning at Will: A Versatile Scheme for Effectively Injecting\n  Sentiments into Image Descriptions",
+            "year": "2018",
+            "citationCount": 0,
+            "abstract": "Automatic image captioning has recently approached human-level performance\ndue to the latest advances in computer vision and natural language\nunderstanding. However, most of the current models can only generate plain\nfactual descriptions about the content of a given image. However, for human\nbeings, image caption writing is quite flexible and diverse, where additional\nlanguage dimensions, such as emotion, humor and language styles, are often\nincorporated to produce diverse, emotional, or appealing captions. In\nparticular, we are interested in generating sentiment-conveying image\ndescriptions, which has received little attention. The main challenge is how to\neffectively inject sentiments into the generated captions without altering the\nsemantic matching between the visual content and the generated descriptions. In\nthis work, we propose two different models, which employ different schemes for\ninjecting sentiments into image captions. Compared with the few existing\napproaches, the proposed models are much simpler and yet more effective. The\nexperimental results show that our model outperform the state-of-the-art models\nin generating sentimental (i.e., sentiment-bearing) image captions. In\naddition, we can also easily manipulate the model by assigning different\nsentiments to the testing image to generate captions with the corresponding\nsentiments.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2501.08085v1",
+            "paperId": "2501.08085v1",
+            "title": "Dynamic Multimodal Sentiment Analysis: Leveraging Cross-Modal Attention\n  for Enabled Classification",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "This paper explores the development of a multimodal sentiment analysis model\nthat integrates text, audio, and visual data to enhance sentiment\nclassification. The goal is to improve emotion detection by capturing the\ncomplex interactions between these modalities, thereby enabling more accurate\nand nuanced sentiment interpretation. The study evaluates three feature fusion\nstrategies -- late stage fusion, early stage fusion, and multi-headed attention\n-- within a transformer-based architecture. Experiments were conducted using\nthe CMU-MOSEI dataset, which includes synchronized text, audio, and visual\ninputs labeled with sentiment scores. Results show that early stage fusion\nsignificantly outperforms late stage fusion, achieving an accuracy of 71.87\\%,\nwhile the multi-headed attention approach offers marginal improvement, reaching\n72.39\\%. The findings suggest that integrating modalities early in the process\nenhances sentiment classification, while attention mechanisms may have limited\nimpact within the current framework. Future work will focus on refining feature\nfusion techniques, incorporating temporal data, and exploring dynamic feature\nweighting to further improve model performance.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2412.10737v1",
+            "paperId": "2412.10737v1",
+            "title": "Sentiment and Hashtag-aware Attentive Deep Neural Network for Multimodal\n  Post Popularity Prediction",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Social media users articulate their opinions on a broad spectrum of subjects\nand share their experiences through posts comprising multiple modes of\nexpression, leading to a notable surge in such multimodal content on social\nmedia platforms. Nonetheless, accurately forecasting the popularity of these\nposts presents a considerable challenge. Prevailing methodologies primarily\ncenter on the content itself, thereby overlooking the wealth of information\nencapsulated within alternative modalities such as visual demographics,\nsentiments conveyed through hashtags and adequately modeling the intricate\nrelationships among hashtags, texts, and accompanying images. This oversight\nlimits the ability to capture emotional connection and audience relevance,\nsignificantly influencing post popularity. To address these limitations, we\npropose a seNtiment and hAshtag-aware attentive deep neuRal netwoRk for\nmultimodAl posT pOpularity pRediction, herein referred to as NARRATOR that\nextracts visual demographics from faces appearing in images and discerns\nsentiment from hashtag usage, providing a more comprehensive understanding of\nthe factors influencing post popularity Moreover, we introduce a hashtag-guided\nattention mechanism that leverages hashtags as navigational cues, guiding the\nmodels focus toward the most pertinent features of textual and visual\nmodalities, thus aligning with target audience interests and broader social\nmedia context. Experimental results demonstrate that NARRATOR outperforms\nexisting methods by a significant margin on two real-world datasets.\nFurthermore, ablation studies underscore the efficacy of integrating visual\ndemographics, sentiment analysis of hashtags, and hashtag-guided attention\nmechanisms in enhancing the performance of post popularity prediction, thereby\nfacilitating increased audience relevance, emotional engagement, and aesthetic\nappeal.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2412.10460v1",
+            "paperId": "2412.10460v1",
+            "title": "Enriching Multimodal Sentiment Analysis through Textual Emotional\n  Descriptions of Visual-Audio Content",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Multimodal Sentiment Analysis (MSA) stands as a critical research frontier,\nseeking to comprehensively unravel human emotions by amalgamating text, audio,\nand visual data. Yet, discerning subtle emotional nuances within audio and\nvideo expressions poses a formidable challenge, particularly when emotional\npolarities across various segments appear similar. In this paper, our objective\nis to spotlight emotion-relevant attributes of audio and visual modalities to\nfacilitate multimodal fusion in the context of nuanced emotional shifts in\nvisual-audio scenarios. To this end, we introduce DEVA, a progressive fusion\nframework founded on textual sentiment descriptions aimed at accentuating\nemotional features of visual-audio content. DEVA employs an Emotional\nDescription Generator (EDG) to transmute raw audio and visual data into\ntextualized sentiment descriptions, thereby amplifying their emotional\ncharacteristics. These descriptions are then integrated with the source data to\nyield richer, enhanced features. Furthermore, DEVA incorporates the Text-guided\nProgressive Fusion Module (TPF), leveraging varying levels of text as a core\nmodality guide. This module progressively fuses visual-audio minor modalities\nto alleviate disparities between text and visual-audio modalities. Experimental\nresults on widely used sentiment analysis benchmark datasets, including MOSI,\nMOSEI, and CH-SIMS, underscore significant enhancements compared to\nstate-of-the-art models. Moreover, fine-grained emotion experiments corroborate\nthe robust sensitivity of DEVA to subtle emotional variations.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "1911.12569v1",
+            "paperId": "1911.12569v1",
+            "title": "Emotion helps Sentiment: A Multi-task Model for Sentiment and Emotion\n  Analysis",
+            "year": "2019",
+            "citationCount": 0,
+            "abstract": "In this paper, we propose a two-layered multi-task attention based neural\nnetwork that performs sentiment analysis through emotion analysis. The proposed\napproach is based on Bidirectional Long Short-Term Memory and uses\nDistributional Thesaurus as a source of external knowledge to improve the\nsentiment and emotion prediction. The proposed system has two levels of\nattention to hierarchically build a meaningful representation. We evaluate our\nsystem on the benchmark dataset of SemEval 2016 Task 6 and also compare it with\nthe state-of-the-art systems on Stance Sentiment Emotion Corpus. Experimental\nresults show that the proposed system improves the performance of sentiment\nanalysis by 3.2 F-score points on SemEval 2016 Task 6 dataset. Our network also\nboosts the performance of emotion analysis by 5 F-score points on Stance\nSentiment Emotion Corpus.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2103.02362v3",
+            "paperId": "2103.02362v3",
+            "title": "Video Sentiment Analysis with Bimodal Information-augmented Multi-Head\n  Attention",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Humans express feelings or emotions via different channels. Take language as\nan example, it entails different sentiments under different visual-acoustic\ncontexts. To precisely understand human intentions as well as reduce the\nmisunderstandings caused by ambiguity and sarcasm, we should consider\nmultimodal signals including textual, visual and acoustic signals. The crucial\nchallenge is to fuse different modalities of features for sentiment analysis.\nTo effectively fuse the information carried by different modalities and better\npredict the sentiments, we design a novel multi-head attention based fusion\nnetwork, which is inspired by the observations that the interactions between\nany two pair-wise modalities are different and they do not equally contribute\nto the final sentiment prediction. By assigning the acoustic-visual,\nacoustic-textual and visual-textual features with reasonable attention and\nexploiting a residual structure, we attend to attain the significant features.\nWe conduct extensive experiments on four public multimodal datasets including\none in Chinese and three in English. The results show that our approach\noutperforms the existing methods and can explain the contributions of bimodal\ninteraction in multiple modalities.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2505.04642v1",
+            "paperId": "2505.04642v1",
+            "title": "Rethinking Multimodal Sentiment Analysis: A High-Accuracy, Simplified\n  Fusion Architecture",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Multimodal sentiment analysis, a pivotal task in affective computing, seeks\nto understand human emotions by integrating cues from language, audio, and\nvisual signals. While many recent approaches leverage complex attention\nmechanisms and hierarchical architectures, we propose a lightweight, yet\neffective fusion-based deep learning model tailored for utterance-level emotion\nclassification. Using the benchmark IEMOCAP dataset, which includes aligned\ntext, audio-derived numeric features, and visual descriptors, we design a\nmodality-specific encoder using fully connected layers followed by dropout\nregularization. The modality-specific representations are then fused using\nsimple concatenation and passed through a dense fusion layer to capture\ncross-modal interactions. This streamlined architecture avoids computational\noverhead while preserving performance, achieving a classification accuracy of\n92% across six emotion categories. Our approach demonstrates that with careful\nfeature engineering and modular design, simpler fusion strategies can\noutperform or match more complex models, particularly in resource-constrained\nenvironments.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2106.11473v1",
+            "paperId": "2106.11473v1",
+            "title": "Sequential Late Fusion Technique for Multi-modal Sentiment Analysis",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Multi-modal sentiment analysis plays an important role for providing better\ninteractive experiences to users. Each modality in multi-modal data can provide\ndifferent viewpoints or reveal unique aspects of a user's emotional state. In\nthis work, we use text, audio and visual modalities from MOSI dataset and we\npropose a novel fusion technique using a multi-head attention LSTM network.\nFinally, we perform a classification task and evaluate its performance.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2002.03773v1",
+            "paperId": "2002.03773v1",
+            "title": "Deriving Emotions and Sentiments from Visual Content: A Disaster\n  Analysis Use Case",
+            "year": "2020",
+            "citationCount": 0,
+            "abstract": "Sentiment analysis aims to extract and express a person's perception,\nopinions and emotions towards an entity, object, product and a service,\nenabling businesses to obtain feedback from the consumers. The increasing\npopularity of the social networks and users' tendency towards sharing their\nfeelings, expressions and opinions in text, visual and audio content has opened\nnew opportunities and challenges in sentiment analysis. While sentiment\nanalysis of text streams has been widely explored in the literature, sentiment\nanalysis of images and videos is relatively new. This article introduces visual\nsentiment analysis and contrasts it with textual sentiment analysis with\nemphasis on the opportunities and challenges in this nascent research area. We\nalso propose a deep visual sentiment analyzer for disaster-related images as a\nuse-case, covering different aspects of visual sentiment analysis starting from\ndata collection, annotation, model selection, implementation and evaluations.\nWe believe such rigorous analysis will provide a baseline for future research\nin the domain.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2109.08333v1",
+            "paperId": "2109.08333v1",
+            "title": "A Multimodal Sentiment Dataset for Video Recommendation",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Recently, multimodal sentiment analysis has seen remarkable advance and a lot\nof datasets are proposed for its development. In general, current multimodal\nsentiment analysis datasets usually follow the traditional system of\nsentiment/emotion, such as positive, negative and so on. However, when applied\nin the scenario of video recommendation, the traditional sentiment/emotion\nsystem is hard to be leveraged to represent different contents of videos in the\nperspective of visual senses and language understanding. Based on this, we\npropose a multimodal sentiment analysis dataset, named baiDu Video Sentiment\ndataset (DuVideoSenti), and introduce a new sentiment system which is designed\nto describe the sentimental style of a video on recommendation scenery.\nSpecifically, DuVideoSenti consists of 5,630 videos which displayed on Baidu,\neach video is manually annotated with a sentimental style label which describes\nthe user's real feeling of a video. Furthermore, we propose UNIMO as our\nbaseline for DuVideoSenti. Experimental results show that DuVideoSenti brings\nnew challenges to multimodal sentiment analysis, and could be used as a new\nbenchmark for evaluating approaches designed for video understanding and\nmultimodal fusion. We also expect our proposed DuVideoSenti could further\nimprove the development of multimodal sentiment analysis and its application to\nvideo recommendations.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2412.00060v1",
+            "paperId": "2412.00060v1",
+            "title": "MOSABench: Multi-Object Sentiment Analysis Benchmark for Evaluating\n  Multimodal Large Language Models Understanding of Complex Image",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Multimodal large language models (MLLMs) have shown remarkable progress in\nhigh-level semantic tasks such as visual question answering, image captioning,\nand emotion recognition. However, despite advancements, there remains a lack of\nstandardized benchmarks for evaluating MLLMs performance in multi-object\nsentiment analysis, a key task in semantic understanding. To address this gap,\nwe introduce MOSABench, a novel evaluation dataset designed specifically for\nmulti-object sentiment analysis. MOSABench includes approximately 1,000 images\nwith multiple objects, requiring MLLMs to independently assess the sentiment of\neach object, thereby reflecting real-world complexities. Key innovations in\nMOSABench include distance-based target annotation, post-processing for\nevaluation to standardize outputs, and an improved scoring mechanism. Our\nexperiments reveal notable limitations in current MLLMs: while some models,\nlike mPLUG-owl and Qwen-VL2, demonstrate effective attention to\nsentiment-relevant features, others exhibit scattered focus and performance\ndeclines, especially as the spatial distance between objects increases. This\nresearch underscores the need for MLLMs to enhance accuracy in complex,\nmulti-object sentiment analysis tasks and establishes MOSABench as a\nfoundational tool for advancing sentiment analysis capabilities in MLLMs.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2403.14050v3",
+            "paperId": "2403.14050v3",
+            "title": "Extracting Emotion Phrases from Tweets using BART",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Sentiment analysis is a natural language processing task that aims to\nidentify and extract the emotional aspects of a text. However, many existing\nsentiment analysis methods primarily classify the overall polarity of a text,\noverlooking the specific phrases that convey sentiment. In this paper, we\napplied an approach to sentiment analysis based on a question-answering\nframework. Our approach leverages the power of Bidirectional Autoregressive\nTransformer (BART), a pre-trained sequence-to-sequence model, to extract a\nphrase from a given text that amplifies a given sentiment polarity. We create a\nnatural language question that identifies the specific emotion to extract and\nthen guide BART to pay attention to the relevant emotional cues in the text. We\nuse a classifier within BART to predict the start and end positions of the\nanswer span within the text, which helps to identify the precise boundaries of\nthe extracted emotion phrase. Our approach offers several advantages over most\nsentiment analysis studies, including capturing the complete context and\nmeaning of the text and extracting precise token spans that highlight the\nintended sentiment. We achieved an end loss of 87% and Jaccard score of 0.61.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2408.10248v1",
+            "paperId": "2408.10248v1",
+            "title": "Target-Dependent Multimodal Sentiment Analysis Via Employing Visual-to\n  Emotional-Caption Translation Network using Visual-Caption Pairs",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "The natural language processing and multimedia field has seen a notable surge\nin interest in multimodal sentiment recognition. Hence, this study aims to\nemploy Target-Dependent Multimodal Sentiment Analysis (TDMSA) to identify the\nlevel of sentiment associated with every target (aspect) stated within a\nmultimodal post consisting of a visual-caption pair. Despite the recent\nadvancements in multimodal sentiment recognition, there has been a lack of\nexplicit incorporation of emotional clues from the visual modality,\nspecifically those pertaining to facial expressions. The challenge at hand is\nto proficiently obtain visual and emotional clues and subsequently synchronise\nthem with the textual content. In light of this fact, this study presents a\nnovel approach called the Visual-to-Emotional-Caption Translation Network\n(VECTN) technique. The primary objective of this strategy is to effectively\nacquire visual sentiment clues by analysing facial expressions. Additionally,\nit effectively aligns and blends the obtained emotional clues with the target\nattribute of the caption mode. The experimental findings demonstrate that our\nmethodology is capable of producing ground-breaking outcomes when applied to\ntwo publicly accessible multimodal Twitter datasets, namely, Twitter-2015 and\nTwitter-2017. The experimental results show that the suggested model achieves\nan accuracy of 81.23% and a macro-F1 of 80.61% on the Twitter-15 dataset, while\n77.42% and 75.19% on the Twitter-17 dataset, respectively. The observed\nimprovement in performance reveals that our model is better than others when it\ncomes to collecting target-level sentiment in multimodal data using the\nexpressions of the face.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2007.14071v1",
+            "paperId": "2007.14071v1",
+            "title": "Emotion Correlation Mining Through Deep Learning Models on Natural\n  Language Text",
+            "year": "2020",
+            "citationCount": 0,
+            "abstract": "Emotion analysis has been attracting researchers' attention. Most previous\nworks in the artificial intelligence field focus on recognizing emotion rather\nthan mining the reason why emotions are not or wrongly recognized. Correlation\namong emotions contributes to the failure of emotion recognition. In this\npaper, we try to fill the gap between emotion recognition and emotion\ncorrelation mining through natural language text from web news. Correlation\namong emotions, expressed as the confusion and evolution of emotion, is\nprimarily caused by human emotion cognitive bias. To mine emotion correlation\nfrom emotion recognition through text, three kinds of features and two deep\nneural network models are presented. The emotion confusion law is extracted\nthrough orthogonal basis. The emotion evolution law is evaluated from three\nperspectives, one-step shift, limited-step shifts, and shortest path transfer.\nThe method is validated using three datasets-the titles, the bodies, and the\ncomments of news articles, covering both objective and subjective texts in\nvarying lengths (long and short). The experimental results show that, in\nsubjective comments, emotions are easily mistaken as anger. Comments tend to\narouse emotion circulations of love-anger and sadness-anger. In objective news,\nit is easy to recognize text emotion as love and cause fear-joy circulation.\nThat means, journalists may try to attract attention using fear and joy words\nbut arouse the emotion love instead; After news release, netizens generate\nemotional comments to express their intense emotions, i.e., anger, sadness, and\nlove. These findings could provide insights for applications regarding\naffective interaction such as network public sentiment, social media\ncommunication, and human-computer interaction.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2311.11237v1",
+            "paperId": "2311.11237v1",
+            "title": "Implementation of AI Deep Learning Algorithm For Multi-Modal Sentiment\n  Analysis",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "A multi-modal emotion recognition method was established by combining\ntwo-channel convolutional neural network with ring network. This method can\nextract emotional information effectively and improve learning efficiency. The\nwords were vectorized with GloVe, and the word vector was input into the\nconvolutional neural network. Combining attention mechanism and maximum pool\nconverter BiSRU channel, the local deep emotion and pre-post sequential emotion\nsemantics are obtained. Finally, multiple features are fused and input as the\npolarity of emotion, so as to achieve the emotion analysis of the target.\nExperiments show that the emotion analysis method based on feature fusion can\neffectively improve the recognition accuracy of emotion data set and reduce the\nlearning time. The model has a certain generalization.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2209.04908v1",
+            "paperId": "2209.04908v1",
+            "title": "Automatic Detection of Sentimentality from Facial Expressions",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "Emotion recognition has received considerable attention from the Computer\nVision community in the last 20 years. However, most of the research focused on\nanalyzing the six basic emotions (e.g. joy, anger, surprise), with a limited\nwork directed to other affective states. In this paper, we tackle\nsentimentality (strong feeling of heartwarming or nostalgia), a new emotional\nstate that has few works in the literature, and no guideline defining its\nfacial markers. To this end, we first collect a dataset of 4.9K videos of\nparticipants watching some sentimental and non-sentimental ads, and then we\nlabel the moments evoking sentimentality in the ads. Second, we use the\nad-level labels and the facial Action Units (AUs) activation across different\nframes for defining some weak frame-level sentimentality labels. Third, we\ntrain a Multilayer Perceptron (MLP) using the AUs activation for sentimentality\ndetection. Finally, we define two new ad-level metrics for evaluating our model\nperformance. Quantitative and qualitative results show promising results for\nsentimentality detection. To the best of our knowledge this is the first work\nto address the problem of sentimentality detection.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2502.15322v1",
+            "paperId": "2502.15322v1",
+            "title": "SentiFormer: Metadata Enhanced Transformer for Image Sentiment Analysis",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "As more and more internet users post images online to express their daily\nemotions, image sentiment analysis has attracted increasing attention.\nRecently, researchers generally tend to design different neural networks to\nextract visual features from images for sentiment analysis. Despite the\nsignificant progress, metadata, the data (e.g., text descriptions and keyword\ntags) for describing the image, has not been sufficiently explored in this\ntask. In this paper, we propose a novel Metadata Enhanced Transformer for\nsentiment analysis (SentiFormer) to fuse multiple metadata and the\ncorresponding image into a unified framework. Specifically, we first obtain\nmultiple metadata of the image and unify the representations of diverse data.\nTo adaptively learn the appropriate weights for each metadata, we then design\nan adaptive relevance learning module to highlight more effective information\nwhile suppressing weaker ones. Moreover, we further develop a cross-modal\nfusion module to fuse the adaptively learned representations and make the final\nprediction. Extensive experiments on three publicly available datasets\ndemonstrate the superiority and rationality of our proposed method.",
+            "tldr": null,
+            "score": 0
+        }
+    ]
+}

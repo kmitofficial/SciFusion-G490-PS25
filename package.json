@@ -1,0 +1,14 @@
+{
+  "name": "scifusion",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "description": "Full-stack research automation system",
+  "packages": {},
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt"
+  }
+}
