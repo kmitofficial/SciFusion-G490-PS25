@@ -71,7 +71,7 @@ export default function IntroPage() {
                 <header className="flex items-center justify-between px-6 py-4 md:px-12">
                     <div className="flex items-center gap-3 text-lg font-semibold tracking-tight">
                         <Satellite className="h-6 w-6 text-sky-400" />
-                        SciFusion Research Suite
+                        SciFusion
                     </div>
                     <div className="hidden space-x-4 text-sm font-medium md:flex">
                         <Link href="/login" className="text-white/70 hover:text-white">

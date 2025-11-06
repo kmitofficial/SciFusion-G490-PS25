@@ -35,10 +35,12 @@ const isTokenValid = (token: string): boolean => {
         const decoded: { exp: number } = jwtDecode(token);
         const now = Date.now() / 1000;
         return decoded.exp > now;
-    } catch (e) {
+    } catch {
         return false;
     }
 };
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -53,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setUser(currentUser);
                 setToken(token);
             } catch (e) {
-                console.error("Failed to fetch user with token", e);
+                console.error("Failed to fetch user", e);
                 localStorage.removeItem("token");
                 setToken(null);
                 setUser(null);
@@ -77,8 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const login = async (formData: URLSearchParams) => {
         try {
-            // FastAPI's OAuth2PasswordRequestForm expects x-www-form-urlencoded
-            const response = await fetch("http://localhost:8000/api/v1/auth/login", {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -93,23 +94,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
 
             const { access_token } = data;
+
             localStorage.setItem("token", access_token);
             await loadUserFromToken(access_token);
             router.push("/app/dashboard");
         } catch (error) {
             console.error("Login failed", error);
-            throw error; // Re-throw to be caught by the form
+            throw error;
         }
     };
 
     const signup = async (userData: any) => {
         try {
             await api.post("/auth/signup", userData);
-            // On success, redirect to login
             router.push("/login");
         } catch (error) {
             console.error("Signup failed", error);
-            throw error; // Re-throw to be caught by the form
+            throw error;
         }
     };
 
@@ -123,18 +124,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return (
         <AuthContext.Provider
             value={{
-        user,
-            token,
-            isAuthenticated: !!user,
-            isLoading,
-            login,
-            logout,
-            signup,
-    }}
->
-    {children}
-    </AuthContext.Provider>
-);
+                user,
+                token,
+                isAuthenticated: !!user,
+                isLoading,
+                login,
+                logout,
+                signup,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export default AuthContext;
