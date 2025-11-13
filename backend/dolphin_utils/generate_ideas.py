@@ -135,7 +135,23 @@ def generate_ideas(
     if rag:
         with open(osp.join(rag_path), "r") as f:
             rag_papers = json.load(f)
-        rag_reference = format_papers_for_printing_ai_researcher(rag_papers)
+        
+        # --- NEW: Use only selected papers if available ---
+        paper_review = load_paper_review(base_dir)
+        if paper_review and not paper_review.get("skip"):
+            selected_papers = paper_review.get("selected_papers") or []
+            if selected_papers:
+                print(f"[GENERATE_IDEAS] Using {len(selected_papers)} human-selected papers instead of all {len(rag_papers.get('paper_bank', []))} papers")
+                # Replace paper_bank with selected papers only
+                rag_papers_filtered = {"paper_bank": selected_papers}
+                rag_reference = format_papers_for_printing_ai_researcher(rag_papers_filtered)
+            else:
+                print("[GENERATE_IDEAS] No papers selected, using all papers from RAG")
+                rag_reference = format_papers_for_printing_ai_researcher(rag_papers)
+        else:
+            print("[GENERATE_IDEAS] No paper review or user skipped, using all papers from RAG")
+            rag_reference = format_papers_for_printing_ai_researcher(rag_papers)
+        # --- END NEW ---
 
     idea_system_prompt = prompt["system"]
 
@@ -153,7 +169,10 @@ def generate_ideas(
         Use this to improve the next idea.
         """
 
-    paper_review = load_paper_review(base_dir)
+    # --- Load paper review for feedback (already loaded above if RAG enabled) ---
+    if not rag:
+        paper_review = load_paper_review(base_dir)
+    
     if paper_review:
         selected_papers = paper_review.get("selected_papers") or []
         selection_lines = "\n".join(

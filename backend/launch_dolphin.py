@@ -586,63 +586,106 @@ if __name__ == "__main__":
     else:
         print(f"[PROCESS] RAG is disabled.")
 
-    # --- MODIFICATION ---
-    print(f"[PROCESS] Calling generate_ideas...")
-    push_log_message(args.job_id, "Generating ideas...", "info")
-    # --- END MODIFICATION ---
-    ideas = generate_ideas(
-        base_dir,
-        client=client,
-        model=client_model,
-        skip_generation=args.skip_idea_generation,
-        max_num_generations=args.num_ideas,
-        num_reflections=NUM_REFLECTIONS,
-        rag=args.rag,
-        rag_path=osp.join(base_dir, f"{args.experiment}_rag_papers.json"),
-        check_independence=args.check_similarity,
-        embedding_model=args.embedding_model,
-        round=args.round,
-        exp_base_file_list=exp_base_file_list,
-    )
-    print(f"[PROCESS] generate_ideas finished. Found {len(ideas)} ideas.")
-    # --- MODIFICATION ---
-    push_log_message(args.job_id, f"Generated {len(ideas)} ideas. Sending to frontend.", "success")
-    # --- END MODIFICATION ---
-    update_job_ideas(args.job_id, ideas)  # This sends the *initial* list
-
-    if args.skip_novelty_check:
-        print(f"[PROCESS] Skipping novelty check.")
-        for idea in ideas:
-            idea["novel"] = True
-            idea["independence"] = True
+    # --- NEW: Check if resuming from human approval ---
+    is_resuming = args.skip_idea_generation and args.skip_novelty_check
+    
+    if is_resuming:
+        # Resuming after human approval - load existing ideas and run experiments
+        print("[PROCESS] ============================================")
+        print("[PROCESS] RESUMING AFTER HUMAN APPROVAL")
+        print("[PROCESS] ============================================")
+        push_log_message(args.job_id, "Resuming experiment execution after human approval...", "info")
+        
+        # Load ideas from the saved file
+        ideas_file = osp.join(base_dir, f"ideas_round_{args.round}_with_pos.json")
+        if not osp.exists(ideas_file):
+            ideas_file = osp.join(base_dir, "ideas.json")
+        
+        with open(ideas_file, "r") as f:
+            novel_ideas = json.load(f)
+        
+        print(f"[PROCESS] Loaded {len(novel_ideas)} ideas from file")
+        push_log_message(args.job_id, f"Loaded {len(novel_ideas)} approved ideas. Starting experiments...", "info")
     else:
+        # Normal flow - generate ideas
         # --- MODIFICATION ---
-        print(f"[PROCESS] Calling check_idea_novelty...")
-        push_log_message(args.job_id, "Checking idea novelty...", "info")
+        print(f"[PROCESS] Calling generate_ideas...")
+        push_log_message(args.job_id, "Generating ideas...", "info")
         # --- END MODIFICATION ---
-        ideas = check_idea_novelty(
-            ideas,
-            base_dir=base_dir,
+        ideas = generate_ideas(
+            base_dir,
             client=client,
             model=client_model,
-            round=args.round
+            skip_generation=args.skip_idea_generation,
+            max_num_generations=args.num_ideas,
+            num_reflections=NUM_REFLECTIONS,
+            rag=args.rag,
+            rag_path=osp.join(base_dir, f"{args.experiment}_rag_papers.json"),
+            check_independence=args.check_similarity,
+            embedding_model=args.embedding_model,
+            round=args.round,
+            exp_base_file_list=exp_base_file_list,
         )
-        print(f"[PROCESS] check_idea_novelty finished.")
+        print(f"[PROCESS] generate_ideas finished. Found {len(ideas)} ideas.")
         # --- MODIFICATION ---
-        push_log_message(args.job_id, "Novelty check complete.", "success")
+        push_log_message(args.job_id, f"Generated {len(ideas)} ideas. Sending to frontend.", "success")
         # --- END MODIFICATION ---
+        update_job_ideas(args.job_id, ideas)  # This sends the *initial* list
 
-    filter_ideas = [idea for idea in ideas if idea.get('independence', True)]
-    print(f"[PROCESS] Filtered for independence: {len(filter_ideas)} ideas remaining.")
-    novel_ideas = [idea for idea in filter_ideas if idea.get("novel", False)]
-    print(f"Run experiments on {len(novel_ideas)} novel and independent ideas.")
+        if args.skip_novelty_check:
+            print(f"[PROCESS] Skipping novelty check.")
+            for idea in ideas:
+                idea["novel"] = True
+                idea["independence"] = True
+        else:
+            # --- MODIFICATION ---
+            print(f"[PROCESS] Calling check_idea_novelty...")
+            push_log_message(args.job_id, "Checking idea novelty...", "info")
+            # --- END MODIFICATION ---
+            ideas = check_idea_novelty(
+                ideas,
+                base_dir=base_dir,
+                client=client,
+                model=client_model,
+                round=args.round
+            )
+            print(f"[PROCESS] check_idea_novelty finished.")
+            # --- MODIFICATION ---
+            push_log_message(args.job_id, "Novelty check complete.", "success")
+            # --- END MODIFICATION ---
 
-    # ---
-    # --- CRITICAL FIX FOR PROGRESS BAR ---
-    # --- Send the *final* list of ideas to the frontend.
-    # ---
-    push_log_message(args.job_id, f"Starting experiments on {len(novel_ideas)} novel ideas.", "info")
-    update_novel_ideas_list(args.job_id, novel_ideas)
+        filter_ideas = [idea for idea in ideas if idea.get('independence', True)]
+        print(f"[PROCESS] Filtered for independence: {len(filter_ideas)} ideas remaining.")
+        novel_ideas = [idea for idea in filter_ideas if idea.get("novel", False)]
+        print(f"Run experiments on {len(novel_ideas)} novel and independent ideas.")
+
+        # ---
+        # --- CRITICAL FIX FOR PROGRESS BAR ---
+        # --- Send the *final* list of ideas to the frontend.
+        # ---
+        push_log_message(args.job_id, f"Generated {len(novel_ideas)} novel ideas. Awaiting human review.", "info")
+        update_novel_ideas_list(args.job_id, novel_ideas)
+        
+        # --- NEW: PAUSE POINT FOR HUMAN IDEA REVIEW ---
+        # Set status to PENDING_HUMAN_IDEA and EXIT the script
+        # The API endpoints will handle code generation and experiments after approval
+        update_job_status(args.job_id, "pending_human_idea")
+        push_log_message(args.job_id, "Ideas ready for human review. Pipeline paused.", "success")
+        print("[PROCESS] ============================================")
+        print("[PROCESS] PIPELINE PAUSED FOR HUMAN REVIEW")
+        print("[PROCESS] ============================================")
+        print("[PROCESS] Ideas have been generated and sent to frontend.")
+        print("[PROCESS] To continue, user must approve an idea via the UI.")
+        print("[PROCESS] This will trigger: POST /jobs/{job_id}/approve-idea")
+        print("[PROCESS] Which will call the experiment execution separately.")
+        print("[PROCESS] Exiting launch_dolphin.py script now.")
+        print("[PROCESS] ============================================")
+        sys.exit(0)  # EXIT HERE - Don't run experiments automatically
+        # --- END NEW PAUSE POINT ---
+    # --- END NEW RESUME CHECK ---
+    
+    # --- NOTE: Code below will NOT execute in this run anymore ---
+    # --- It should be moved to a separate function/script triggered by API ---
     # ---
     # --- END FIX
     # ---

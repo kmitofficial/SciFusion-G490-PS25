@@ -149,6 +149,39 @@ We benchmark InternAgent-DR on a series of benchmarks, including GAIA, HLE and G
 
 
 
+## 🎯 Human-in-the-Loop (HITL) Implementation
+
+InternAgent supports **human intervention at multiple checkpoints** to guide the research process:
+
+### Pause Points
+1. **Paper Selection** - After collecting relevant papers, the system pauses for human review
+2. **Idea Approval** - After generating novel ideas, awaits human approval before experiments
+3. **Result Feedback** - Allows experts to provide feedback on experimental results for iterative improvement
+
+### How It Works
+```
+Research Pipeline:
+┌─────────────┐    ┌──────────────┐    ┌──────────────┐
+│   Collect   │ → ⏸️│ Human Reviews│ →  │   Generate   │
+│   Papers    │    │ & Selects    │    │    Ideas     │
+└─────────────┘    └──────────────┘    └──────────────┘
+                                              ↓
+┌─────────────┐    ┌──────────────┐    ┌──────────────┐
+│  Complete   │ ←  │     Run      │ ← ⏸️│ Human Approves│
+│  & Iterate  │    │ Experiments  │    │     Ideas     │
+└─────────────┘    └──────────────┘    └──────────────┘
+```
+
+**Key Features:**
+- **Selected Papers Only** - Only human-selected papers are used in idea generation (not all retrieved papers)
+- **User Comments** - Human feedback and comments are directly injected into the LLM prompt
+- **Pipeline Pause/Resume** - The system truly pauses and waits for human input before continuing
+- **Feedback Loop** - Expert insights guide idea refinement across iterations
+
+The backend (`server/services/research.py`) orchestrates these pause points, while the frontend provides intuitive approval modals for seamless human interaction.
+
+---
+
 ## 🚀 How to use the early version, Dolphin?
 
 ### Installation

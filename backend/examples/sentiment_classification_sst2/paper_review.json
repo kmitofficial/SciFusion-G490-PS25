@@ -1,75 +1,42 @@
 {
     "selected_paper_ids": [
-        "2410.11674v2",
-        "2501.02945v3",
-        "2208.09300v1",
-        "2207.10517v2",
-        "2106.09305v3",
-        "2410.19025v1"
+        "1807.04990v1",
+        "1610.06272v2",
+        "2209.03557v1"
     ],
     "selected_papers": [
         {
-            "id": "2410.11674v2",
-            "paperId": "2410.11674v2",
-            "title": "LLM-Mixer: Multiscale Mixing in LLMs for Time Series Forecasting",
-            "year": "2024",
+            "id": "1807.04990v1",
+            "paperId": "1807.04990v1",
+            "title": "A Multi-sentiment-resource Enhanced Attention Network for Sentiment Classification",
+            "year": "2018",
             "citationCount": 0,
-            "abstract": "Time series forecasting remains a challenging task, particularly in the context of complex multiscale temporal patterns. This study presents LLM-Mixer, a framework that improves forecasting accuracy through the combination of multiscale time-series decomposition with pre-trained LLMs (Large Language Models). LLM-Mixer captures both short-term fluctuations and long-term trends by decomposing the data into multiple temporal resolutions and processing them with a frozen LLM, guided by a textual prompt specifically designed for time-series data. Extensive experiments conducted on multivariate and univariate datasets demonstrate that LLM-Mixer achieves competitive performance, outperforming recent state-of-the-art models across various forecasting horizons. This work highlights the potential of combining multiscale analysis and LLMs for effective and scalable time-series forecasting.",
+            "abstract": "Deep learning approaches for sentiment classification do not fully exploit sentiment linguistic knowledge. In this paper, we propose a Multi-sentiment-resource Enhanced Attention Network (MEAN) to alleviate the problem by integrating three kinds of sentiment linguistic knowledge (e.g., sentiment lexicon, negation words, intensity words) into the deep neural network via attention mechanisms. By using various types of sentiment resources, MEAN utilizes sentiment-relevant information from different representation subspaces, which makes it more effective to capture the overall semantics of the sentiment, negation and intensity words for sentiment prediction. The experimental results demonstrate that MEAN has robust superiority over strong competitors.",
             "tldr": null,
             "score": 9
         },
         {
-            "id": "2501.02945v3",
-            "paperId": "2501.02945v3",
-            "title": "From Tables to Time: How TabPFN-v2 Outperforms Specialized Time Series Forecasting Models",
-            "year": "2025",
+            "id": "1610.06272v2",
+            "paperId": "1610.06272v2",
+            "title": "Lexicon Integrated CNN Models with Attention for Sentiment Analysis",
+            "year": "2016",
             "citationCount": 0,
-            "abstract": "Foundation models have become increasingly popular for forecasting due to their ability to provide predictions without requiring a lot of training data. In this work, we demonstrate how TabPFN-v2, a general tabular foundation model, can be effectively applied to time series forecasting. We introduce TabPFN-TS, a simple method that combines TabPFN-v2 with lightweight feature engineering to enable both point and probabilistic forecasting. Despite its simplicity and compact size (11M parameters), TabPFN-TS achieves top rank on the public GIFT-Eval leaderboard in both forecasting tasks. Through ablation studies, we investigate factors contributing to this surprising effectiveness, especially considering TabPFN-v2 was pretrained solely on synthetic tabular data with no exposure to time series. Our results highlights the potential of tabular foundation models like TabPFN-v2 as a valuable new approach for time series forecasting. Our implementation is available at https://github.com/PriorLabs/tabpfn-time-series.",
+            "abstract": "With the advent of word embeddings, lexicons are no longer fully utilized for sentiment analysis although they still provide important features in the traditional setting. This paper introduces a novel approach to sentiment analysis that integrates lexicon embeddings and an attention mechanism into Convolutional Neural Networks. Our approach performs separate convolutions for word and lexicon embeddings and provides a global view of the document using attention. Our models are experimented on both the SemEval'16 Task 4 dataset and the Stanford Sentiment Treebank, and show comparative or better results against the existing state-of-the-art systems. Our analysis shows that lexicon embeddings allow to build high-performing models with much smaller word embeddings, and the attention mechanism effectively dims out noisy words for sentiment analysis.",
             "tldr": null,
             "score": 8
         },
         {
-            "id": "2208.09300v1",
-            "paperId": "2208.09300v1",
-            "title": "Expressing Multivariate Time Series as Graphs with Time Series Attention Transformer",
+            "id": "2209.03557v1",
+            "paperId": "2209.03557v1",
+            "title": "Does Attention Mechanism Possess the Feature of Human Reading? A Perspective of Sentiment Classification Task",
             "year": "2022",
             "citationCount": 0,
-            "abstract": "A reliable and efficient representation of multivariate time series is crucial in various downstream machine learning tasks. In multivariate time series forecasting, each variable depends on its historical values and there are inter-dependencies among variables as well. Models have to be designed to capture both intra- and inter-relationships among the time series. To move towards this goal, we propose the Time Series Attention Transformer (TSAT) for multivariate time series representation learning. Using TSAT, we represent both temporal information and inter-dependencies of multivariate time series in terms of edge-enhanced dynamic graphs. The intra-series correlations are represented by nodes in a dynamic graph; a self-attention mechanism is modified to capture the inter-series correlations by using the super-empirical mode decomposition (SMD) module. We applied the embedded dynamic graphs to times series forecasting problems, including two real-world datasets and two benchmark datasets. Extensive experiments show that TSAT clearly outerperforms six state-of-the-art baseline methods in various forecasting horizons. We further visualize the embedded dynamic graphs to illustrate the graph representation power of TSAT. We share our code at https://github.com/RadiantResearch/TSAT.",
-            "tldr": null,
-            "score": 8
-        },
-        {
-            "id": "2207.10517v2",
-            "paperId": "2207.10517v2",
-            "title": "MQRetNN: Multi-Horizon Time Series Forecasting with Retrieval Augmentation",
-            "year": "2022",
-            "citationCount": 0,
-            "abstract": "Multi-horizon probabilistic time series forecasting has wide applicability to real-world tasks such as demand forecasting. Recent work in neural time-series forecasting mainly focus on the use of Seq2Seq architectures. For example, MQTransformer - an improvement of MQCNN - has shown the state-of-the-art performance in probabilistic demand forecasting. In this paper, we consider incorporating cross-entity information to enhance model performance by adding a cross-entity attention mechanism along with a retrieval mechanism to select which entities to attend over. We demonstrate how our new neural architecture, MQRetNN, leverages the encoded contexts from a pretrained baseline model on the entire population to improve forecasting accuracy. Using MQCNN as the baseline model (due to computational constraints, we do not use MQTransformer), we first show on a small demand forecasting dataset that it is possible to achieve ~3% improvement in test loss by adding a cross-entity attention mechanism where each entity attends to all others in the population. We then evaluate the model with our proposed retrieval methods - as a means of approximating an attention over a large population - on a large-scale demand forecasting application with over 2 million products and observe ~1% performance gain over the MQCNN baseline.",
-            "tldr": null,
-            "score": 8
-        },
-        {
-            "id": "2106.09305v3",
-            "paperId": "2106.09305v3",
-            "title": "SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction",
-            "year": "2021",
-            "citationCount": 0,
-            "abstract": "One unique property of time series is that the temporal relations are largely preserved after downsampling into two sub-sequences. By taking advantage of this property, we propose a novel neural network architecture that conducts sample convolution and interaction for temporal modeling and forecasting, named SCINet. Specifically, SCINet is a recursive downsample-convolve-interact architecture. In each layer, we use multiple convolutional filters to extract distinct yet valuable temporal features from the downsampled sub-sequences or features. By combining these rich features aggregated from multiple resolutions, SCINet effectively models time series with complex temporal dynamics. Experimental results show that SCINet achieves significant forecasting accuracy improvements over both existing convolutional models and Transformer-based solutions across various real-world time series forecasting datasets. Our codes and data are available at https://github.com/cure-lab/SCINet.",
-            "tldr": null,
-            "score": 7
-        },
-        {
-            "id": "2410.19025v1",
-            "paperId": "2410.19025v1",
-            "title": "Large Language Models for Financial Aid in Financial Time-series Forecasting",
-            "year": "2024",
-            "citationCount": 0,
-            "abstract": "Considering the difficulty of financial time series forecasting in financial aid, much of the current research focuses on leveraging big data analytics in financial services. One modern approach is to utilize \"predictive analysis\", analogous to forecasting financial trends. However, many of these time series data in Financial Aid (FA) pose unique challenges due to limited historical datasets and high dimensional financial information, which hinder the development of effective predictive models that balance accuracy with efficient runtime and memory usage. Pre-trained foundation models are employed to address these challenging tasks. We use state-of-the-art time series models including pre-trained LLMs (GPT-2 as the backbone), transformers, and linear models to demonstrate their ability to outperform traditional approaches, even with minimal (\"few-shot\") or no fine-tuning (\"zero-shot\"). Our benchmark study, which includes financial aid with seven other time series tasks, shows the potential of using LLMs for scarce financial datasets.",
+            "abstract": "[Purpose] To understand the meaning of a sentence, humans can focus on important words in the sentence, which reflects our eyes staying on each word in different gaze time or times. Thus, some studies utilize eye-tracking values to optimize the attention mechanism in deep learning models. But these studies lack to explain the rationality of this approach. Whether the attention mechanism possesses this feature of human reading needs to be explored. [Design/methodology/approach] We conducted experiments on a sentiment classification task. Firstly, we obtained eye-tracking values from two open-source eye-tracking corpora to describe the feature of human reading. Then, the machine attention values of each sentence were learned from a sentiment classification model. Finally, a comparison was conducted to analyze machine attention values and eye-tracking values. [Findings] Through experiments, we found the attention mechanism can focus on important words, such as adjectives, adverbs, and sentiment words, which are valuable for judging the sentiment of sentences on the sentiment classification task. It possesses the feature of human reading, focusing on important words in sentences when reading. Due to the insufficient learning of the attention mechanism, some words are wrongly focused. The eye-tracking values can help the attention mechanism correct this error and improve the model performance. [Originality/value] Our research not only provides a reasonable explanation for the study of using eye-tracking values to optimize the attention mechanism, but also provides new inspiration for the interpretability of attention mechanism.",
             "tldr": null,
             "score": 7
         }
     ],
-    "comment": "do proper matching betweenthem",
+    "comment": null,
     "skip": false,
-    "submitted_at": "2025-11-13T02:07:23.390065Z"
+    "submitted_at": "2025-11-13T07:02:58.843884Z"
 }
