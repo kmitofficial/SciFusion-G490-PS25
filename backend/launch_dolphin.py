@@ -141,6 +141,37 @@ def push_log_message(job_id, message, log_type="info"):
 # --- END API CALLBACK FUNCTIONS ---
 
 
+def wait_for_paper_review(job_id, timeout_seconds: int = 3600, poll_interval: int = 5):
+    """Poll the backend until human paper review is available or timeout elapses."""
+    if not job_id:
+        return None
+
+    start_time = time.time()
+    while True:
+        try:
+            resp = requests.get(
+                f"{API_BASE_URL}/_internal/paper-review/{job_id}",
+                timeout=10
+            )
+            resp.raise_for_status()
+            payload = resp.json()
+        except Exception as exc:
+            print(f"[API_CALLBACK ERROR] Polling paper review failed: {exc}")
+            time.sleep(poll_interval)
+            continue
+
+        status_value = payload.get("status")
+        if status_value == "ready":
+            return payload.get("paper_review") or {}
+
+        elapsed = time.time() - start_time
+        if elapsed >= timeout_seconds:
+            print("[API_CALLBACK] Paper review wait timed out. Proceeding without input.")
+            return None
+
+        time.sleep(poll_interval)
+
+
 def print_time():
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
@@ -529,6 +560,29 @@ if __name__ == "__main__":
         with open(file_path, "w") as f:
             json.dump(paper_dict, f, indent=4)
         update_job_papers(args.job_id, paper_dict)
+
+        push_log_message(args.job_id, "Waiting for human paper selection...", "info")
+        review_data = wait_for_paper_review(args.job_id)
+        if review_data is None:
+            push_log_message(args.job_id, "No human paper input received. Continuing automatically.", "info")
+        else:
+            review_path = osp.join(base_dir, "paper_review.json")
+            if "selected_papers" not in review_data:
+                selected_ids = review_data.get("selected_paper_ids") or []
+                review_data["selected_papers"] = [
+                    paper for paper in paper_bank if paper.get("id") in selected_ids
+                ]
+            with open(review_path, "w") as f:
+                json.dump(review_data, f, indent=4)
+
+            if review_data.get("skip"):
+                push_log_message(args.job_id, "User skipped paper review. Proceeding with default workflow.", "info")
+            else:
+                push_log_message(
+                    args.job_id,
+                    f"Received human paper feedback on {len(review_data.get('selected_paper_ids') or [])} papers.",
+                    "success"
+                )
     else:
         print(f"[PROCESS] RAG is disabled.")
 

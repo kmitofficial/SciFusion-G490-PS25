@@ -1,221 +1,388 @@
 {
-    "topic_description": "novel attention mechanisms for sentiment classification",
+    "topic_description": "Using Transformers for time series forecasting",
     "all_queries": [
-        "Input(\"textual data (e.g., sentences, reviews, tweets)\"), Output(\"sentiment label (e.g., positive, negative, neutral)\")",
-        "KeywordQuery(\"novel attention mechanisms sentiment classification\")",
-        "PaperQuery(\"1807.04990v1\")",
-        "GetReferences(\"1807.04990v1\")",
-        "KeywordQuery(\"attention mechanism sentiment analysis\")",
-        "KeywordQuery(\"graph attention networks sentiment classification\")"
+        "Input(\"historical time series data\"), Output(\"future time series values\")",
+        "KeywordQuery(\"Transformer time series forecasting\")",
+        "PaperQuery(\"2410.11674v2\")"
     ],
     "paper_bank": [
         {
-            "id": "1807.04990v1",
-            "paperId": "1807.04990v1",
-            "title": "A Multi-sentiment-resource Enhanced Attention Network for Sentiment\n  Classification",
-            "year": "2018",
+            "id": "2410.11674v2",
+            "paperId": "2410.11674v2",
+            "title": "LLM-Mixer: Multiscale Mixing in LLMs for Time Series Forecasting",
+            "year": "2024",
             "citationCount": 0,
-            "abstract": "Deep learning approaches for sentiment classification do not fully exploit\nsentiment linguistic knowledge. In this paper, we propose a\nMulti-sentiment-resource Enhanced Attention Network (MEAN) to alleviate the\nproblem by integrating three kinds of sentiment linguistic knowledge (e.g.,\nsentiment lexicon, negation words, intensity words) into the deep neural\nnetwork via attention mechanisms. By using various types of sentiment\nresources, MEAN utilizes sentiment-relevant information from different\nrepresentation subspaces, which makes it more effective to capture the overall\nsemantics of the sentiment, negation and intensity words for sentiment\nprediction. The experimental results demonstrate that MEAN has robust\nsuperiority over strong competitors.",
+            "abstract": "Time series forecasting remains a challenging task, particularly in the context of complex multiscale temporal patterns. This study presents LLM-Mixer, a framework that improves forecasting accuracy through the combination of multiscale time-series decomposition with pre-trained LLMs (Large Language Models). LLM-Mixer captures both short-term fluctuations and long-term trends by decomposing the data into multiple temporal resolutions and processing them with a frozen LLM, guided by a textual prompt specifically designed for time-series data. Extensive experiments conducted on multivariate and univariate datasets demonstrate that LLM-Mixer achieves competitive performance, outperforming recent state-of-the-art models across various forecasting horizons. This work highlights the potential of combining multiscale analysis and LLMs for effective and scalable time-series forecasting.",
             "tldr": null,
             "score": 9
         },
         {
-            "id": "2010.12156v1",
-            "paperId": "2010.12156v1",
-            "title": "Attention Transfer Network for Aspect-level Sentiment Classification",
-            "year": "2020",
-            "citationCount": 0,
-            "abstract": "Aspect-level sentiment classification (ASC) aims to detect the sentiment\npolarity of a given opinion target in a sentence. In neural network-based\nmethods for ASC, most works employ the attention mechanism to capture the\ncorresponding sentiment words of the opinion target, then aggregate them as\nevidence to infer the sentiment of the target. However, aspect-level datasets\nare all relatively small-scale due to the complexity of annotation. Data\nscarcity causes the attention mechanism sometimes to fail to focus on the\ncorresponding sentiment words of the target, which finally weakens the\nperformance of neural models. To address the issue, we propose a novel\nAttention Transfer Network (ATN) in this paper, which can successfully exploit\nattention knowledge from resource-rich document-level sentiment classification\ndatasets to improve the attention capability of the aspect-level sentiment\nclassification task. In the ATN model, we design two different methods to\ntransfer attention knowledge and conduct experiments on two ASC benchmark\ndatasets. Extensive experimental results show that our methods consistently\noutperform state-of-the-art works. Further analysis also validates the\neffectiveness of ATN.",
-            "tldr": null,
-            "score": 8
-        },
-        {
-            "id": "2303.07689v1",
-            "paperId": "2303.07689v1",
-            "title": "Dual-Attention Model for Aspect-Level Sentiment Classification",
-            "year": "2023",
-            "citationCount": 0,
-            "abstract": "I propose a novel dual-attention model(DAM) for aspect-level sentiment\nclassification. Many methods have been proposed, such as support vector\nmachines for artificial design features, long short-term memory networks based\non attention mechanisms, and graph neural networks based on dependency parsing.\nWhile these methods all have decent performance, I think they all miss one\nimportant piece of syntactic information: dependency labels. Based on this\nidea, this paper proposes a model using dependency labels for the attention\nmechanism to do this task. We evaluate the proposed approach on three datasets:\nlaptop and restaurant are from SemEval 2014, and the last one is a twitter\ndataset. Experimental results show that the dual attention model has good\nperformance on all three datasets.",
-            "tldr": null,
-            "score": 8
-        },
-        {
-            "id": "2308.11447v1",
-            "paperId": "2308.11447v1",
-            "title": "Aspect-oriented Opinion Alignment Network for Aspect-Based Sentiment\n  Classification",
-            "year": "2023",
-            "citationCount": 0,
-            "abstract": "Aspect-based sentiment classification is a crucial problem in fine-grained\nsentiment analysis, which aims to predict the sentiment polarity of the given\naspect according to its context. Previous works have made remarkable progress\nin leveraging attention mechanism to extract opinion words for different\naspects. However, a persistent challenge is the effective management of\nsemantic mismatches, which stem from attention mechanisms that fall short in\nadequately aligning opinions words with their corresponding aspect in\nmulti-aspect sentences. To address this issue, we propose a novel\nAspect-oriented Opinion Alignment Network (AOAN) to capture the contextual\nassociation between opinion words and the corresponding aspect. Specifically,\nwe first introduce a neighboring span enhanced module which highlights various\ncompositions of neighboring words and given aspects. In addition, we design a\nmulti-perspective attention mechanism that align relevant opinion information\nwith respect to the given aspect. Extensive experiments on three benchmark\ndatasets demonstrate that our model achieves state-of-the-art results. The\nsource code is available at https://github.com/AONE-NLP/ABSA-AOAN.",
-            "tldr": null,
-            "score": 8
-        },
-        {
-            "id": "1909.02606v1",
-            "paperId": "1909.02606v1",
-            "title": "Syntax-Aware Aspect Level Sentiment Classification with Graph Attention\n  Networks",
-            "year": "2019",
-            "citationCount": 0,
-            "abstract": "Aspect level sentiment classification aims to identify the sentiment\nexpressed towards an aspect given a context sentence. Previous neural network\nbased methods largely ignore the syntax structure in one sentence. In this\npaper, we propose a novel target-dependent graph attention network (TD-GAT) for\naspect level sentiment classification, which explicitly utilizes the dependency\nrelationship among words. Using the dependency graph, it propagates sentiment\nfeatures directly from the syntactic context of an aspect target. In our\nexperiments, we show our method outperforms multiple baselines with GloVe\nembeddings. We also demonstrate that using BERT representations further\nsubstantially boosts the performance.",
-            "tldr": null,
-            "score": 8
-        },
-        {
-            "id": "1906.04501v1",
-            "paperId": "1906.04501v1",
-            "title": "Modeling Sentiment Dependencies with Graph Convolutional Networks for\n  Aspect-level Sentiment Classification",
-            "year": "2019",
-            "citationCount": 0,
-            "abstract": "Aspect-level sentiment classification aims to distinguish the sentiment\npolarities over one or more aspect terms in a sentence. Existing approaches\nmostly model different aspects in one sentence independently, which ignore the\nsentiment dependencies between different aspects. However, we find such\ndependency information between different aspects can bring additional valuable\ninformation. In this paper, we propose a novel aspect-level sentiment\nclassification model based on graph convolutional networks (GCN) which can\neffectively capture the sentiment dependencies between multi-aspects in one\nsentence. Our model firstly introduces bidirectional attention mechanism with\nposition encoding to model aspect-specific representations between each aspect\nand its context words, then employs GCN over the attention mechanism to capture\nthe sentiment dependencies between different aspects in one sentence. We\nevaluate the proposed approach on the SemEval 2014 datasets. Experiments show\nthat our model outperforms the state-of-the-art methods. We also conduct\nexperiments to evaluate the effectiveness of GCN module, which indicates that\nthe dependencies between different aspects is highly helpful in aspect-level\nsentiment classification.",
-            "tldr": null,
-            "score": 7
-        },
-        {
-            "id": "2312.10048v4",
-            "paperId": "2312.10048v4",
-            "title": "Knowledge Graph Enhanced Aspect-Level Sentiment Analysis",
-            "year": "2023",
-            "citationCount": 0,
-            "abstract": "In this paper, we propose a novel method to enhance sentiment analysis by\naddressing the challenge of context-specific word meanings. It combines the\nadvantages of a BERT model with a knowledge graph based synonym data. This\nsynergy leverages a dynamic attention mechanism to develop a knowledge-driven\nstate vector. For classifying sentiments linked to specific aspects, the\napproach constructs a memory bank integrating positional data. The data are\nthen analyzed using a DCGRU to pinpoint sentiment characteristics related to\nspecific aspect terms. Experiments on three widely used datasets demonstrate\nthe superior performance of our method in sentiment classification.",
-            "tldr": null,
-            "score": 7
-        },
-        {
-            "id": "2503.08079v1",
-            "paperId": "2503.08079v1",
-            "title": "Advancing Sentiment Analysis: A Novel LSTM Framework with Multi-head\n  Attention",
+            "id": "2501.02945v3",
+            "paperId": "2501.02945v3",
+            "title": "From Tables to Time: How TabPFN-v2 Outperforms Specialized Time Series Forecasting Models",
             "year": "2025",
             "citationCount": 0,
-            "abstract": "This work proposes an LSTM-based sentiment classification model with\nmulti-head attention mechanism and TF-IDF optimization. Through the integration\nof TF-IDF feature extraction and multi-head attention, the model significantly\nimproves text sentiment analysis performance. Experimental results on public\ndata sets demonstrate that the new method achieves substantial improvements in\nthe most critical metrics like accuracy, recall, and F1-score compared to\nbaseline models. Specifically, the model achieves an accuracy of 80.28% on the\ntest set, which is improved by about 12% in comparison with standard LSTM\nmodels. Ablation experiments also support the necessity and necessity of all\nmodules, in which the impact of multi-head attention is greatest to performance\nimprovement. This research provides a proper approach to sentiment analysis,\nwhich can be utilized in public opinion monitoring, product recommendation,\netc.",
+            "abstract": "Foundation models have become increasingly popular for forecasting due to their ability to provide predictions without requiring a lot of training data. In this work, we demonstrate how TabPFN-v2, a general tabular foundation model, can be effectively applied to time series forecasting. We introduce TabPFN-TS, a simple method that combines TabPFN-v2 with lightweight feature engineering to enable both point and probabilistic forecasting. Despite its simplicity and compact size (11M parameters), TabPFN-TS achieves top rank on the public GIFT-Eval leaderboard in both forecasting tasks. Through ablation studies, we investigate factors contributing to this surprising effectiveness, especially considering TabPFN-v2 was pretrained solely on synthetic tabular data with no exposure to time series. Our results highlights the potential of tabular foundation models like TabPFN-v2 as a valuable new approach for time series forecasting. Our implementation is available at https://github.com/PriorLabs/tabpfn-time-series.",
             "tldr": null,
-            "score": 7
+            "score": 8
         },
         {
-            "id": "2002.09685v3",
-            "paperId": "2002.09685v3",
-            "title": "Investigating Typed Syntactic Dependencies for Targeted Sentiment\n  Classification Using Graph Attention Neural Network",
-            "year": "2020",
-            "citationCount": 0,
-            "abstract": "Targeted sentiment classification predicts the sentiment polarity on given\ntarget mentions in input texts. Dominant methods employ neural networks for\nencoding the input sentence and extracting relations between target mentions\nand their contexts. Recently, graph neural network has been investigated for\nintegrating dependency syntax for the task, achieving the state-of-the-art\nresults. However, existing methods do not consider dependency label\ninformation, which can be intuitively useful. To solve the problem, we\ninvestigate a novel relational graph attention network that integrates typed\nsyntactic dependency information. Results on standard benchmarks show that our\nmethod can effectively leverage label information for improving targeted\nsentiment classification performances. Our final model significantly\noutperforms state-of-the-art syntax-based approaches.",
-            "tldr": null,
-            "score": 7
-        },
-        {
-            "id": "2112.03011v1",
-            "paperId": "2112.03011v1",
-            "title": "Isomer: Transfer enhanced Dual-Channel Heterogeneous Dependency\n  Attention Network for Aspect-based Sentiment Classification",
-            "year": "2021",
-            "citationCount": 0,
-            "abstract": "Aspect-based sentiment classification aims to predict the sentiment polarity\nof a specific aspect in a sentence. However, most existing methods attempt to\nconstruct dependency relations into a homogeneous dependency graph with the\nsparsity and ambiguity, which cannot cover the comprehensive contextualized\nfeatures of short texts or consider any additional node types or semantic\nrelation information. To solve those issues, we present a sentiment analysis\nmodel named Isomer, which performs a dual-channel attention on heterogeneous\ndependency graphs incorporating external knowledge, to effectively integrate\nother additional information. Specifically, a transfer-enhanced dual-channel\nheterogeneous dependency attention network is devised in Isomer to model short\ntexts using heterogeneous dependency graphs. These heterogeneous dependency\ngraphs not only consider different types of information but also incorporate\nexternal knowledge. Experiments studies show that our model outperforms recent\nmodels on benchmark datasets. Furthermore, the results suggest that our method\ncaptures the importance of various information features to focus on informative\ncontextual words.",
-            "tldr": null,
-            "score": 7
-        },
-        {
-            "id": "2509.11604v2",
-            "paperId": "2509.11604v2",
-            "title": "Dynamic Span Interaction and Graph-Aware Memory for Entity-Level\n  Sentiment Classification",
-            "year": "2025",
-            "citationCount": 0,
-            "abstract": "Entity-level sentiment classification involves identifying the sentiment\npolarity linked to specific entities within text. This task poses several\nchallenges: effectively modeling the subtle and complex interactions between\nentities and their surrounding sentiment expressions; capturing dependencies\nthat may span across sentences; and ensuring consistent sentiment predictions\nfor multiple mentions of the same entity through coreference resolution.\nAdditionally, linguistic phenomena such as negation, ambiguity, and overlapping\nopinions further complicate the analysis. These complexities make entity-level\nsentiment classification a difficult problem, especially in real-world, noisy\ntextual data. To address these issues, we propose SpanEIT, a novel framework\nintegrating dynamic span interaction and graph-aware memory mechanisms for\nenhanced entity-sentiment relational modeling. SpanEIT builds span-based\nrepresentations for entities and candidate sentiment phrases, employs\nbidirectional attention for fine-grained interactions, and uses a graph\nattention network to capture syntactic and co-occurrence relations. A\ncoreference-aware memory module ensures entity-level consistency across\ndocuments. Experiments on FSAD, BARU, and IMDB datasets show SpanEIT\noutperforms state-of-the-art transformer and hybrid baselines in accuracy and\nF1 scores. Ablation and interpretability analyses validate the effectiveness of\nour approach, underscoring its potential for fine-grained sentiment analysis in\napplications like social media monitoring and customer feedback analysis.",
-            "tldr": null,
-            "score": 6
-        },
-        {
-            "id": "1807.07961v2",
-            "paperId": "1807.07961v2",
-            "title": "Twitter Sentiment Analysis via Bi-sense Emoji Embedding and\n  Attention-based LSTM",
-            "year": "2018",
-            "citationCount": 0,
-            "abstract": "Sentiment analysis on large-scale social media data is important to bridge\nthe gaps between social media contents and real world activities including\npolitical election prediction, individual and public emotional status\nmonitoring and analysis, and so on. Although textual sentiment analysis has\nbeen well studied based on platforms such as Twitter and Instagram, analysis of\nthe role of extensive emoji uses in sentiment analysis remains light. In this\npaper, we propose a novel scheme for Twitter sentiment analysis with extra\nattention on emojis. We first learn bi-sense emoji embeddings under positive\nand negative sentimental tweets individually, and then train a sentiment\nclassifier by attending on these bi-sense emoji embeddings with an\nattention-based long short-term memory network (LSTM). Our experiments show\nthat the bi-sense embedding is effective for extracting sentiment-aware\nembeddings of emojis and outperforms the state-of-the-art models. We also\nvisualize the attentions to show that the bi-sense emoji embedding provides\nbetter guidance on the attention mechanism to obtain a more robust\nunderstanding of the semantics and sentiments.",
-            "tldr": null,
-            "score": 6
-        },
-        {
-            "id": "1812.01527v2",
-            "paperId": "1812.01527v2",
-            "title": "Leveraging Multi-grained Sentiment Lexicon Information for Neural\n  Sequence Models",
-            "year": "2018",
-            "citationCount": 0,
-            "abstract": "Neural sequence models have achieved great success in sentence-level\nsentiment classification. However, some models are exceptionally complex or\nbased on expensive features. Some other models recognize the value of existed\nlinguistic resource but utilize it insufficiently. This paper proposes a novel\nand general method to incorporate lexicon information, including sentiment\nlexicons(+/-), negation words and intensifiers. Words are annotated in\nfine-grained and coarse-grained labels. The proposed method first encodes the\nfine-grained labels into sentiment embedding and concatenates it with word\nembedding. Second, the coarse-grained labels are utilized to enhance the\nattention mechanism to give large weight on sentiment-related words.\nExperimental results show that our method can increase classification accuracy\nfor neural sequence models on both SST-5 and MR dataset. Specifically, the\nenhanced Bi-LSTM model can even compare with a Tree-LSTM which uses expensive\nphrase-level annotations. Further analysis shows that in most cases the lexicon\nresource can offer the right annotations. Besides, the proposed method is\ncapable of overcoming the effect from inevitably wrong annotations.",
-            "tldr": null,
-            "score": 5
-        },
-        {
-            "id": "1610.06272v2",
-            "paperId": "1610.06272v2",
-            "title": "Lexicon Integrated CNN Models with Attention for Sentiment Analysis",
-            "year": "2016",
-            "citationCount": 0,
-            "abstract": "With the advent of word embeddings, lexicons are no longer fully utilized for\nsentiment analysis although they still provide important features in the\ntraditional setting. This paper introduces a novel approach to sentiment\nanalysis that integrates lexicon embeddings and an attention mechanism into\nConvolutional Neural Networks. Our approach performs separate convolutions for\nword and lexicon embeddings and provides a global view of the document using\nattention. Our models are experimented on both the SemEval'16 Task 4 dataset\nand the Stanford Sentiment Treebank, and show comparative or better results\nagainst the existing state-of-the-art systems. Our analysis shows that lexicon\nembeddings allow to build high-performing models with much smaller word\nembeddings, and the attention mechanism effectively dims out noisy words for\nsentiment analysis.",
-            "tldr": null,
-            "score": 5
-        },
-        {
-            "id": "2509.09160v1",
-            "paperId": "2509.09160v1",
-            "title": "Target-oriented Multimodal Sentiment Classification with\n  Counterfactual-enhanced Debiasing",
-            "year": "2025",
-            "citationCount": 0,
-            "abstract": "Target-oriented multimodal sentiment classification seeks to predict\nsentiment polarity for specific targets from image-text pairs. While existing\nworks achieve competitive performance, they often over-rely on textual content\nand fail to consider dataset biases, in particular word-level contextual\nbiases. This leads to spurious correlations between text features and output\nlabels, impairing classification accuracy. In this paper, we introduce a novel\ncounterfactual-enhanced debiasing framework to reduce such spurious\ncorrelations. Our framework incorporates a counterfactual data augmentation\nstrategy that minimally alters sentiment-related causal features, generating\ndetail-matched image-text samples to guide the model's attention toward content\ntied to sentiment. Furthermore, for learning robust features from\ncounterfactual data and prompting model decisions, we introduce an adaptive\ndebiasing contrastive learning mechanism, which effectively mitigates the\ninfluence of biased words. Experimental results on several benchmark datasets\nshow that our proposed method outperforms state-of-the-art baselines.",
-            "tldr": null,
-            "score": 4
-        },
-        {
-            "id": "2209.03557v1",
-            "paperId": "2209.03557v1",
-            "title": "Does Attention Mechanism Possess the Feature of Human Reading? A\n  Perspective of Sentiment Classification Task",
+            "id": "2208.09300v1",
+            "paperId": "2208.09300v1",
+            "title": "Expressing Multivariate Time Series as Graphs with Time Series Attention Transformer",
             "year": "2022",
             "citationCount": 0,
-            "abstract": "[Purpose] To understand the meaning of a sentence, humans can focus on\nimportant words in the sentence, which reflects our eyes staying on each word\nin different gaze time or times. Thus, some studies utilize eye-tracking values\nto optimize the attention mechanism in deep learning models. But these studies\nlack to explain the rationality of this approach. Whether the attention\nmechanism possesses this feature of human reading needs to be explored.\n[Design/methodology/approach] We conducted experiments on a sentiment\nclassification task. Firstly, we obtained eye-tracking values from two\nopen-source eye-tracking corpora to describe the feature of human reading.\nThen, the machine attention values of each sentence were learned from a\nsentiment classification model. Finally, a comparison was conducted to analyze\nmachine attention values and eye-tracking values. [Findings] Through\nexperiments, we found the attention mechanism can focus on important words,\nsuch as adjectives, adverbs, and sentiment words, which are valuable for\njudging the sentiment of sentences on the sentiment classification task. It\npossesses the feature of human reading, focusing on important words in\nsentences when reading. Due to the insufficient learning of the attention\nmechanism, some words are wrongly focused. The eye-tracking values can help the\nattention mechanism correct this error and improve the model performance.\n[Originality/value] Our research not only provides a reasonable explanation for\nthe study of using eye-tracking values to optimize the attention mechanism, but\nalso provides new inspiration for the interpretability of attention mechanism.",
+            "abstract": "A reliable and efficient representation of multivariate time series is crucial in various downstream machine learning tasks. In multivariate time series forecasting, each variable depends on its historical values and there are inter-dependencies among variables as well. Models have to be designed to capture both intra- and inter-relationships among the time series. To move towards this goal, we propose the Time Series Attention Transformer (TSAT) for multivariate time series representation learning. Using TSAT, we represent both temporal information and inter-dependencies of multivariate time series in terms of edge-enhanced dynamic graphs. The intra-series correlations are represented by nodes in a dynamic graph; a self-attention mechanism is modified to capture the inter-series correlations by using the super-empirical mode decomposition (SMD) module. We applied the embedded dynamic graphs to times series forecasting problems, including two real-world datasets and two benchmark datasets. Extensive experiments show that TSAT clearly outerperforms six state-of-the-art baseline methods in various forecasting horizons. We further visualize the embedded dynamic graphs to illustrate the graph representation power of TSAT. We share our code at https://github.com/RadiantResearch/TSAT.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2207.10517v2",
+            "paperId": "2207.10517v2",
+            "title": "MQRetNN: Multi-Horizon Time Series Forecasting with Retrieval Augmentation",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "Multi-horizon probabilistic time series forecasting has wide applicability to real-world tasks such as demand forecasting. Recent work in neural time-series forecasting mainly focus on the use of Seq2Seq architectures. For example, MQTransformer - an improvement of MQCNN - has shown the state-of-the-art performance in probabilistic demand forecasting. In this paper, we consider incorporating cross-entity information to enhance model performance by adding a cross-entity attention mechanism along with a retrieval mechanism to select which entities to attend over. We demonstrate how our new neural architecture, MQRetNN, leverages the encoded contexts from a pretrained baseline model on the entire population to improve forecasting accuracy. Using MQCNN as the baseline model (due to computational constraints, we do not use MQTransformer), we first show on a small demand forecasting dataset that it is possible to achieve ~3% improvement in test loss by adding a cross-entity attention mechanism where each entity attends to all others in the population. We then evaluate the model with our proposed retrieval methods - as a means of approximating an attention over a large population - on a large-scale demand forecasting application with over 2 million products and observe ~1% performance gain over the MQCNN baseline.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2106.09305v3",
+            "paperId": "2106.09305v3",
+            "title": "SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "One unique property of time series is that the temporal relations are largely preserved after downsampling into two sub-sequences. By taking advantage of this property, we propose a novel neural network architecture that conducts sample convolution and interaction for temporal modeling and forecasting, named SCINet. Specifically, SCINet is a recursive downsample-convolve-interact architecture. In each layer, we use multiple convolutional filters to extract distinct yet valuable temporal features from the downsampled sub-sequences or features. By combining these rich features aggregated from multiple resolutions, SCINet effectively models time series with complex temporal dynamics. Experimental results show that SCINet achieves significant forecasting accuracy improvements over both existing convolutional models and Transformer-based solutions across various real-world time series forecasting datasets. Our codes and data are available at https://github.com/cure-lab/SCINet.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2410.19025v1",
+            "paperId": "2410.19025v1",
+            "title": "Large Language Models for Financial Aid in Financial Time-series Forecasting",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Considering the difficulty of financial time series forecasting in financial aid, much of the current research focuses on leveraging big data analytics in financial services. One modern approach is to utilize \"predictive analysis\", analogous to forecasting financial trends. However, many of these time series data in Financial Aid (FA) pose unique challenges due to limited historical datasets and high dimensional financial information, which hinder the development of effective predictive models that balance accuracy with efficient runtime and memory usage. Pre-trained foundation models are employed to address these challenging tasks. We use state-of-the-art time series models including pre-trained LLMs (GPT-2 as the backbone), transformers, and linear models to demonstrate their ability to outperform traditional approaches, even with minimal (\"few-shot\") or no fine-tuning (\"zero-shot\"). Our benchmark study, which includes financial aid with seven other time series tasks, shows the potential of using LLMs for scarce financial datasets.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2510.09776v1",
+            "paperId": "2510.09776v1",
+            "title": "Why Do Transformers Fail to Forecast Time Series In-Context?",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Time series forecasting (TSF) remains a challenging and largely unsolved problem in machine learning, despite significant recent efforts leveraging Large Language Models (LLMs), which predominantly rely on Transformer architectures. Empirical evidence consistently shows that even powerful Transformers often fail to outperform much simpler models, e.g., linear models, on TSF tasks; however, a rigorous theoretical understanding of this phenomenon remains limited. In this paper, we provide a theoretical analysis of Transformers' limitations for TSF through the lens of In-Context Learning (ICL) theory. Specifically, under AR($p$) data, we establish that: (1) Linear Self-Attention (LSA) models $\\textit{cannot}$ achieve lower expected MSE than classical linear models for in-context forecasting; (2) as the context length approaches to infinity, LSA asymptotically recovers the optimal linear predictor; and (3) under Chain-of-Thought (CoT) style inference, predictions collapse to the mean exponentially. We empirically validate these findings through carefully designed experiments. Our theory not only sheds light on several previously underexplored phenomena but also offers practical insights for designing more effective forecasting architectures. We hope our work encourages the broader research community to revisit the fundamental theoretical limitations of TSF and to critically evaluate the direct application of increasingly sophisticated architectures without deeper scrutiny.",
+            "tldr": null,
+            "score": 6
+        },
+        {
+            "id": "2306.12086v2",
+            "paperId": "2306.12086v2",
+            "title": "What Constitutes Good Contrastive Learning in Time-Series Forecasting?",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "In recent years, the introduction of self-supervised contrastive learning (SSCL) has demonstrated remarkable improvements in representation learning across various domains, including natural language processing and computer vision. By leveraging the inherent benefits of self-supervision, SSCL enables the pre-training of representation models using vast amounts of unlabeled data. Despite these advances, there remains a significant gap in understanding the impact of different SSCL strategies on time series forecasting performance, as well as the specific benefits that SSCL can bring. This paper aims to address these gaps by conducting a comprehensive analysis of the effectiveness of various training variables, including different SSCL algorithms, learning strategies, model architectures, and their interplay. Additionally, to gain deeper insights into the improvements brought about by SSCL in the context of time-series forecasting, a qualitative analysis of the empirical receptive field is performed. Through our experiments, we demonstrate that the end-to-end training of a Transformer model using the Mean Squared Error (MSE) loss and SSCL emerges as the most effective approach in time series forecasting. Notably, the incorporation of the contrastive objective enables the model to prioritize more pertinent information for forecasting, such as scale and periodic relationships. These findings contribute to a better understanding of the benefits of SSCL in time series forecasting and provide valuable insights for future research in this area. Our codes are available at https://github.com/chiyuzhang94/contrastive_learning_time-series_e2e.",
+            "tldr": null,
+            "score": 5
+        },
+        {
+            "id": "2107.03743v1",
+            "paperId": "2107.03743v1",
+            "title": "Probabilistic Time Series Forecasting with Implicit Quantile Networks",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Here, we propose a general method for probabilistic time series forecasting. We combine an autoregressive recurrent neural network to model temporal dynamics with Implicit Quantile Networks to learn a large class of distributions over a time-series target. When compared to other probabilistic neural forecasting models on real- and simulated data, our approach is favorable in terms of point-wise prediction accuracy as well as on estimating the underlying temporal distribution.",
             "tldr": null,
             "score": 4
         },
         {
-            "id": "1907.02046v1",
-            "paperId": "1907.02046v1",
-            "title": "Deep neural network-based classification model for Sentiment Analysis",
-            "year": "2019",
-            "citationCount": 0,
-            "abstract": "The growing prosperity of social networks has brought great challenges to the\nsentimental tendency mining of users. As more and more researchers pay\nattention to the sentimental tendency of online users, rich research results\nhave been obtained based on the sentiment classification of explicit texts.\nHowever, research on the implicit sentiment of users is still in its infancy.\nAiming at the difficulty of implicit sentiment classification, a research on\nimplicit sentiment classification model based on deep neural network is carried\nout. Classification models based on DNN, LSTM, Bi-LSTM and CNN were established\nto judge the tendency of the user's implicit sentiment text. Based on the\nBi-LSTM model, the classification model of word-level attention mechanism is\nstudied. The experimental results on the public dataset show that the\nestablished LSTM series classification model and CNN classification model can\nachieve good sentiment classification effect, and the classification effect is\nsignificantly better than the DNN model. The Bi-LSTM based attention mechanism\nclassification model obtained the optimal R value in the positive category\nidentification.",
-            "tldr": null,
-            "score": 3
-        },
-        {
-            "id": "2103.03446v1",
-            "paperId": "2103.03446v1",
-            "title": "Enhanced Aspect-Based Sentiment Analysis Models with Progressive\n  Self-supervised Attention Learning",
+            "id": "2110.13179v8",
+            "paperId": "2110.13179v8",
+            "title": "Probabilistic Hierarchical Forecasting with Deep Poisson Mixtures",
             "year": "2021",
             "citationCount": 0,
-            "abstract": "In aspect-based sentiment analysis (ABSA), many neural models are equipped\nwith an attention mechanism to quantify the contribution of each context word\nto sentiment prediction. However, such a mechanism suffers from one drawback:\nonly a few frequent words with sentiment polarities are tended to be taken into\nconsideration for final sentiment decision while abundant infrequent sentiment\nwords are ignored by models. To deal with this issue, we propose a progressive\nself-supervised attention learning approach for attentional ABSA models. In\nthis approach, we iteratively perform sentiment prediction on all training\ninstances, and continually learn useful attention supervision information in\nthe meantime. During training, at each iteration, context words with the\nhighest impact on sentiment prediction, identified based on their attention\nweights or gradients, are extracted as words with active/misleading influence\non the correct/incorrect prediction for each instance. Words extracted in this\nway are masked for subsequent iterations. To exploit these extracted words for\nrefining ABSA models, we augment the conventional training objective with a\nregularization term that encourages ABSA models to not only take full advantage\nof the extracted active context words but also decrease the weights of those\nmisleading words. We integrate the proposed approach into three\nstate-of-the-art neural ABSA models. Experiment results and in-depth analyses\nshow that our approach yields better attention results and significantly\nenhances the performance of all three models. We release the source code and\ntrained models at https://github.com/DeepLearnXMU/PSSAttention.",
+            "abstract": "Hierarchical forecasting problems arise when time series have a natural group structure, and predictions at multiple levels of aggregation and disaggregation across the groups are needed. In such problems, it is often desired to satisfy the aggregation constraints in a given hierarchy, referred to as hierarchical coherence in the literature. Maintaining coherence while producing accurate forecasts can be a challenging problem, especially in the case of probabilistic forecasting. We present a novel method capable of accurate and coherent probabilistic forecasts for time series when reliable hierarchical information is present. We call it Deep Poisson Mixture Network (DPMN). It relies on the combination of neural networks and a statistical model for the joint distribution of the hierarchical multivariate time series structure. By construction, the model guarantees hierarchical coherence and provides simple rules for aggregation and disaggregation of the predictive distributions. We perform an extensive empirical evaluation comparing the DPMN to other state-of-the-art methods which produce hierarchically coherent probabilistic forecasts on multiple public datasets. Comparing to existing coherent probabilistic models, we obtain a relative improvement in the overall Continuous Ranked Probability Score (CRPS) of 11.8% on Australian domestic tourism data, and 8.1% on the Favorita grocery sales dataset, where time series are grouped with geographical hierarchies or travel intent hierarchies. For San Francisco Bay Area highway traffic, where the series' hierarchical structure is randomly assigned, and their correlations are less informative, our method does not show significant performance differences over statistical baselines.",
             "tldr": null,
             "score": 3
         },
         {
-            "id": "1611.04636v1",
-            "paperId": "1611.04636v1",
-            "title": "When Saliency Meets Sentiment: Understanding How Image Content Invokes\n  Emotion and Sentiment",
-            "year": "2016",
-            "citationCount": 0,
-            "abstract": "Sentiment analysis is crucial for extracting social signals from social media\ncontent. Due to the prevalence of images in social media, image sentiment\nanalysis is receiving increasing attention in recent years. However, most\nexisting systems are black-boxes that do not provide insight on how image\ncontent invokes sentiment and emotion in the viewers. Psychological studies\nhave confirmed that salient objects in an image often invoke emotions. In this\nwork, we investigate more fine-grained and more comprehensive interaction\nbetween visual saliency and visual sentiment. In particular, we partition\nimages in several primary scene-type dimensions, including: open-closed,\nnatural-manmade, indoor-outdoor, and face-noface. Using state of the art\nsaliency detection algorithm and sentiment classification algorithm, we examine\nhow the sentiment of the salient region(s) in an image relates to the overall\nsentiment of the image. The experiments on a representative image emotion\ndataset have shown interesting correlation between saliency and sentiment in\ndifferent scene types and in turn shed light on the mechanism of visual\nsentiment evocation.",
-            "tldr": null,
-            "score": 2
-        },
-        {
-            "id": "1805.07043v1",
-            "paperId": "1805.07043v1",
-            "title": "Aspect Based Sentiment Analysis with Gated Convolutional Networks",
+            "id": "1809.03561v1",
+            "paperId": "1809.03561v1",
+            "title": "Quantile Regression for Qualifying Match of GEFCom2017 Probabilistic Load Forecasting",
             "year": "2018",
             "citationCount": 0,
-            "abstract": "Aspect based sentiment analysis (ABSA) can provide more detailed information\nthan general sentiment analysis, because it aims to predict the sentiment\npolarities of the given aspects or entities in text. We summarize previous\napproaches into two subtasks: aspect-category sentiment analysis (ACSA) and\naspect-term sentiment analysis (ATSA). Most previous approaches employ long\nshort-term memory and attention mechanisms to predict the sentiment polarity of\nthe concerned targets, which are often complicated and need more training time.\nWe propose a model based on convolutional neural networks and gating\nmechanisms, which is more accurate and efficient. First, the novel Gated\nTanh-ReLU Units can selectively output the sentiment features according to the\ngiven aspect or entity. The architecture is much simpler than attention layer\nused in the existing models. Second, the computations of our model could be\neasily parallelized during training, because convolutional layers do not have\ntime dependency as in LSTM layers, and gating units also work independently.\nThe experiments on SemEval datasets demonstrate the efficiency and\neffectiveness of our models.",
+            "abstract": "We present a simple quantile regression-based forecasting method that was applied in a probabilistic load forecasting framework of the Global Energy Forecasting Competition 2017 (GEFCom2017). The hourly load data is log transformed and split into a long-term trend component and a remainder term. The key forecasting element is the quantile regression approach for the remainder term that takes into account weekly and annual seasonalities such as their interactions. Temperature information is only used to stabilize the forecast of the long-term trend component. Public holidays information is ignored. Still, the forecasting method placed second in the open data track and fourth in the definite data track with our forecasting method, which is remarkable given simplicity of the model. The method also outperforms the Vanilla benchmark consistently.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "1603.01376v1",
+            "paperId": "1603.01376v1",
+            "title": "Lasso estimation for GEFCom2014 probabilistic electric load forecasting",
+            "year": "2016",
+            "citationCount": 0,
+            "abstract": "We present a methodology for probabilistic load forecasting that is based on lasso (least absolute shrinkage and selection operator) estimation. The model considered can be regarded as a bivariate time-varying threshold autoregressive(AR) process for the hourly electric load and temperature. The joint modeling approach incorporates the temperature effects directly, and reflects daily, weekly, and annual seasonal patterns and public holiday effects. We provide two empirical studies, one based on the probabilistic load forecasting track of the Global Energy Forecasting Competition 2014 (GEFCom2014-L), and the other based on another recent probabilistic load forecasting competition that follows a setup similar to that of GEFCom2014-L. In both empirical case studies, the proposed methodology outperforms two multiple linear regression based benchmarks from among the top eight entries to GEFCom2014-L.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "1810.08418v2",
+            "paperId": "1810.08418v2",
+            "title": "Probabilistic Forecasting in Day-Ahead Electricity Markets: Simulating Peak and Off-Peak Prices",
+            "year": "2018",
+            "citationCount": 0,
+            "abstract": "In this paper we include dependency structures for electricity price forecasting and forecasting evaluation. We work with off-peak and peak time series from the German-Austrian day-ahead price, hence we analyze bivariate data. We first estimate the mean of the two time series, and then in a second step we estimate the residuals. The mean equation is estimated by OLS and elastic net and the residuals are estimated by maximum likelihood. Our contribution is to include a bivariate jump component on a mean reverting jump diffusion model in the residuals. The models' forecasts are evaluated using four different criteria, including the energy score to measure whether the correlation structure between the time series is properly included or not. In the results it is observed that the models with bivariate jumps provide better results with the energy score, which means that it is important to consider this structure in order to properly forecast correlated time series.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2502.19086v5",
+            "paperId": "2502.19086v5",
+            "title": "Forecasting intermittent time series with Gaussian Processes and Tweedie likelihood",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We adopt Gaussian Processes (GPs) as latent functions for probabilistic forecasting of intermittent time series. The model is trained in a Bayesian framework that accounts for the uncertainty about the latent function. We couple the latent GP variable with two types of forecast distributions: the negative binomial (NegBinGP) and the Tweedie distribution (TweedieGP). While the negative binomial has already been used in forecasting intermittent time series, this is the first time in which a fully parameterized Tweedie density is used for intermittent time series. We properly evaluate the Tweedie density, which has both a point mass at zero and heavy tails, avoiding simplifying assumptions made in existing models. We test our models on thousands of intermittent count time series. Results show that our models provide consistently better probabilistic forecasts than the competitors. In particular, TweedieGP obtains the best estimates of the highest quantiles, thus showing that it is more flexible than NegBinGP.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2511.06224v1",
+            "paperId": "2511.06224v1",
+            "title": "Bitcoin Forecasting with Classical Time Series Models on Prices and Volatility",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "This paper evaluates the performance of classical time series models in forecasting Bitcoin prices, focusing on ARIMA, SARIMA, GARCH, and EGARCH. Daily price data from 2010 to 2020 were analyzed, with models trained on the first 90 percent and tested on the final 10 percent. Forecast accuracy was assessed using MAE, RMSE, AIC, and BIC. The results show that ARIMA provided the strongest forecasts for short-run log-price dynamics, while EGARCH offered the best fit for volatility by capturing asymmetry in responses to shocks. These findings suggest that despite Bitcoin's extreme volatility, classical time series models remain valuable for short-run forecasting. The study contributes to understanding cryptocurrency predictability and sets the stage for future work integrating machine learning and macroeconomic variables.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2303.14295v1",
+            "paperId": "2303.14295v1",
+            "title": "Clustering Multivariate Time Series using Energy Distance",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "A novel methodology is proposed for clustering multivariate time series data using energy distance defined in Sz\u00e9kely and Rizzo (2013). Specifically, a dissimilarity matrix is formed using the energy distance statistic to measure separation between the finite dimensional distributions for the component time series. Once the pairwise dissimilarity matrix is calculated, a hierarchical clustering method is then applied to obtain the dendrogram. This procedure is completely nonparametric as the dissimilarities between stationary distributions are directly calculated without making any model assumptions. In order to justify this procedure, asymptotic properties of the energy distance estimates are derived for general stationary and ergodic time series. The method is illustrated in a simulation study for various component time series that are either linear or nonlinear. Finally the methodology is applied to two examples; one involves GDP of selected countries and the other is population size of various states in the U.S.A. in the years 1900 -1999.",
             "tldr": null,
             "score": 2
         },
         {
-            "id": "1909.03477v2",
-            "paperId": "1909.03477v2",
-            "title": "Aspect-based Sentiment Classification with Aspect-specific Graph\n  Convolutional Networks",
+            "id": "1904.03825v1",
+            "paperId": "1904.03825v1",
+            "title": "Application of data compression techniques to time series forecasting",
             "year": "2019",
             "citationCount": 0,
-            "abstract": "Due to their inherent capability in semantic alignment of aspects and their\ncontext words, attention mechanism and Convolutional Neural Networks (CNNs) are\nwidely applied for aspect-based sentiment classification. However, these models\nlack a mechanism to account for relevant syntactical constraints and long-range\nword dependencies, and hence may mistakenly recognize syntactically irrelevant\ncontextual words as clues for judging aspect sentiment. To tackle this problem,\nwe propose to build a Graph Convolutional Network (GCN) over the dependency\ntree of a sentence to exploit syntactical information and word dependencies.\nBased on it, a novel aspect-specific sentiment classification framework is\nraised. Experiments on three benchmarking collections illustrate that our\nproposed model has comparable effectiveness to a range of state-of-the-art\nmodels, and further demonstrate that both syntactical information and\nlong-range word dependencies are properly captured by the graph convolution\nstructure.",
+            "abstract": "In this study we show that standard well-known file compression programs (zlib, bzip2, etc.) are able to forecast real-world time series data well. The strength of our approach is its ability to use a set of data compression algorithms and \"automatically\" choose the best one of them during the process of forecasting. Besides, modern data-compressors are able to find many kinds of latent regularities using some methods of artificial intelligence (for example, some data-compressors are based on finding the smallest formal grammar that describes the time series). Thus, our approach makes it possible to apply some particular methods of artificial intelligence for time-series forecasting.\n  As examples of the application of the proposed method, we made forecasts for the monthly T-index and the Kp-index time series using standard compressors. In both cases, we used the Mean Absolute Error (MAE) as an accuracy measure.\n  For the monthly T-index time series, we made 18 forecasts beyond the available data for each month since January 2011 to July 2017. We show that, in comparison with the forecasts made by the Australian Bureau of Meteorology, our method more accurately predicts one value ahead.\n  The Kp-index time series consists of 3-hour values ranging from 0 to 9. For each day from February 4, 2018 to March 28, 2018, we made forecasts for 24 values ahead. We compared our forecasts with the forecasts made by the Space Weather Prediction Center (SWPC). The results showed that the accuracy of our method is similar to the accuracy of the SWPC's method. As in the previous case, we also obtained more accurate one-step forecasts.",
+            "tldr": null,
+            "score": 2
+        },
+        {
+            "id": "1902.03714v1",
+            "paperId": "1902.03714v1",
+            "title": "Hawkes processes for credit indices time series analysis: How random are trades arrival times?",
+            "year": "2019",
+            "citationCount": 0,
+            "abstract": "Targeting a better understanding of credit market dynamics, the authors have studied a stochastic model named the Hawkes process. Describing trades arrival times, this kind of model allows for the capture of self-excitement and mutual interactions phenomena. The authors propose here a simple yet conclusive method for fitting multidimensional Hawkes processes with exponential kernels, based on a maximum likelihood non-convex optimization. The method was successfully tested on simulated data, then used on new publicly available real trading data for three European credit indices, thus enabling quantification of self-excitement as well as volume impacts or cross indices influences.",
+            "tldr": null,
+            "score": 2
+        },
+        {
+            "id": "1411.4413v2",
+            "paperId": "1411.4413v2",
+            "title": "Observation of the rare $B^0_s\\to\u03bc^+\u03bc^-$ decay from the combined analysis of CMS and LHCb data",
+            "year": "2014",
+            "citationCount": 0,
+            "abstract": "A joint measurement is presented of the branching fractions $B^0_s\\to\u03bc^+\u03bc^-$ and $B^0\\to\u03bc^+\u03bc^-$ in proton-proton collisions at the LHC by the CMS and LHCb experiments. The data samples were collected in 2011 at a centre-of-mass energy of 7 TeV, and in 2012 at 8 TeV. The combined analysis produces the first observation of the $B^0_s\\to\u03bc^+\u03bc^-$ decay, with a statistical significance exceeding six standard deviations, and the best measurement of its branching fraction so far. Furthermore, evidence for the $B^0\\to\u03bc^+\u03bc^-$ decay is obtained with a statistical significance of three standard deviations. The branching fraction measurements are statistically compatible with SM predictions and impose stringent constraints on several theories beyond the SM.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "0901.0512v4",
+            "paperId": "0901.0512v4",
+            "title": "Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics",
+            "year": "2008",
+            "citationCount": 0,
+            "abstract": "A detailed study is presented of the expected performance of the ATLAS detector. The reconstruction of tracks, leptons, photons, missing energy and jets is investigated, together with the performance of b-tagging and the trigger. The physics potential for a variety of interesting physics processes, within the Standard Model and beyond, is examined. The study comprises a series of notes based on simulations of the detector and physics processes, with particular emphasis given to the data expected from the first years of operation of the LHC at CERN.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "1710.05839v2",
+            "paperId": "1710.05839v2",
+            "title": "Search for High-energy Neutrinos from Binary Neutron Star Merger GW170817 with ANTARES, IceCube, and the Pierre Auger Observatory",
+            "year": "2017",
+            "citationCount": 0,
+            "abstract": "The Advanced LIGO and Advanced Virgo observatories recently discovered gravitational waves from a binary neutron star inspiral. A short gamma-ray burst (GRB) that followed the merger of this binary was also recorded by the Fermi Gamma-ray Burst Monitor (Fermi-GBM), and the Anticoincidence Shield for the Spectrometer for the International Gamma-Ray Astrophysics Laboratory (INTEGRAL), indicating particle acceleration by the source. The precise location of the event was determined by optical detections of emission following the merger. We searched for high-energy neutrinos from the merger in the GeV--EeV energy range using the ANTARES, IceCube, and Pierre Auger Observatories. No neutrinos directionally coincident with the source were detected within $\\pm500$ s around the merger time. Additionally, no MeV neutrino burst signal was detected coincident with the merger. We further carried out an extended search in the direction of the source for high-energy neutrinos within the 14-day period following the merger, but found no evidence of emission. We used these results to probe dissipation mechanisms in relativistic outflows driven by the binary neutron star merger. The non-detection is consistent with model predictions of short GRBs observed at a large off-axis angle.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18080v2",
+            "paperId": "2508.18080v2",
+            "title": "GWTC-4.0: An Introduction to Version 4.0 of the Gravitational-Wave Transient Catalog",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "The Gravitational-Wave Transient Catalog (GWTC) is a collection of short-duration (transient) gravitational wave signals identified by the LIGO-Virgo-KAGRA Collaboration in gravitational-wave data produced by the eponymous detectors. The catalog provides information about the identified candidates, such as the arrival time and amplitude of the signal and properties of the signal's source as inferred from the observational data. GWTC is the data release of this dataset and version 4.0 extends the catalog to include observations made during the first part of the fourth LIGO-Virgo-KAGRA observing run up until 2024 January 31. This paper marks an introduction to a collection of articles related to this version of the catalog, GWTC-4.0. The collection of articles accompanying the catalog provides documentation of the methods used to analyze the data, summaries of the catalog of events, observational measurements drawn from the population, and detailed discussions of selected candidates",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2403.03004v1",
+            "paperId": "2403.03004v1",
+            "title": "Ultralight vector dark matter search using data from the KAGRA O3GK run",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Among the various candidates for dark matter (DM), ultralight vector DM can be probed by laser interferometric gravitational wave detectors through the measurement of oscillating length changes in the arm cavities. In this context, KAGRA has a unique feature due to differing compositions of its mirrors, enhancing the signal of vector DM in the length change in the auxiliary channels. Here we present the result of a search for $U(1)_{B-L}$ gauge boson DM using the KAGRA data from auxiliary length channels during the first joint observation run together with GEO600. By applying our search pipeline, which takes into account the stochastic nature of ultralight DM, upper bounds on the coupling strength between the $U(1)_{B-L}$ gauge boson and ordinary matter are obtained for a range of DM masses. While our constraints are less stringent than those derived from previous experiments, this study demonstrates the applicability of our method to the lower-mass vector DM search, which is made difficult in this measurement by the short observation time compared to the auto-correlation time scale of DM.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18081v1",
+            "paperId": "2508.18081v1",
+            "title": "GWTC-4.0: Methods for Identifying and Characterizing Gravitational-wave Transients",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "The Gravitational-Wave Transient Catalog (GWTC) is a collection of candidate gravitational-wave transient signals identified and characterized by the LIGO-Virgo-KAGRA Collaboration. Producing the contents of the GWTC from detector data requires complex analysis methods. These comprise techniques to model the signal; identify the transients in the data; evaluate the quality of the data and mitigate possible instrumental issues; infer the parameters of each transient; compare the data with the waveform models for compact binary coalescences; and handle the large amount of results associated with all these different analyses. In this paper, we describe the methods employed to produce the catalog's fourth release, GWTC-4.0, focusing on the analysis of the first part of the fourth observing run of Advanced LIGO, Advanced Virgo and KAGRA.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2407.12867v2",
+            "paperId": "2407.12867v2",
+            "title": "Swift-BAT GUANO follow-up of gravitational-wave triggers in the third LIGO-Virgo-KAGRA observing run",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "We present results from a search for X-ray/gamma-ray counterparts of gravitational-wave (GW) candidates from the third observing run (O3) of the LIGO-Virgo-KAGRA (LVK) network using the Swift Burst Alert Telescope (Swift-BAT). The search includes 636 GW candidates received in low latency, 86 of which have been confirmed by the offline analysis and included in the third cumulative Gravitational-Wave Transient Catalogs (GWTC-3). Targeted searches were carried out on the entire GW sample using the maximum--likelihood NITRATES pipeline on the BAT data made available via the GUANO infrastructure. We do not detect any significant electromagnetic emission that is temporally and spatially coincident with any of the GW candidates. We report flux upper limits in the 15-350 keV band as a function of sky position for all the catalog candidates. For GW candidates where the Swift-BAT false alarm rate is less than 10$^{-3}$ Hz, we compute the GW--BAT joint false alarm rate. Finally, the derived Swift-BAT upper limits are used to infer constraints on the putative electromagnetic emission associated with binary black hole mergers.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2410.16565v2",
+            "paperId": "2410.16565v2",
+            "title": "Search for gravitational waves emitted from SN 2023ixf",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "We present the results of a search for gravitational-wave transients associated with core-collapse supernova SN 2023ixf, which was observed in the galaxy Messier 101 via optical emission on 2023 May 19th, during the LIGO-Virgo-KAGRA 15th Engineering Run. We define a five-day on-source window during which an accompanying gravitational-wave signal may have occurred. No gravitational waves have been identified in data when at least two gravitational-wave observatories were operating, which covered $\\sim 14\\%$ of this five-day window. We report the search detection efficiency for various possible gravitational-wave emission models. Considering the distance to M101 (6.7 Mpc), we derive constraints on the gravitational-wave emission mechanism of core-collapse supernovae across a broad frequency spectrum, ranging from 50 Hz to 2 kHz where we assume the gravitational-wave emission occurred when coincident data are available in the on-source window. Considering an ellipsoid model for a rotating proto-neutron star, our search is sensitive to gravitational-wave energy $1 \\times 10^{-4} M_{\\odot} c^2$ and luminosity $2.6 \\times 10^{-4} M_{\\odot} c^2/s$ for a source emitting at 82 Hz. These constraints are around an order of magnitude more stringent than those obtained so far with gravitational-wave data. The constraint on the ellipticity of the proto-neutron star that is formed is as low as 1.08, at frequencies above 1200 Hz, surpassing past results.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2501.01495v2",
+            "paperId": "2501.01495v2",
+            "title": "Search for continuous gravitational waves from known pulsars in the first part of the fourth LIGO-Virgo-KAGRA observing run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Continuous gravitational waves (CWs) emission from neutron stars carries information about their internal structure and equation of state, and it can provide tests of General Relativity. We present a search for CWs from a set of 45 known pulsars in the first part of the fourth LIGO--Virgo--KAGRA observing run, known as O4a. We conducted a targeted search for each pulsar using three independent analysis methods considering the single-harmonic and the dual-harmonic emission models. We find no evidence of a CW signal in O4a data for both models and set upper limits on the signal amplitude and on the ellipticity, which quantifies the asymmetry in the neutron star mass distribution. For the single-harmonic emission model, 29 targets have the upper limit on the amplitude below the theoretical spin-down limit. The lowest upper limit on the amplitude is $6.4\\!\\times\\!10^{-27}$ for the young energetic pulsar J0537-6910, while the lowest constraint on the ellipticity is $8.8\\!\\times\\!10^{-9}$ for the bright nearby millisecond pulsar J0437-4715. Additionally, for a subset of 16 targets we performed a narrowband search that is more robust regarding the emission model, with no evidence of a signal. We also found no evidence of non-standard polarizations as predicted by the Brans-Dicke theory.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2410.09151v2",
+            "paperId": "2410.09151v2",
+            "title": "A search using GEO600 for gravitational waves coincident with fast radio bursts from SGR 1935+2154",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "The magnetar SGR 1935+2154 is the only known Galactic source of fast radio bursts (FRBs). FRBs from SGR 1935+2154 were first detected by CHIME/FRB and STARE2 in 2020 April, after the conclusion of the LIGO, Virgo, and KAGRA Collaborations' O3 observing run. Here we analyze four periods of gravitational wave (GW) data from the GEO600 detector coincident with four periods of FRB activity detected by CHIME/FRB, as well as X-ray glitches and X-ray bursts detected by NICER and NuSTAR close to the time of one of the FRBs. We do not detect any significant GW emission from any of the events. Instead, using a short-duration GW search (for bursts $\\leq$ 1 s) we derive 50\\% (90\\%) upper limits of $10^{48}$ ($10^{49}$) erg for GWs at 300 Hz and $10^{49}$ ($10^{50}$) erg at 2 kHz, and constrain the GW-to-radio energy ratio to $\\leq 10^{14} - 10^{16}$. We also derive upper limits from a long-duration search for bursts with durations between 1 and 10 s. These represent the strictest upper limits on concurrent GW emission from FRBs.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18083v2",
+            "paperId": "2508.18083v2",
+            "title": "GWTC-4.0: Population Properties of Merging Compact Binaries",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We detail the population properties of merging compact objects using 158 mergers from the cumulative Gravitational-Wave Transient Catalog 4.0, which includes three types of binary mergers: binary neutron star, neutron star--black hole binary, and binary black hole mergers. We resolve multiple over- and under-densities in the black hole mass distribution: features persist at primary masses of $10\\,M_\\odot$ and $35\\,M_\\odot$ with a possible third feature at $\\sim 20\\,M_\\odot$. These are departures from an otherwise power-law-like continuum that steepens above $35\\,M_\\odot$. Binary black holes with primary masses near $10\\,M_\\odot$ are more likely to have less massive secondaries, with a mass ratio distribution peaking at $q = 0.74^{+0.13}_{-0.13}$, potentially a signature of stable mass transfer during binary evolution. Black hole spins are inferred to be non-extremal, with 90\\% of black holes having $\u03c7< 0.57$, and preferentially aligned with binary orbits, implying many merging binaries form in isolation. However, we find a significant fraction, 0.24-0.42, of binaries have negative effective inspiral spins, suggesting many could be formed dynamically in gas-free environments. We find evidence for correlation between effective inspiral spin and mass ratio, though it is unclear if this is driven by variation in the mode of the distribution or the width. (Abridged)",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2308.03822v1",
+            "paperId": "2308.03822v1",
+            "title": "Search for Eccentric Black Hole Coalescences during the Third Observing Run of LIGO and Virgo",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Despite the growing number of confident binary black hole coalescences observed through gravitational waves so far, the astrophysical origin of these binaries remains uncertain. Orbital eccentricity is one of the clearest tracers of binary formation channels. Identifying binary eccentricity, however, remains challenging due to the limited availability of gravitational waveforms that include effects of eccentricity. Here, we present observational results for a waveform-independent search sensitive to eccentric black hole coalescences, covering the third observing run (O3) of the LIGO and Virgo detectors. We identified no new high-significance candidates beyond those that were already identified with searches focusing on quasi-circular binaries. We determine the sensitivity of our search to high-mass (total mass $M>70$ $M_\\odot$) binaries covering eccentricities up to 0.3 at 15 Hz orbital frequency, and use this to compare model predictions to search results. Assuming all detections are indeed quasi-circular, for our fiducial population model, we place an upper limit for the merger rate density of high-mass binaries with eccentricities $0 < e \\leq 0.3$ at $0.33$ Gpc$^{-3}$ yr$^{-1}$ at 90\\% confidence level.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2404.04248v3",
+            "paperId": "2404.04248v3",
+            "title": "Observation of Gravitational Waves from the Coalescence of a $2.5\\text{-}4.5~M_\\odot$ Compact Object and a Neutron Star",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "We report the observation of a coalescing compact binary with component masses $2.5\\text{-}4.5~M_\\odot$ and $1.2\\text{-}2.0~M_\\odot$ (all measurements quoted at the 90% credible level). The gravitational-wave signal GW230529_181500 was observed during the fourth observing run of the LIGO-Virgo-KAGRA detector network on 2023 May 29 by the LIGO Livingston Observatory. The primary component of the source has a mass less than $5~M_\\odot$ at 99% credibility. We cannot definitively determine from gravitational-wave data alone whether either component of the source is a neutron star or a black hole. However, given existing estimates of the maximum neutron star mass, we find the most probable interpretation of the source to be the coalescence of a neutron star with a black hole that has a mass between the most massive neutron stars and the least massive black holes observed in the Galaxy. We provisionally estimate a merger rate density of $55^{+127}_{-47}~\\text{Gpc}^{-3}\\,\\text{yr}^{-1}$ for compact binary coalescences with properties similar to the source of GW230529_181500; assuming that the source is a neutron star-black hole merger, GW230529_181500-like sources constitute about 60% of the total merger rate inferred for neutron star-black hole coalescences. The discovery of this system implies an increase in the expected rate of neutron star-black hole mergers with electromagnetic counterparts and provides further evidence for compact objects existing within the purported lower mass gap.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.20721v1",
+            "paperId": "2508.20721v1",
+            "title": "Upper Limits on the Isotropic Gravitational-Wave Background from the first part of LIGO, Virgo, and KAGRA's fourth Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We present results from the search for an isotropic gravitational-wave background using Advanced LIGO and Advanced Virgo data from O1 through O4a, the first part of the fourth observing run. This background is the accumulated signal from unresolved sources throughout cosmic history and encodes information about the merger history of compact binaries throughout the Universe, as well as exotic physics and potentially primordial processes from the early cosmos. Our cross-correlation analysis reveals no statistically significant background signal, enabling us to constrain several theoretical scenarios. For compact binary coalescences which approximately follow a 2/3 power-law spectrum, we constrain the fractional energy density to $\u03a9_{\\rm GW}(25{\\rm Hz})\\leq 2.0\\times 10^{-9}$ (95% cred.), a factor of 1.7 improvement over previous results. Scale-invariant backgrounds are constrained to $\u03a9_{\\rm GW}(25{\\rm Hz})\\leq 2.8\\times 10^{-9}$, representing a 2.1x sensitivity gain. We also place new limits on gravity theories predicting non-standard polarization modes and confirm that terrestrial magnetic noise sources remain below detection threshold. Combining these spectral limits with population models for GWTC-4, the latest gravitational-wave event catalog, we find our constraints remain above predicted merger backgrounds but are approaching detectability. The joint analysis combining the background limits shown here with the GWTC-4 catalog enables improved inference of the binary black hole merger rate evolution across cosmic time. Employing GWTC-4 inference results and standard modeling choices, we estimate that the total background arising from compact binary coalescences is $\u03a9_{\\rm CBC}(25{\\rm Hz})={0.9^{+1.1}_{-0.5}\\times 10^{-9}}$ at 90% confidence, where the largest contribution is due to binary black holes only, $\u03a9_{\\rm BBH}(25{\\rm Hz})=0.8^{+1.1}_{-0.5}\\times 10^{-9}$.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.26848v2",
+            "paperId": "2510.26848v2",
+            "title": "Cosmological and High Energy Physics implications from gravitational-wave background searches in LIGO-Virgo-KAGRA's O1-O4a runs",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We search for gravitational-wave background signals produced by various early Universe processes in the Advanced LIGO O4a dataset, combined with the data from the earlier O1, O2, and O3 (LIGO-Virgo) runs. The absence of detectable signals enables powerful constraints on fundamental physics. We derive gravitational-wave background energy density upper limits from the O1-O4a data to constrain parameters associated with various possible processes in the early Universe: first-order phase transitions, cosmic strings, domain walls, stiff equation of state, axion inflation, second-order scalar perturbations, primordial black hole binaries, and parity violation. In our analyses, the presence of an astrophysical background produced by compact (black hole and neutron star) binary coalescences throughout the Universe is also considered. We address the implications for various cosmological and high energy physics models based on the obtained parameter constraints. We conclude that LIGO-Virgo data already yield significant constraints on numerous early Universe scenarios.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.27022v2",
+            "paperId": "2510.27022v2",
+            "title": "Direct multi-model dark-matter search with gravitational-wave interferometers using data from the first part of the fourth LIGO-Virgo-KAGRA observing run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Gravitational-wave detectors can probe the existence of dark matter with exquisite sensitivity. Here, we perform a search for three kinds of dark matter -- dilatons (spin-0), dark photons (spin-1) and tensor bosons (spin-2) -- using three independent methods on the first part of the most recent data from the fourth observing run of LIGO--Virgo--KAGRA. Each form of dark matter could have interacted with different standard-model particles in the instruments, causing unique differential strains on the interferometers. While we do not find any evidence for a signal, we place the most stringent upper limits to-date on each of these models. For scalars with masses between $[4\\times 10^{-14},1.5\\times 10^{-13}]$ eV that couple to photons or electrons, our constraints improve upon those from the third observing run by one order of magnitude, with the tightest limit of $\\sim 10^{-20}\\,\\text{GeV}^{-1}$ at a mass of $\\sim2\\times 10^{-13}\\text{ eV}$. For vectors with masses between $[7\\times 10^{-13},8.47\\times 10^{-12}]$ eV that couple to baryons, our constraints supersede those from MICROSCOPE and E\u00f6t-Wash by one to two orders of magnitude, reaching a minimum of $\\sim 5\\times 10^{-24}$ at a mass of $\\sim 10^{-12}$ eV. For tensors with masses of $[4\\times 10^{-14},8.47\\times 10^{-12}]$ eV (the full mass range analyzed) that couple via a Yukawa interaction, our constraints surpass those from fifth-force experiments by four to five orders of magnitude, achieving a limit as low as $\\sim 8\\times 10^{-9}$ at $\\sim2\\times 10^{-13}$ eV. Our results show that gravitational-wave interferometers have become frontiers for new physics and laboratories for direct multi-model dark-matter detection.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18079v3",
+            "paperId": "2508.18079v3",
+            "title": "Open Data from LIGO, Virgo, and KAGRA through the First Part of the Fourth Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "LIGO, Virgo, and KAGRA form a network of gravitational-wave observatories. Data and analysis results from this network are made publicly available through the Gravitational Wave Open Science Center. This paper describes open data from this network, including the addition of data from the first part of the fourth observing run (O4a) and selected periods from the preceding engineering run, collected from May 2023 to January 2024. The public data set includes calibrated strain time series for each instrument, data from additional channels used for noise subtraction and detector characterization, and analysis data products from version 4.0 of the Gravitational-Wave Transient Catalog.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.26931v1",
+            "paperId": "2510.26931v1",
+            "title": "GW241011 and GW241110: Exploring Binary Formation and Fundamental Physics with Asymmetric, High-Spin Black Hole Coalescence",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We report the observation of gravitational waves from two binary black hole coalescences during the fourth observing run of the LIGO--Virgo--KAGRA detector network, GW241011 and GW241110. The sources of these two signals are characterized by rapid and precisely measured primary spins, non-negligible spin--orbit misalignment, and unequal mass ratios between their constituent black holes. These properties are characteristic of binaries in which the more massive object was itself formed from a previous binary black hole merger, and suggest that the sources of GW241011 and GW241110 may have formed in dense stellar environments in which repeated mergers can take place. As the third loudest gravitational-wave event published to date, with a median network signal-to-noise ratio of $36.0$, GW241011 furthermore yields stringent constraints on the Kerr nature of black holes, the multipolar structure of gravitational-wave generation, and the existence of ultralight bosons within the mass range $10^{-13}$--$10^{-12}$ eV.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.17487v1",
+            "paperId": "2510.17487v1",
+            "title": "Directional Search for Persistent Gravitational Waves: Results from the First Part of LIGO-Virgo-KAGRA's Fourth Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "The angular distribution of gravitational-wave power from persistent sources may exhibit anisotropies arising from the large-scale structure of the Universe. This motivates directional searches for astrophysical and cosmological gravitational-wave backgrounds, as well as continuous-wave emitters. We present results of such a search using data from the first observing run through the first portion of the fourth observing run of the LIGO-Virgo-KAGRA Collaborations. We apply gravitational-wave radiometer techniques to generate skymaps and search for both narrowband and broadband persistent gravitational-wave sources. Additionally, we use spherical harmonic decomposition to probe spatially extended sources. No evidence of persistent gravitational-wave signals is found, and we set the most stringent constraints to date on such emissions. For narrowband point sources, our sensitivity estimate to effective strain amplitude lies in the range $(0.03 - 8.4) \\times 10^{-24}$ across all sky and frequency range $(20 - 160)$ Hz. For targeted sources -- Scorpius X-1, SN 1987A, the Galactic Center, Terzan 5, and NGC 6397 -- we constrain the strain amplitude with best limits ranging from $\\sim 1.1 \\times 10^{-25}$ to $6.5 \\times 10^{-24}$. For persistent broadband sources, we constrain the gravitational-wave flux $F_{\u03b1, \\hat{n}}^{95\\%, \\mathrm{UL}}(25\\, \\mathrm{Hz}) < (0.008 - 5.5) \\times 10^{-8}\\, \\mathrm{erg\\, cm^{-2}\\, s^{-1}\\, Hz^{-1}}$, depending on the sky direction $\\hat{n}$ and spectral index $\u03b1=0,\\,2/3,\\,3$. Finally, for extended sources, we place upper limits on the strain angular power spectrum $C_\\ell^{1/2} < (0.63 - 17) \\times 10^{-10} \\,\\mathrm{sr}^{-1}$.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18082v2",
+            "paperId": "2508.18082v2",
+            "title": "GWTC-4.0: Updating the Gravitational-Wave Transient Catalog with Observations from the First Part of the Fourth LIGO-Virgo-KAGRA Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Version 4.0 of the Gravitational-Wave Transient Catalog (GWTC-4.0) adds new candidates detected by the LIGO, Virgo, and KAGRA observatories through the first part of the fourth observing run (O4a: 2023 May 24 15:00:00 to 2024 January 16 16:00:00 UTC) and a preceding engineering run. In this new data, we find 128 new compact binary coalescence candidates that are identified by at least one of our search algorithms with a probability of astrophysical origin $p_{\\rm astro} \\geq 0.5$ and that are not vetoed during event validation. We also provide detailed source property measurements for 86 of these that have a false alarm rate $< 1 \\rm{yr}^{-1}$. Based on the inferred component masses, these new candidates are consistent with signals from binary black holes and neutron star-black hole binaries (GW230518_125908 and GW230529_181500). Median inferred component masses of binary black holes in the catalog now range from $5.79\\,M_\\odot$ (GW230627_015337) to $137\\,M_\\odot$ (GW231123_135430), while GW231123_135430 was probably produced by the most massive binary observed in the catalog. For the first time we have discovered binary black hole signals with network signal-to-noise ratio exceeding 30, GW230814_230901 and GW231226_01520, enabling high-fidelity studies of the waveforms and astrophysical properties of these systems. Combined with the 90 candidates included in GWTC-3.0, the catalog now contains 218 candidates with $p_{\\rm astro} \\geq 0.5$ and not otherwise vetoed, doubling the size of the catalog and further opening our view of the gravitational-wave Universe.",
             "tldr": null,
             "score": 0
         }

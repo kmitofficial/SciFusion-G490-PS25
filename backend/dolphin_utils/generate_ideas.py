@@ -3,7 +3,7 @@ import os
 import os.path as osp
 import time
 import torch
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Optional
 from dolphin_utils.llm_utils import get_response_from_llm, extract_json_between_markers
 from dolphin_utils.rag_utils import format_papers_for_printing, format_papers_for_printing_ai_researcher
 from dolphin_utils.prompts import *
@@ -12,33 +12,62 @@ import requests
 import backoff
 import torch.nn.functional as F
 
+# --- NEW: Import job update ---
+try:
+    from launch_dolphin import update_job_status
+except ImportError:
+    def update_job_status(job_id, status, extra=None):
+        print(f"[GENERATE_IDEAS] Fallback: Job {job_id} → {status}")
 
 history_ideas_bank = []
 history_ideas_id = []
-
 negative_ideas_bank = []
+
+# --- NEW: Load human feedback ---
+def load_human_feedback(base_dir: str) -> Optional[Dict]:
+    feedback_path = osp.join(base_dir, "human_feedback.json")
+    if not osp.exists(feedback_path):
+        return None
+    try:
+        with open(feedback_path, "r") as f:
+            return json.load(f)
+    except:
+        return None
+
+
+def load_paper_review(base_dir: str) -> Optional[Dict]:
+    review_path = osp.join(base_dir, "paper_review.json")
+    if not osp.exists(review_path):
+        return None
+    try:
+        with open(review_path, "r") as f:
+            return json.load(f)
+    except Exception:
+        return None
 
 # GENERATE IDEAS
 def generate_ideas(
-        base_dir,
-        client,
-        model,
-        skip_generation=False,
-        max_num_generations=20,
-        num_reflections=5,
-        rag=False,
-        rag_path=None,
-        check_independence=False,
-        embedding_model=None,
-        round=0,
-        exp_base_file_list=None
+    base_dir,
+    client,
+    model,
+    skip_generation=False,
+    max_num_generations=20,
+    num_reflections=5,
+    rag=False,
+    rag_path=None,
+    check_independence=False,
+    embedding_model=None,
+    round=0,
+    exp_base_file_list=None,
+    job_id: str = None  # ← NEW
 ):
     global history_ideas_bank, history_ideas_id
     if len(history_ideas_bank) != 0:
         history_ideas_bank, history_ideas_id = [], []
+
     total_price = 0
+
     if skip_generation:
-        # Load existing ideas from file
         try:
             with open(osp.join(base_dir, "ideas.json"), "r") as f:
                 ideas = json.load(f)
@@ -57,144 +86,148 @@ def generate_ideas(
         sentence_model = AutoModel.from_pretrained(embedding_model)
         independence_list = []
         history_ideas_list = []
+        idea_str_archive = []
 
-    idea_str_archive = []
-    with open(osp.join(base_dir, "seed_ideas.json"), "r") as f:
-        seed_ideas = json.load(f)
+        with open(osp.join(base_dir, "seed_ideas.json"), "r") as f:
+            seed_ideas = json.load(f)
 
-    # only one seed idea
-    if check_independence:
         for seed_idea in seed_ideas:
-            independence = check_idea_independence(seed_idea, history_ideas_list, sentence_tokenizer, sentence_model)
-            idea_str_archive.append(json.dumps(seed_idea))
-            independence_list.append(independence)
-            history_ideas_list.append(seed_idea)
-    else:
-        for seed_idea in seed_ideas:
-            idea_str_archive.append(json.dumps(seed_idea))
+            if check_independence:
+                independence = check_idea_independence(seed_idea, history_ideas_list, sentence_tokenizer, sentence_model)
+                idea_str_archive.append(json.dumps(seed_idea))
+                independence_list.append(independence)
+                history_ideas_list.append(seed_idea)
+            else:
+                idea_str_archive.append(json.dumps(seed_idea))
 
-    if round > 0:
-        idea_str_archive_pos = []
-        assert check_independence == True
-        p_list, n_list, m_list, e_list = [], [], [], []
-        for dir in exp_base_file_list[0]:
-            p_temp, n_temp, m_temp, e_temp = check_results(dir)
-            p_list += p_temp
-            n_list += n_temp
-            m_list += m_temp
-            e_list += e_temp
-        p_list = ['_'.join(name.split('_')[2:]) for name in p_list]
-        n_list = ['_'.join(name.split('_')[2:]) for name in n_list]
-        m_list = ['_'.join(name.split('_')[2:]) for name in m_list]
-
-        previous_ideas = []
-        for file in exp_base_file_list[1]:
-            previous_ideas += json.load(open(file))
-
-        previous_summary = []
-        for p_idea in previous_ideas:
-            if p_idea['Name'] in (n_list + m_list):
-                previous_summary.append(encode_sentence(p_idea['Summary'], sentence_model, sentence_tokenizer))
+        if round > 0:
+            idea_str_archive_pos = []
+            assert check_independence == True
+            p_list, n_list, m_list, e_list = [], [], [], []
+            for dir in exp_base_file_list[0]:
+                p_temp, n_temp, m_temp, e_temp = check_results(dir)
+                p_list += p_temp
+                n_list += n_temp
+                m_list += m_temp
+                e_list += e_temp
+            p_list = ['_'.join(name.split('_')[2:]) for name in p_list]
+            n_list = ['_'.join(name.split('_')[2:]) for name in n_list]
+            m_list = ['_'.join(name.split('_')[2:]) for name in m_list]
+            previous_ideas = []
+            for file in exp_base_file_list[1]:
+                previous_ideas += json.load(open(file))
+            previous_summary = []
+            for p_idea in previous_ideas:
+                if p_idea['Name'] in (n_list + m_list):
+                    previous_summary.append(encode_sentence(p_idea['Summary'], sentence_model, sentence_tokenizer))
                 history_ideas_list.append(p_idea)
                 idea_str_archive.append(json.dumps(p_idea))
-            elif p_idea['Name'] in p_list:
-                idea_str_archive_pos.append(json.dumps(p_idea))
-                idea_str_archive.append(json.dumps(p_idea))
-
-        history_ideas_bank += previous_summary
-        history_ideas_id += [len(history_ideas_id) + i for i in list(range(len(previous_summary)))]
+                if p_idea['Name'] in p_list:
+                    idea_str_archive_pos.append(json.dumps(p_idea))
+            history_ideas_bank += previous_summary
+            history_ideas_id += [len(history_ideas_id) + i for i in range(len(previous_summary))]
 
     with open(osp.join(base_dir, "experiment.py"), "r") as f:
         code = f.read()
-
     with open(osp.join(base_dir, "prompt.json"), "r") as f:
         prompt = json.load(f)
 
     if rag:
         with open(osp.join(rag_path), "r") as f:
             rag_papers = json.load(f)
-            rag_reference = format_papers_for_printing_ai_researcher(rag_papers)
+        rag_reference = format_papers_for_printing_ai_researcher(rag_papers)
 
     idea_system_prompt = prompt["system"]
+
+    # --- NEW: Load human feedback ---
+    human_feedback = load_human_feedback(base_dir)
+    feedback_suffix = ""
+    if human_feedback:
+        result = human_feedback.get("result", {})
+        label = result.get("label", "None")
+        comment = result.get("comment", "")
+        feedback_suffix = f"""
+        HUMAN FEEDBACK ON LAST RESULT:
+        - Label: {label}
+        - Comment: {comment}
+        Use this to improve the next idea.
+        """
+
+    paper_review = load_paper_review(base_dir)
+    if paper_review:
+        selected_papers = paper_review.get("selected_papers") or []
+        selection_lines = "\n".join(
+            [
+                f"        - {paper.get('title', 'Untitled')} ({paper.get('year', 'N/A')})"
+                for paper in selected_papers
+            ]
+        )
+        comment = paper_review.get("comment") or "None"
+        if paper_review.get("skip"):
+            feedback_suffix += "\n        HUMAN NOTE: User skipped providing specific paper guidance.\n        "
+        else:
+            feedback_suffix += f"""
+        HUMAN PAPER SELECTION INPUT:
+{selection_lines or '        - No specific papers selected.'}
+        Additional comment: {comment}
+        """
 
     for _ in range(max_num_generations):
         print()
         print(f"Generating idea {_ + 1}/{max_num_generations}")
         try:
             prev_ideas_string = "\n\n".join(idea_str_archive)
-
             msg_history = []
             print(f"Iteration 1/{num_reflections}")
+
             if round == 0:
                 if rag:
-                    text, msg_history, price = get_response_from_llm(
-                        idea_first_prompt_with_rag.format(
-                            task_description=prompt["task_description"],
-                            rag_reference=rag_reference,
-                            code=code,
-                            prev_ideas_string=prev_ideas_string,
-                            num_reflections=num_reflections,
-                        ),
-                        client=client,
-                        model=model,
-                        system_message=idea_system_prompt,
-                        msg_history=msg_history,
-                    )
-                    total_price += price
+                    prompt_text = idea_first_prompt_with_rag.format(
+                        task_description=prompt["task_description"],
+                        rag_reference=rag_reference,
+                        code=code,
+                        prev_ideas_string=prev_ideas_string,
+                        num_reflections=num_reflections,
+                    ) + feedback_suffix
                 else:
-                    text, msg_history, price = get_response_from_llm(
-                        idea_first_prompt.format(
-                            task_description=prompt["task_description"],
-                            code=code,
-                            prev_ideas_string=prev_ideas_string,
-                            num_reflections=num_reflections,
-                        ),
-                        client=client,
-                        model=model,
-                        system_message=idea_system_prompt,
-                        msg_history=msg_history,
-                    )
-                    total_price += price
-
+                    prompt_text = idea_first_prompt.format(
+                        task_description=prompt["task_description"],
+                        code=code,
+                        prev_ideas_string=prev_ideas_string,
+                        num_reflections=num_reflections,
+                    ) + feedback_suffix
             elif round > 0:
                 prev_ideas_string_pos = "\n\n".join(idea_str_archive_pos)
-
                 if rag:
-                    text, msg_history, price = get_response_from_llm(
-                        idea_first_prompt_with_rag_loop.format(
-                            task_description=prompt["task_description"],
-                            rag_reference=rag_reference,
-                            code=code,
-                            prev_ideas_string=prev_ideas_string,
-                            prev_ideas_string_pos=prev_ideas_string_pos,
-                            num_reflections=num_reflections,
-                        ),
-                        client=client,
-                        model=model,
-                        system_message=idea_system_prompt,
-                        msg_history=msg_history,
-                    )
-                    total_price += price
+                    prompt_text = idea_first_prompt_with_rag_loop.format(
+                        task_description=prompt["task_description"],
+                        rag_reference=rag_reference,
+                        code=code,
+                        prev_ideas_string=prev_ideas_string,
+                        prev_ideas_string_pos=prev_ideas_string_pos,
+                        num_reflections=num_reflections,
+                    ) + feedback_suffix
                 else:
-                    text, msg_history, price = get_response_from_llm(
-                        idea_first_prompt.format(
-                            task_description=prompt["task_description"],
-                            code=code,
-                            prev_ideas_string=prev_ideas_string,
-                            num_reflections=num_reflections,
-                        ),
-                        client=client,
-                        model=model,
-                        system_message=idea_system_prompt,
-                        msg_history=msg_history,
-                    )
-                    total_price += price
-            ## PARSE OUTPUT
+                    prompt_text = idea_first_prompt.format(
+                        task_description=prompt["task_description"],
+                        code=code,
+                        prev_ideas_string=prev_ideas_string,
+                        num_reflections=num_reflections,
+                    ) + feedback_suffix
+
+            text, msg_history, price = get_response_from_llm(
+                prompt_text,
+                client=client,
+                model=model,
+                system_message=idea_system_prompt,
+                msg_history=msg_history,
+            )
+            total_price += price
+
             json_output = extract_json_between_markers(text)
             assert json_output is not None, "Failed to extract JSON from LLM output"
             print(json_output)
 
-            # Iteratively improve task.
             if num_reflections > 1:
                 for j in range(num_reflections - 1):
                     print(f"Iteration {j + 2}/{num_reflections}")
@@ -208,43 +241,39 @@ def generate_ideas(
                         msg_history=msg_history,
                     )
                     total_price += price
-                    ## PARSE OUTPUT
                     json_output = extract_json_between_markers(text)
-                    assert (
-                            json_output is not None
-                    ), "Failed to extract JSON from LLM output"
+                    assert json_output is not None, "Failed to extract JSON from LLM output"
                     print(json_output)
-
                     if "I am done" in text:
                         print(f"Idea generation converged after {j + 2} iterations.")
                         break
 
             if check_independence:
-                independence = check_idea_independence(json_output, history_ideas_list, sentence_tokenizer,
-                                                       sentence_model)
+                independence = check_idea_independence(json_output, history_ideas_list, sentence_tokenizer, sentence_model)
                 idea_str_archive.append(json.dumps(json_output))
                 independence_list.append(independence)
                 history_ideas_list.append(json_output)
             else:
                 idea_str_archive.append(json.dumps(json_output))
+
+            # --- NEW: Save idea to DB ---
+            if job_id:
+                update_job_status(
+                    job_id,
+                    "ideas_generated",
+                    extra={"current_idea": json_output}
+                )
+
         except Exception as e:
             print(f"Failed to generate idea: {e}")
             continue
 
-    ## SAVE IDEAS
-    ideas = []
-    for idea_str in idea_str_archive:
-        ideas.append(json.loads(idea_str))
-
+    ideas = [json.loads(s) for s in idea_str_archive]
     if round > 0:
         ideas = [ideas[0]] + ideas[-len(independence_list) + 1:]
-
     if check_independence:
         for idea, independence in zip(ideas, independence_list):
-            idea.update({
-                'independence': independence
-            })
-
+            idea.update({"independence": independence})
     if round > 0:
         ideas = ideas[len(seed_ideas):]
 
@@ -258,103 +287,32 @@ def generate_ideas(
     return ideas
 
 
-# GENERATE IDEAS OPEN-ENDED
-def generate_next_idea(
-        base_dir,
-        client,
-        model,
-        prev_idea_archive=[],
-        num_reflections=5,
-        max_attempts=10,
+# --- NEW: Generate next idea with feedback ---
+def generate_next_idea_with_feedback(
+    base_dir,
+    client,
+    model,
+    job_id: str,
+    current_idea_idx: int
 ):
-    idea_archive = prev_idea_archive
-    original_archive_size = len(idea_archive)
-
-    print(f"Generating idea {original_archive_size + 1}")
-
-    if len(prev_idea_archive) == 0:
-        print(f"First iteration, taking seed ideas")
-        # seed the archive on the first run with pre-existing ideas
-        with open(osp.join(base_dir, "seed_ideas.json"), "r") as f:
-            seed_ideas = json.load(f)
-        for seed_idea in seed_ideas[:1]:
-            idea_archive.append(seed_idea)
-    else:
-        with open(osp.join(base_dir, "experiment.py"), "r") as f:
-            code = f.read()
-        with open(osp.join(base_dir, "prompt.json"), "r") as f:
-            prompt = json.load(f)
-        idea_system_prompt = prompt["system"]
-
-        for _ in range(max_attempts):
-            try:
-                idea_strings = []
-                for idea in idea_archive:
-                    idea_strings.append(json.dumps(idea))
-                prev_ideas_string = "\n\n".join(idea_strings)
-
-                msg_history = []
-                print(f"Iteration 1/{num_reflections}")
-                text, msg_history, price = get_response_from_llm(
-                    idea_first_prompt.format(
-                        task_description=prompt["task_description"],
-                        code=code,
-                        prev_ideas_string=prev_ideas_string,
-                        num_reflections=num_reflections,
-                    )
-                    + """
-Completed ideas have an additional "Score" field which indicates the assessment by an expert ML reviewer.
-This is on a standard 1-10 ML conference scale.
-Scores of 0 indicate the idea failed either during experimentation, writeup or reviewing.
-""",
-                    client=client,
-                    model=model,
-                    system_message=idea_system_prompt,
-                    msg_history=msg_history,
-                )
-                ## PARSE OUTPUT
-                json_output = extract_json_between_markers(text)
-                assert json_output is not None, "Failed to extract JSON from LLM output"
-                print(json_output)
-
-                # Iteratively improve task.
-                if num_reflections > 1:
-                    for j in range(num_reflections - 1):
-                        print(f"Iteration {j + 2}/{num_reflections}")
-                        text, msg_history, price = get_response_from_llm(
-                            idea_reflection_prompt.format(
-                                current_round=j + 2, num_reflections=num_reflections
-                            ),
-                            client=client,
-                            model=model,
-                            system_message=idea_system_prompt,
-                            msg_history=msg_history,
-                        )
-                        ## PARSE OUTPUT
-                        json_output = extract_json_between_markers(text)
-                        assert (
-                                json_output is not None
-                        ), "Failed to extract JSON from LLM output"
-                        print(json_output)
-
-                        if "I am done" in text:
-                            print(
-                                f"Idea generation converged after {j + 2} iterations."
-                            )
-                            break
-
-                idea_archive.append(json_output)
-                break
-            except Exception as e:
-                print(f"Failed to generate idea: {e}")
-                continue
-
-    ## SAVE IDEAS
-    with open(osp.join(base_dir, "ideas.json"), "w") as f:
-        json.dump(idea_archive, f, indent=4)
-
-    return idea_archive
-
+    ideas = generate_ideas(
+        base_dir=base_dir,
+        client=client,
+        model=model,
+        max_num_generations=1,
+        num_reflections=3,
+        job_id=job_id
+    )
+    if ideas:
+        update_job_status(
+            job_id,
+            "pending_human_idea",
+            extra={
+                "current_idea_idx": current_idea_idx,
+                "idea": ideas[0]
+            }
+        )
+    return ideas
 
 def on_backoff(details):
     print(

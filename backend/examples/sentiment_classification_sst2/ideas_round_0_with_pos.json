@@ -10,17 +10,5 @@
         "Novelty": 6,
         "independence": true,
         "novel": true
-    },
-    {
-        "Name": "sentiment_interaction_aware_attention",
-        "Title": "Sentiment Interaction-Aware Attention for Deeper Text Understanding in Transformers",
-        "Motivation": "Transformer models like BERT excel at capturing contextual relationships via self-attention. However, standard attention treats all token interactions equally, failing to explicitly model how sentiment cues (like negation, intensity, and polarity) interact with each other to shape meaning. Human understanding of sentiment is deeply rooted in these interactions. This research proposes to imbue self-attention with an explicit mechanism to learn and leverage these sentiment interaction patterns.",
-        "Method": "We propose a novel 'Sentiment Interaction-Aware Attention' (SIAA) mechanism. SIAA enhances the standard multi-head self-attention by introducing sentiment-specific interaction biases. For each token, we first identify its sentiment type (e.g., positive, negative, negation, intensifier) using a lexicon and potentially a learned sentiment classifier. These sentiment types are then used to enrich the token embeddings before the Q, K, V projections. Crucially, the attention score between a query token (q) and a key token (k) is modulated by a learned 'sentiment interaction bias' term: `score = standard_attention_score + bias(sentiment_type(q), sentiment_type(k))`. This `bias` is a learned function (e.g., a small lookup table or MLP) that explicitly models how the interaction of sentiment types of the query and key tokens affects their attention weight. This allows the model to learn nuanced sentiment dynamics, such as how negation interacts with positive words or how intensifiers amplify sentiment.",
-        "Experiment": "1. Compile a comprehensive sentiment lexicon (positive, negative, negation, intensifiers, diminishers).\n2. Develop a mechanism to assign sentiment types to tokens, potentially using the lexicon for initialization and a small learned classifier.\n3. Load a pre-trained BERT model (e.g., 'prajjwal1/bert-tiny').\n4. Replace the standard `BertSelfAttention` modules within the BERT model with a custom `SentimentInteractionAwareSelfAttention` module.\n5. The custom attention module will: a) receive token embeddings, b) assign sentiment types to tokens, c) learn sentiment-specific interaction bias terms based on pairs of sentiment types, and d) integrate these biases into the attention score calculation.\n6. Train the modified BERT model end-to-end on the SST-2 dataset.\n7. Evaluate performance using accuracy and AUC, comparing against the original BERT model and the previous 'Sentiment-Guided Attention' idea.",
-        "Summary": "Enhance BERT's sentiment analysis by introducing a learned, sentiment-type-pair-specific bias into the self-attention mechanism, enabling the model to capture nuanced sentiment interactions.",
-        "Feasibility": 7,
-        "Novelty": 9,
-        "independence": true,
-        "novel": true
     }
 ]

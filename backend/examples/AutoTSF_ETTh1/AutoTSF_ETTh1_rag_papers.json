@@ -1,209 +1,390 @@
 {
-    "topic_description": "Short-Term Temperature Forecasting Using LSTM Networks",
+    "topic_description": "using transformers for time series forecasting",
     "all_queries": [
-        "Input(\"historical temperature data, time-series features, external factors\")\nOutput(\"predicted temperature for a future short-term period\")",
-        "KeywordQuery(\"LSTM short-term temperature forecasting\")"
+        "Input(\"time series data\"), Output(\"future time series values\")",
+        "KeywordQuery(\"transformer time series forecasting\")",
+        "PaperQuery(\"2410.11674v2\")"
     ],
     "paper_bank": [
         {
-            "id": "1811.06341v1",
-            "paperId": "1811.06341v1",
-            "title": "Spatio-temporal Stacked LSTM for Temperature Prediction in Weather\n  Forecasting",
-            "year": "2018",
-            "citationCount": 0,
-            "abstract": "Long Short-Term Memory (LSTM) is a well-known method used widely on sequence\nlearning and time series prediction. In this paper we deployed stacked LSTM\nmodel in an application of weather forecasting. We propose a 2-layer\nspatio-temporal stacked LSTM model which consists of independent LSTM models\nper location in the first LSTM layer. Subsequently, the input of the second\nLSTM layer is formed based on the combination of the hidden states of the first\nlayer LSTM models. The experiments show that by utilizing the spatial\ninformation the prediction performance of the stacked LSTM model improves in\nmost of the cases.",
-            "tldr": null,
-            "score": 9
-        },
-        {
-            "id": "2409.09414v1",
-            "paperId": "2409.09414v1",
-            "title": "Weather Prediction Using CNN-LSTM for Time Series Analysis: A Case Study\n  on Delhi Temperature Data",
+            "id": "2410.11674v2",
+            "paperId": "2410.11674v2",
+            "title": "LLM-Mixer: Multiscale Mixing in LLMs for Time Series Forecasting",
             "year": "2024",
             "citationCount": 0,
-            "abstract": "As global climate change intensifies, accurate weather forecasting is\nincreasingly crucial for sectors such as agriculture, energy management, and\nenvironmental protection. Traditional methods, which rely on physical and\nstatistical models, often struggle with complex, nonlinear, and time-varying\ndata, underscoring the need for more advanced techniques. This study explores a\nhybrid CNN-LSTM model to enhance temperature forecasting accuracy for the Delhi\nregion, using historical meteorological data from 1996 to 2017. We employed\nboth direct and indirect methods, including comprehensive data preprocessing\nand exploratory analysis, to construct and train our model. The CNN component\neffectively extracts spatial features, while the LSTM captures temporal\ndependencies, leading to improved prediction accuracy. Experimental results\nindicate that the CNN-LSTM model significantly outperforms traditional\nforecasting methods in terms of both accuracy and stability, with a mean square\nerror (MSE) of 3.26217 and a root mean square error (RMSE) of 1.80615. The\nhybrid model demonstrates its potential as a robust tool for temperature\nprediction, offering valuable insights for meteorological forecasting and\nrelated fields. Future research should focus on optimizing model architecture,\nexploring additional feature extraction techniques, and addressing challenges\nsuch as overfitting and computational complexity. This approach not only\nadvances temperature forecasting but also provides a foundation for applying\ndeep learning to other time series forecasting tasks.",
+            "abstract": "Time series forecasting remains a challenging task, particularly in the context of complex multiscale temporal patterns. This study presents LLM-Mixer, a framework that improves forecasting accuracy through the combination of multiscale time-series decomposition with pre-trained LLMs (Large Language Models). LLM-Mixer captures both short-term fluctuations and long-term trends by decomposing the data into multiple temporal resolutions and processing them with a frozen LLM, guided by a textual prompt specifically designed for time-series data. Extensive experiments conducted on multivariate and univariate datasets demonstrate that LLM-Mixer achieves competitive performance, outperforming recent state-of-the-art models across various forecasting horizons. This work highlights the potential of combining multiscale analysis and LLMs for effective and scalable time-series forecasting.",
             "tldr": null,
             "score": 9
         },
         {
-            "id": "2412.07997v1",
-            "paperId": "2412.07997v1",
-            "title": "Accurate Prediction of Temperature Indicators in Eastern China Using a\n  Multi-Scale CNN-LSTM-Attention model",
-            "year": "2024",
-            "citationCount": 0,
-            "abstract": "In recent years, the importance of accurate weather forecasting has become\nincreasingly prominent due to the impacts of global climate change and the\nrapid development of data science. Traditional forecasting methods often\nstruggle to handle the complexity and nonlinearity inherent in climate data. To\naddress these challenges, we propose a weather prediction model based on a\nmulti-scale convolutional CNN-LSTM-Attention architecture, specifically\ndesigned for time series forecasting of temperature data in China. The model\nintegrates Convolutional Neural Networks (CNN), Long Short-Term Memory (LSTM)\nnetworks, and attention mechanisms to leverage the strengths of spatial feature\nextraction, temporal sequence modeling, and the ability to focus on important\nfeatures. The development process of the model includes data collection,\npreprocessing, feature extraction, and model building. Experimental results\nshow that the model performs excellently in predicting temperature trends with\nhigh accuracy. The final computed results indicate that the Mean Squared Error\n(MSE) is 1.978295 and the Root Mean Squared Error (RMSE) is 0.8106562. This\nwork marks a significant advancement in applying deep learning techniques to\nmeteorological data, offering a valuable tool for improving weather forecasting\naccuracy and providing essential support for decision-making in areas such as\nurban planning, agriculture, and energy management.",
-            "tldr": null,
-            "score": 9
-        },
-        {
-            "id": "2410.14963v1",
-            "paperId": "2410.14963v1",
-            "title": "Deep Learning for Weather Forecasting: A CNN-LSTM Hybrid Model for\n  Predicting Historical Temperature Data",
-            "year": "2024",
-            "citationCount": 0,
-            "abstract": "As global climate change intensifies, accurate weather forecasting has become\nincreasingly important, affecting agriculture, energy management, environmental\nprotection, and daily life. This study introduces a hybrid model combining\nConvolutional Neural Networks (CNNs) and Long Short-Term Memory (LSTM) networks\nto predict historical temperature data. CNNs are utilized for spatial feature\nextraction, while LSTMs handle temporal dependencies, resulting in\nsignificantly improved prediction accuracy and stability. By using Mean\nAbsolute Error (MAE) as the loss function, the model demonstrates excellent\nperformance in processing complex meteorological data, addressing challenges\nsuch as missing data and high-dimensionality. The results show a strong\nalignment between the prediction curve and test data, validating the model's\npotential in climate prediction. This study offers valuable insights for fields\nsuch as agriculture, energy management, and urban planning, and lays the\ngroundwork for future applications in weather forecasting under the context of\nglobal climate change.",
-            "tldr": null,
-            "score": 9
-        },
-        {
-            "id": "2510.10702v1",
-            "paperId": "2510.10702v1",
-            "title": "Attention-Enhanced LSTM Modeling for Improved Temperature and Rainfall\n  Forecasting in Bangladesh",
+            "id": "2501.02945v3",
+            "paperId": "2501.02945v3",
+            "title": "From Tables to Time: How TabPFN-v2 Outperforms Specialized Time Series Forecasting Models",
             "year": "2025",
             "citationCount": 0,
-            "abstract": "Accurate climate forecasting is vital for Bangladesh, a region highly\nsusceptible to climate change impacts on temperature and rainfall. Existing\nmodels often struggle to capture long-range dependencies and complex temporal\npatterns in climate data. This study introduces an advanced Long Short-Term\nMemory (LSTM) model integrated with an attention mechanism to enhance the\nprediction of temperature and rainfall dynamics. Utilizing comprehensive\ndatasets from 1901-2023, sourced from NASA's POWER Project for temperature and\nthe Humanitarian Data Exchange for rainfall, the model effectively captures\nseasonal and long-term trends. It outperforms baseline models, including\nXGBoost, Simple LSTM, and GRU, achieving a test MSE of 0.2411 (normalized\nunits), MAE of 0.3860 degrees C, R^2 of 0.9834, and NRMSE of 0.0370 for\ntemperature, and MSE of 1283.67 mm^2, MAE of 22.91 mm, R^2 of 0.9639, and NRMSE\nof 0.0354 for rainfall on monthly forecasts. The model demonstrates improved\nrobustness with only a 20 percent increase in MSE under simulated climate\ntrends (compared to an approximately 2.2-fold increase in baseline models\nwithout trend features) and a 50 percent degradation under regional variations\n(compared to an approximately 4.8-fold increase in baseline models without\nenhancements). These results highlight the model's ability to improve\nforecasting precision and offer potential insights into the physical processes\ngoverning climate variability in Bangladesh, supporting applications in\nclimate-sensitive sectors.",
-            "tldr": null,
-            "score": 9
-        },
-        {
-            "id": "2102.02892v1",
-            "paperId": "2102.02892v1",
-            "title": "Using Long Short-Term Memory (LSTM) and Internet of Things (IoT) for\n  localized surface temperature forecasting in an urban environment",
-            "year": "2021",
-            "citationCount": 0,
-            "abstract": "The rising temperature is one of the key indicators of a warming climate, and\nit can cause extensive stress to biological systems as well as built\nstructures. Due to the heat island effect, it is most severe in urban\nenvironments compared to other landscapes due to the decrease in vegetation\nassociated with a dense human-built environment. It is essential to adequately\nmonitor the local temperature dynamics to mitigate risks associated with\nincreasing temperatures, which can include short term strategy to protect\npeople and animals, to long term strategy to how to build a new structure and\ncope with extreme events. Observed temperature is also a very important input\nfor atmospheric models, and accurate data can lead to better future forecasts.\n  Ambient temperature collected at ground level can have a higher variability\nwhen compared to regional weather forecasts, which fail to capture the local\ndynamics. There remains a clear need for an accurate air temperature prediction\nat the sub-urban scale at high temporal and spatial resolution. This research\nproposed a framework based on Long Short-Term Memory (LSTM) deep learning\nnetwork to generate day-ahead hourly temperature forecast with high spatial\nresolution. A case study is shown which uses historical in-situ observations\nand Internet of Things (IoT) observations for New York City, USA. By leveraging\nthe historical air temperature data from in-situ observations, the LSTM model\ncan be exposed to more historical patterns that might not be present in the IoT\nobservations. Meanwhile, by using IoT observations, the spatial resolution of\nair temperature predictions is significantly improved.",
+            "abstract": "Foundation models have become increasingly popular for forecasting due to their ability to provide predictions without requiring a lot of training data. In this work, we demonstrate how TabPFN-v2, a general tabular foundation model, can be effectively applied to time series forecasting. We introduce TabPFN-TS, a simple method that combines TabPFN-v2 with lightweight feature engineering to enable both point and probabilistic forecasting. Despite its simplicity and compact size (11M parameters), TabPFN-TS achieves top rank on the public GIFT-Eval leaderboard in both forecasting tasks. Through ablation studies, we investigate factors contributing to this surprising effectiveness, especially considering TabPFN-v2 was pretrained solely on synthetic tabular data with no exposure to time series. Our results highlights the potential of tabular foundation models like TabPFN-v2 as a valuable new approach for time series forecasting. Our implementation is available at https://github.com/PriorLabs/tabpfn-time-series.",
             "tldr": null,
             "score": 8
         },
         {
-            "id": "2011.04452v1",
-            "paperId": "2011.04452v1",
-            "title": "Comparison between ARIMA and Deep Learning Models for Temperature\n  Forecasting",
-            "year": "2020",
+            "id": "2208.09300v1",
+            "paperId": "2208.09300v1",
+            "title": "Expressing Multivariate Time Series as Graphs with Time Series Attention Transformer",
+            "year": "2022",
             "citationCount": 0,
-            "abstract": "Weather forecasting benefits us in various ways from farmers in cultivation\nand harvesting their crops to airlines to schedule their flights. Weather\nforecasting is a challenging task due to the chaotic nature of the atmosphere.\nTherefore lot of research attention has drawn to obtain the benefits and to\novercome the challenges of weather forecasting. This paper compares ARIMA (Auto\nRegressive Integrated Moving Average) model and deep learning models to\nforecast temperature. The deep learning model consists of one dimensional\nconvolutional layers to extract spatial features and LSTM layers to extract\ntemporal features. Both of these models are applied to hourly temperature data\nset from Szeged, Hungry. According to the experimental results deep learning\nmodel was able to perform better than the traditional ARIMA methodology.",
+            "abstract": "A reliable and efficient representation of multivariate time series is crucial in various downstream machine learning tasks. In multivariate time series forecasting, each variable depends on its historical values and there are inter-dependencies among variables as well. Models have to be designed to capture both intra- and inter-relationships among the time series. To move towards this goal, we propose the Time Series Attention Transformer (TSAT) for multivariate time series representation learning. Using TSAT, we represent both temporal information and inter-dependencies of multivariate time series in terms of edge-enhanced dynamic graphs. The intra-series correlations are represented by nodes in a dynamic graph; a self-attention mechanism is modified to capture the inter-series correlations by using the super-empirical mode decomposition (SMD) module. We applied the embedded dynamic graphs to times series forecasting problems, including two real-world datasets and two benchmark datasets. Extensive experiments show that TSAT clearly outerperforms six state-of-the-art baseline methods in various forecasting horizons. We further visualize the embedded dynamic graphs to illustrate the graph representation power of TSAT. We share our code at https://github.com/RadiantResearch/TSAT.",
             "tldr": null,
             "score": 8
         },
         {
-            "id": "2101.09356v1",
-            "paperId": "2101.09356v1",
-            "title": "Dynamical prediction of two meteorological factors using the deep neural\n  network and the long short term memory $(1)$",
+            "id": "2106.09305v3",
+            "paperId": "2106.09305v3",
+            "title": "SCINet: Time Series Modeling and Forecasting with Sample Convolution and Interaction",
             "year": "2021",
             "citationCount": 0,
-            "abstract": "It is important to calculate and analyze temperature and humidity prediction\naccuracies among quantitative meteorological forecasting. This study\nmanipulates the extant neural network methods to foster the predictive\naccuracy. To achieve such tasks, we analyze and explore the predictive accuracy\nand performance in the neural networks using two combined meteorological\nfactors (temperature and humidity). Simulated studies are performed by applying\nthe artificial neural network (ANN), deep neural network (DNN), extreme\nlearning machine (ELM), long short-term memory (LSTM), and long short-term\nmemory with peephole connections (LSTM-PC) machine learning methods, and the\naccurate prediction value are compared to that obtained from each other\nmethods. Data are extracted from low frequency time-series of ten metropolitan\ncities of South Korea from March 2014 to February 2020 to validate our\nobservations. To test the robustness of methods, the error of LSTM is found to\noutperform that of the other four methods in predictive accuracy. Particularly,\nas testing results, the temperature prediction of LSTM in summer in Tongyeong\nhas a root mean squared error (RMSE) value of 0.866 lower than that of other\nneural network methods, while the mean absolute percentage error (MAPE) value\nof LSTM for humidity prediction is 5.525 in summer in Mokpo, significantly\nbetter than other metropolitan cities.",
+            "abstract": "One unique property of time series is that the temporal relations are largely preserved after downsampling into two sub-sequences. By taking advantage of this property, we propose a novel neural network architecture that conducts sample convolution and interaction for temporal modeling and forecasting, named SCINet. Specifically, SCINet is a recursive downsample-convolve-interact architecture. In each layer, we use multiple convolutional filters to extract distinct yet valuable temporal features from the downsampled sub-sequences or features. By combining these rich features aggregated from multiple resolutions, SCINet effectively models time series with complex temporal dynamics. Experimental results show that SCINet achieves significant forecasting accuracy improvements over both existing convolutional models and Transformer-based solutions across various real-world time series forecasting datasets. Our codes and data are available at https://github.com/cure-lab/SCINet.",
             "tldr": null,
             "score": 7
         },
         {
-            "id": "2301.13774v1",
-            "paperId": "2301.13774v1",
-            "title": "Multi Feature Data Fusion-Based Load Forecasting of Electric Vehicle\n  Charging Stations Using a Deep Learning Model",
-            "year": "2023",
-            "citationCount": 0,
-            "abstract": "We propose a forecasting technique based on multi-feature data fusion to\nenhance the accuracy of an electric vehicle (EV) charging station load\nforecasting deep-learning model. The proposed method uses multi-feature inputs\nbased on observations of historical weather (wind speed, temperature, and\nhumidity) data as multiple inputs to a Long Short-Term Memory (LSTM) model to\nachieve a robust prediction of charging loads. Weather conditions are\nsignificant influencers of the behavior of EV drivers and their driving\npatterns. These behavioral and driving patterns affect the charging patterns of\nthe drivers. Rather than one prediction (step, model, or variables) made by\nconventional LSTM models, three charging load (energy demand) predictions of\nEVs were made depending on different multi-feature inputs. Data fusion was used\nto combine and optimize the different charging load prediction results. The\nperformance of the final implemented model was evaluated by the mean absolute\nprediction error of the forecast. The implemented model had a prediction error\nof 3.29%. This prediction error was lower than initial prediction results by\nthe LSTM model. The numerical results indicate an improvement in the\nperformance of the EV load forecast, indicating that the proposed model could\nbe used to optimize and improve EV load forecasts for electric vehicle charging\nstations to meet the energy requirements of EVs.",
-            "tldr": null,
-            "score": 4
-        },
-        {
-            "id": "2509.26187v1",
-            "paperId": "2509.26187v1",
-            "title": "Optimizing Indoor Environmental Quality in Smart Buildings Using Deep\n  Learning",
-            "year": "2025",
-            "citationCount": 0,
-            "abstract": "Ensuring optimal Indoor Environmental Quality (IEQ) is vital for occupant\nhealth and productivity, yet it often comes at a high energy cost in\nconventional Heating, Ventilation, and Air Conditioning (HVAC) systems. This\npaper proposes a deep learning driven approach to proactively manage IEQ\nparameters specifically CO2 concentration, temperature, and humidity while\nbalancing building energy efficiency. Leveraging the ROBOD dataset collected\nfrom a net-zero energy academic building, we benchmark three\narchitectures--Long Short-Term Memory (LSTM), Gated Recurrent Units (GRU), and\na hybrid Convolutional Neural Network LSTM (CNN-LSTM)--to forecast IEQ\nvariables across various time horizons. Our results show that GRU achieves the\nbest short-term prediction accuracy with lower computational overhead, whereas\nCNN-LSTM excels in extracting dominant features for extended forecasting\nwindows. Meanwhile, LSTM offers robust long-range temporal modeling. The\ncomparative analysis highlights that prediction reliability depends on data\nresolution, sensor placement, and fluctuating occupancy conditions. These\nfindings provide actionable insights for intelligent Building Management\nSystems (BMS) to implement predictive HVAC control, thereby reducing energy\nconsumption and enhancing occupant comfort in real-world building operations.",
-            "tldr": null,
-            "score": 4
-        },
-        {
-            "id": "2511.00552v1",
-            "paperId": "2511.00552v1",
-            "title": "Temporal Fusion Transformer for Multi-Horizon Probabilistic Forecasting\n  of Weekly Retail Sales",
-            "year": "2025",
-            "citationCount": 0,
-            "abstract": "Accurate multi-horizon retail forecasts are critical for inventory and\npromotions. We present a novel study of weekly Walmart sales (45 stores,\n2010--2012) using a Temporal Fusion Transformer (TFT) that fuses static store\nidentifiers with time-varying exogenous signals (holidays, CPI, fuel price,\ntemperature). The pipeline produces 1--5-week-ahead probabilistic forecasts via\nQuantile Loss, yielding calibrated 90\\% prediction intervals and\ninterpretability through variable-selection networks, static enrichment, and\ntemporal attention. On a fixed 2012 hold-out dataset, TFT achieves an RMSE of\n\\$57.9k USD per store-week and an $R^2$ of 0.9875. Across a 5-fold\nchronological cross-validation, the averages are RMSE = \\$64.6k USD and $R^2$ =\n0.9844, outperforming the XGB, CNN, LSTM, and CNN-LSTM baseline models. These\nresults demonstrate practical value for inventory planning and holiday-period\noptimization, while maintaining model transparency.",
-            "tldr": null,
-            "score": 4
-        },
-        {
-            "id": "2102.09024v1",
-            "paperId": "2102.09024v1",
-            "title": "Deep Learning Approaches for Forecasting Strawberry Yields and Prices\n  Using Satellite Images and Station-Based Soil Parameters",
-            "year": "2021",
-            "citationCount": 0,
-            "abstract": "Computational tools for forecasting yields and prices for fresh produce have\nbeen based on traditional machine learning approaches or time series modelling.\nWe propose here an alternate approach based on deep learning algorithms for\nforecasting strawberry yields and prices in Santa Barbara county, California.\nBuilding the proposed forecasting model comprises three stages: first, the\nstation-based ensemble model (ATT-CNN-LSTM-SeriesNet_Ens) with its compound\ndeep learning components, SeriesNet with Gated Recurrent Unit (GRU) and\nConvolutional Neural Network LSTM with Attention layer (Att-CNN-LSTM), are\ntrained and tested using the station-based soil temperature and moisture data\nof SantaBarbara as input and the corresponding strawberry yields or prices as\noutput. Secondly, the remote sensing ensemble model (SIM_CNN-LSTM_Ens), which\nis an ensemble model of Convolutional NeuralNetwork LSTM (CNN-LSTM) models, is\ntrained and tested using satellite images of the same county as input mapped to\nthe same yields and prices as output. These two ensembles forecast strawberry\nyields and prices with minimal forecasting errors and highest model correlation\nfor five weeks ahead forecasts.Finally, the forecasts of these two models are\nensembled to have a final forecasted value for yields and prices by introducing\na voting ensemble. Based on an aggregated performance measure (AGM), it is\nfound that this voting ensemble not only enhances the forecasting performance\nby 5% compared to its best performing component model but also outperforms the\nDeep Learning (DL) ensemble model found in literature by 33% for forecasting\nyields and 21% for forecasting prices",
-            "tldr": null,
-            "score": 3
-        },
-        {
-            "id": "2004.10928v2",
-            "paperId": "2004.10928v2",
-            "title": "Recurrent Neural Network Architecture Search for Geophysical Emulation",
-            "year": "2020",
-            "citationCount": 0,
-            "abstract": "Developing surrogate geophysical models from data is a key research topic in\natmospheric and oceanic modeling because of the large computational costs\nassociated with numerical simulation methods. Researchers have started applying\na wide range of machine learning models, in particular neural networks, to\ngeophysical data for forecasting without these constraints. Constructing neural\nnetworks for forecasting such data is nontrivial, however, and often requires\ntrial and error. To address these limitations, we focus on developing\nproper-orthogonal-decomposition-based long short-term memory networks\n(POD-LSTMs). We develop a scalable neural architecture search for generating\nstacked LSTMs to forecast temperature in the NOAA Optimum Interpolation\nSea-Surface Temperature data set. Our approach identifies POD-LSTMs that are\nsuperior to manually designed variants and baseline time-series prediction\nmethods. We also assess the scalability of different architecture search\nstrategies on up to 512 Intel Knights Landing nodes of the Theta supercomputer\nat the Argonne Leadership Computing Facility.",
-            "tldr": null,
-            "score": 3
-        },
-        {
-            "id": "2507.01034v1",
-            "paperId": "2507.01034v1",
-            "title": "Data-driven Insights for Informed Decision-Making: Applying LSTM\n  Networks for Robust Electricity Forecasting in Libya",
-            "year": "2025",
-            "citationCount": 0,
-            "abstract": "Accurate electricity forecasting is crucial for grid stability and energy\nplanning, especially in Benghazi, Libya, where frequent load shedding,\ngeneration deficits, and infrastructure limitations persist. This study\nproposes a data-driven approach to forecast electricity load, generation, and\ndeficits for 2025 using historical data from 2019 (a year marked by\ninstability) and 2023 (a more stable year). Multiple time series models were\napplied, including ARIMA, seasonal ARIMA, dynamic regression ARIMA, exponential\nsmoothing, extreme gradient boosting, and Long Short-Term Memory (LSTM) neural\nnetworks. The dataset was enhanced through missing value imputation, outlier\nsmoothing, and log transformation. Performance was assessed using mean squared\nerror, root mean squared error, mean absolute error, and mean absolute\npercentage error. LSTM outperformed all other models, showing strong\ncapabilities in modeling non-stationary and seasonal patterns. A key\ncontribution of this work is an optimized LSTM framework that integrates\nexogenous factors such as temperature and humidity, offering robust performance\nin forecasting multiple electricity indicators. These results provide practical\ninsights for policymakers and grid operators to enable proactive load\nmanagement and resource planning in data-scarce, volatile regions.",
-            "tldr": null,
-            "score": 3
-        },
-        {
-            "id": "2304.05174v1",
-            "paperId": "2304.05174v1",
-            "title": "Electricity Demand Forecasting with Hybrid Statistical and Machine\n  Learning Algorithms: Case Study of Ukraine",
-            "year": "2023",
-            "citationCount": 0,
-            "abstract": "This article presents a novel hybrid approach using statistics and machine\nlearning to forecast the national demand of electricity. As investment and\noperation of future energy systems require long-term electricity demand\nforecasts with hourly resolution, our mathematical model fills a gap in energy\nforecasting. The proposed methodology was constructed using hourly data from\nUkraine's electricity consumption ranging from 2013 to 2020. To this end, we\nanalysed the underlying structure of the hourly, daily and yearly time series\nof electricity consumption. The long-term yearly trend is evaluated using\nmacroeconomic regression analysis. The mid-term model integrates temperature\nand calendar regressors to describe the underlying structure, and combines\nARIMA and LSTM ``black-box'' pattern-based approaches to describe the error\nterm. The short-term model captures the hourly seasonality through calendar\nregressors and multiple ARMA models for the residual. Results show that the\nbest forecasting model is composed by combining multiple regression models and\na LSTM hybrid model for residual prediction. Our hybrid model is very effective\nat forecasting long-term electricity consumption on an hourly resolution. In\ntwo years of out-of-sample forecasts with 17520 timesteps, it is shown to be\nwithin 96.83 \\% accuracy.",
-            "tldr": null,
-            "score": 3
-        },
-        {
-            "id": "2112.13681v1",
-            "paperId": "2112.13681v1",
-            "title": "Wholesale Electricity Price Forecasting using Integrated Long-term\n  Recurrent Convolutional Network Model",
-            "year": "2021",
-            "citationCount": 0,
-            "abstract": "Electricity price is a key factor affecting the decision-making for all\nmarket participants. Accurate forecasting of electricity prices is very\nimportant and is also very challenging since electricity price is highly\nvolatile due to various factors. This paper proposes an integrated long-term\nrecurrent convolutional network (ILRCN) model to predict electricity prices\nconsidering the majority contributing attributes to the market price as input.\nThe proposed ILRCN model combines the functionalities of convolutional neural\nnetwork and long short-term memory (LSTM) algorithm along with the proposed\nnovel conditional error correction term. The combined ILRCN model can identify\nthe linear and non-linear behavior within the input data. We have used ERCOT\nwholesale market price data along with load profile, temperature, and other\nfactors for the Houston region to illustrate the proposed model. The\nperformance of the proposed ILRCN electricity price forecasting model is\nverified using performance/evaluation metrics like mean absolute error and\naccuracy. Case studies reveal that the proposed ILRCN model is accurate and\nefficient in electricity price forecasting as compared to the support vector\nmachine (SVM) model, fully-connected neural network model, LSTM model and the\nLRCN model without the conditional error correction stage.",
-            "tldr": null,
-            "score": 3
-        },
-        {
-            "id": "2309.15207v1",
-            "paperId": "2309.15207v1",
-            "title": "Balancing Computational Efficiency and Forecast Error in Machine\n  Learning-based Time-Series Forecasting: Insights from Live Experiments on\n  Meteorological Nowcasting",
-            "year": "2023",
-            "citationCount": 0,
-            "abstract": "Machine learning for time-series forecasting remains a key area of research.\nDespite successful application of many machine learning techniques, relating\ncomputational efficiency to forecast error remains an under-explored domain.\nThis paper addresses this topic through a series of real-time experiments to\nquantify the relationship between computational cost and forecast error using\nmeteorological nowcasting as an example use-case. We employ a variety of\npopular regression techniques (XGBoost, FC-MLP, Transformer, and LSTM) for\nmulti-horizon, short-term forecasting of three variables (temperature, wind\nspeed, and cloud cover) for multiple locations. During a 5-day live experiment,\n4000 data sources were streamed for training and inferencing 144 models per\nhour. These models were parameterized to explore forecast error for two\ncomputational cost minimization methods: a novel auto-adaptive data reduction\ntechnique (Variance Horizon) and a performance-based concept drift-detection\nmechanism. Forecast error of all model variations were benchmarked in real-time\nagainst a state-of-the-art numerical weather prediction model. Performance was\nassessed using classical and novel evaluation metrics. Results indicate that\nusing the Variance Horizon reduced computational usage by more than 50\\%, while\nincreasing between 0-15\\% in error. Meanwhile, performance-based retraining\nreduced computational usage by up to 90\\% while \\emph{also} improving forecast\nerror by up to 10\\%. Finally, the combination of both the Variance Horizon and\nperformance-based retraining outperformed other model configurations by up to\n99.7\\% when considering error normalized to computational usage.",
-            "tldr": null,
-            "score": 3
-        },
-        {
-            "id": "2404.07924v1",
-            "paperId": "2404.07924v1",
-            "title": "A Parsimonious Setup for Streamflow Forecasting using CNN-LSTM",
+            "id": "2410.19025v1",
+            "paperId": "2410.19025v1",
+            "title": "Large Language Models for Financial Aid in Financial Time-series Forecasting",
             "year": "2024",
             "citationCount": 0,
-            "abstract": "Significant strides have been made in advancing streamflow predictions,\nnotably with the introduction of cutting-edge machine-learning models.\nPredominantly, Long Short-Term Memories (LSTMs) and Convolution Neural Networks\n(CNNs) have been widely employed in this domain. While LSTMs are applicable in\nboth rainfall-runoff and time series settings, CNN-LSTMs have primarily been\nutilized in rainfall-runoff scenarios. In this study, we extend the application\nof CNN-LSTMs to time series settings, leveraging lagged streamflow data in\nconjunction with precipitation and temperature data to predict streamflow. Our\nresults show a substantial improvement in predictive performance in 21 out of\n32 HUC8 basins in Nebraska, showcasing noteworthy increases in the Kling-Gupta\nEfficiency (KGE) values. These results highlight the effectiveness of CNN-LSTMs\nin time series settings, particularly for spatiotemporal hydrological modeling,\nfor more accurate and robust streamflow predictions.",
+            "abstract": "Considering the difficulty of financial time series forecasting in financial aid, much of the current research focuses on leveraging big data analytics in financial services. One modern approach is to utilize \"predictive analysis\", analogous to forecasting financial trends. However, many of these time series data in Financial Aid (FA) pose unique challenges due to limited historical datasets and high dimensional financial information, which hinder the development of effective predictive models that balance accuracy with efficient runtime and memory usage. Pre-trained foundation models are employed to address these challenging tasks. We use state-of-the-art time series models including pre-trained LLMs (GPT-2 as the backbone), transformers, and linear models to demonstrate their ability to outperform traditional approaches, even with minimal (\"few-shot\") or no fine-tuning (\"zero-shot\"). Our benchmark study, which includes financial aid with seven other time series tasks, shows the potential of using LLMs for scarce financial datasets.",
             "tldr": null,
-            "score": 2
+            "score": 7
         },
         {
-            "id": "1812.07699v1",
-            "paperId": "1812.07699v1",
-            "title": "A Comparison of LSTMs and Attention Mechanisms for Forecasting Financial\n  Time Series",
-            "year": "2018",
+            "id": "2207.10517v2",
+            "paperId": "2207.10517v2",
+            "title": "MQRetNN: Multi-Horizon Time Series Forecasting with Retrieval Augmentation",
+            "year": "2022",
             "citationCount": 0,
-            "abstract": "While LSTMs show increasingly promising results for forecasting Financial\nTime Series (FTS), this paper seeks to assess if attention mechanisms can\nfurther improve performance. The hypothesis is that attention can help prevent\nlong-term dependencies experienced by LSTM models. To test this hypothesis, the\nmain contribution of this paper is the implementation of an LSTM with\nattention. Both the benchmark LSTM and the LSTM with attention were compared\nand both achieved reasonable performances of up to 60% on five stocks from\nKaggle's Two Sigma dataset. This comparative analysis demonstrates that an LSTM\nwith attention can indeed outperform standalone LSTMs but further investigation\nis required as issues do arise with such model architectures.",
+            "abstract": "Multi-horizon probabilistic time series forecasting has wide applicability to real-world tasks such as demand forecasting. Recent work in neural time-series forecasting mainly focus on the use of Seq2Seq architectures. For example, MQTransformer - an improvement of MQCNN - has shown the state-of-the-art performance in probabilistic demand forecasting. In this paper, we consider incorporating cross-entity information to enhance model performance by adding a cross-entity attention mechanism along with a retrieval mechanism to select which entities to attend over. We demonstrate how our new neural architecture, MQRetNN, leverages the encoded contexts from a pretrained baseline model on the entire population to improve forecasting accuracy. Using MQCNN as the baseline model (due to computational constraints, we do not use MQTransformer), we first show on a small demand forecasting dataset that it is possible to achieve ~3% improvement in test loss by adding a cross-entity attention mechanism where each entity attends to all others in the population. We then evaluate the model with our proposed retrieval methods - as a means of approximating an attention over a large population - on a large-scale demand forecasting application with over 2 million products and observe ~1% performance gain over the MQCNN baseline.",
             "tldr": null,
-            "score": 2
+            "score": 7
         },
         {
-            "id": "2509.12615v1",
-            "paperId": "2509.12615v1",
-            "title": "Mob-based cattle weight gain forecasting using ML models",
+            "id": "2510.09776v1",
+            "paperId": "2510.09776v1",
+            "title": "Why Do Transformers Fail to Forecast Time Series In-Context?",
             "year": "2025",
             "citationCount": 0,
-            "abstract": "Forecasting mob based cattle weight gain (MB CWG) may benefit large livestock\nfarms, allowing farmers to refine their feeding strategies, make educated\nbreeding choices, and reduce risks linked to climate variability and market\nfluctuations. In this paper, a novel technique termed MB CWG is proposed to\nforecast the one month advanced weight gain of herd based cattle using\nhistorical data collected from the Charles Sturt University Farm. This research\nemploys a Random Forest (RF) model, comparing its performance against Support\nVector Regression (SVR) and Long Short Term Memory (LSTM) models for monthly\nweight gain prediction. Four datasets were used to evaluate the performance of\nmodels, using 756 sample data from 108 herd-based cattle, along with weather\ndata (rainfall and temperature) influencing CWG. The RF model performs better\nthan the SVR and LSTM models across all datasets, achieving an R^2 of 0.973,\nRMSE of 0.040, and MAE of 0.033 when both weather and age factors were\nincluded. The results indicate that including both weather and age factors\nsignificantly improves the accuracy of weight gain predictions, with the RF\nmodel outperforming the SVR and LSTM models in all scenarios. These findings\ndemonstrate the potential of RF as a robust tool for forecasting cattle weight\ngain in variable conditions, highlighting the influence of age and climatic\nfactors on herd based weight trends. This study has also developed an\ninnovative automated pre processing tool to generate a benchmark dataset for MB\nCWG predictive models. The tool is publicly available on GitHub and can assist\nin preparing datasets for current and future analytical research..",
+            "abstract": "Time series forecasting (TSF) remains a challenging and largely unsolved problem in machine learning, despite significant recent efforts leveraging Large Language Models (LLMs), which predominantly rely on Transformer architectures. Empirical evidence consistently shows that even powerful Transformers often fail to outperform much simpler models, e.g., linear models, on TSF tasks; however, a rigorous theoretical understanding of this phenomenon remains limited. In this paper, we provide a theoretical analysis of Transformers' limitations for TSF through the lens of In-Context Learning (ICL) theory. Specifically, under AR($p$) data, we establish that: (1) Linear Self-Attention (LSA) models $\\textit{cannot}$ achieve lower expected MSE than classical linear models for in-context forecasting; (2) as the context length approaches to infinity, LSA asymptotically recovers the optimal linear predictor; and (3) under Chain-of-Thought (CoT) style inference, predictions collapse to the mean exponentially. We empirically validate these findings through carefully designed experiments. Our theory not only sheds light on several previously underexplored phenomena but also offers practical insights for designing more effective forecasting architectures. We hope our work encourages the broader research community to revisit the fundamental theoretical limitations of TSF and to critically evaluate the direct application of increasingly sophisticated architectures without deeper scrutiny.",
+            "tldr": null,
+            "score": 6
+        },
+        {
+            "id": "2107.03743v1",
+            "paperId": "2107.03743v1",
+            "title": "Probabilistic Time Series Forecasting with Implicit Quantile Networks",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Here, we propose a general method for probabilistic time series forecasting. We combine an autoregressive recurrent neural network to model temporal dynamics with Implicit Quantile Networks to learn a large class of distributions over a time-series target. When compared to other probabilistic neural forecasting models on real- and simulated data, our approach is favorable in terms of point-wise prediction accuracy as well as on estimating the underlying temporal distribution.",
+            "tldr": null,
+            "score": 5
+        },
+        {
+            "id": "2306.12086v2",
+            "paperId": "2306.12086v2",
+            "title": "What Constitutes Good Contrastive Learning in Time-Series Forecasting?",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "In recent years, the introduction of self-supervised contrastive learning (SSCL) has demonstrated remarkable improvements in representation learning across various domains, including natural language processing and computer vision. By leveraging the inherent benefits of self-supervision, SSCL enables the pre-training of representation models using vast amounts of unlabeled data. Despite these advances, there remains a significant gap in understanding the impact of different SSCL strategies on time series forecasting performance, as well as the specific benefits that SSCL can bring. This paper aims to address these gaps by conducting a comprehensive analysis of the effectiveness of various training variables, including different SSCL algorithms, learning strategies, model architectures, and their interplay. Additionally, to gain deeper insights into the improvements brought about by SSCL in the context of time-series forecasting, a qualitative analysis of the empirical receptive field is performed. Through our experiments, we demonstrate that the end-to-end training of a Transformer model using the Mean Squared Error (MSE) loss and SSCL emerges as the most effective approach in time series forecasting. Notably, the incorporation of the contrastive objective enables the model to prioritize more pertinent information for forecasting, such as scale and periodic relationships. These findings contribute to a better understanding of the benefits of SSCL in time series forecasting and provide valuable insights for future research in this area. Our codes are available at https://github.com/chiyuzhang94/contrastive_learning_time-series_e2e.",
+            "tldr": null,
+            "score": 4
+        },
+        {
+            "id": "2110.13179v8",
+            "paperId": "2110.13179v8",
+            "title": "Probabilistic Hierarchical Forecasting with Deep Poisson Mixtures",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Hierarchical forecasting problems arise when time series have a natural group structure, and predictions at multiple levels of aggregation and disaggregation across the groups are needed. In such problems, it is often desired to satisfy the aggregation constraints in a given hierarchy, referred to as hierarchical coherence in the literature. Maintaining coherence while producing accurate forecasts can be a challenging problem, especially in the case of probabilistic forecasting. We present a novel method capable of accurate and coherent probabilistic forecasts for time series when reliable hierarchical information is present. We call it Deep Poisson Mixture Network (DPMN). It relies on the combination of neural networks and a statistical model for the joint distribution of the hierarchical multivariate time series structure. By construction, the model guarantees hierarchical coherence and provides simple rules for aggregation and disaggregation of the predictive distributions. We perform an extensive empirical evaluation comparing the DPMN to other state-of-the-art methods which produce hierarchically coherent probabilistic forecasts on multiple public datasets. Comparing to existing coherent probabilistic models, we obtain a relative improvement in the overall Continuous Ranked Probability Score (CRPS) of 11.8% on Australian domestic tourism data, and 8.1% on the Favorita grocery sales dataset, where time series are grouped with geographical hierarchies or travel intent hierarchies. For San Francisco Bay Area highway traffic, where the series' hierarchical structure is randomly assigned, and their correlations are less informative, our method does not show significant performance differences over statistical baselines.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "1809.03561v1",
+            "paperId": "1809.03561v1",
+            "title": "Quantile Regression for Qualifying Match of GEFCom2017 Probabilistic Load Forecasting",
+            "year": "2018",
+            "citationCount": 0,
+            "abstract": "We present a simple quantile regression-based forecasting method that was applied in a probabilistic load forecasting framework of the Global Energy Forecasting Competition 2017 (GEFCom2017). The hourly load data is log transformed and split into a long-term trend component and a remainder term. The key forecasting element is the quantile regression approach for the remainder term that takes into account weekly and annual seasonalities such as their interactions. Temperature information is only used to stabilize the forecast of the long-term trend component. Public holidays information is ignored. Still, the forecasting method placed second in the open data track and fourth in the definite data track with our forecasting method, which is remarkable given simplicity of the model. The method also outperforms the Vanilla benchmark consistently.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "1603.01376v1",
+            "paperId": "1603.01376v1",
+            "title": "Lasso estimation for GEFCom2014 probabilistic electric load forecasting",
+            "year": "2016",
+            "citationCount": 0,
+            "abstract": "We present a methodology for probabilistic load forecasting that is based on lasso (least absolute shrinkage and selection operator) estimation. The model considered can be regarded as a bivariate time-varying threshold autoregressive(AR) process for the hourly electric load and temperature. The joint modeling approach incorporates the temperature effects directly, and reflects daily, weekly, and annual seasonal patterns and public holiday effects. We provide two empirical studies, one based on the probabilistic load forecasting track of the Global Energy Forecasting Competition 2014 (GEFCom2014-L), and the other based on another recent probabilistic load forecasting competition that follows a setup similar to that of GEFCom2014-L. In both empirical case studies, the proposed methodology outperforms two multiple linear regression based benchmarks from among the top eight entries to GEFCom2014-L.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "1810.08418v2",
+            "paperId": "1810.08418v2",
+            "title": "Probabilistic Forecasting in Day-Ahead Electricity Markets: Simulating Peak and Off-Peak Prices",
+            "year": "2018",
+            "citationCount": 0,
+            "abstract": "In this paper we include dependency structures for electricity price forecasting and forecasting evaluation. We work with off-peak and peak time series from the German-Austrian day-ahead price, hence we analyze bivariate data. We first estimate the mean of the two time series, and then in a second step we estimate the residuals. The mean equation is estimated by OLS and elastic net and the residuals are estimated by maximum likelihood. Our contribution is to include a bivariate jump component on a mean reverting jump diffusion model in the residuals. The models' forecasts are evaluated using four different criteria, including the energy score to measure whether the correlation structure between the time series is properly included or not. In the results it is observed that the models with bivariate jumps provide better results with the energy score, which means that it is important to consider this structure in order to properly forecast correlated time series.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2502.19086v5",
+            "paperId": "2502.19086v5",
+            "title": "Forecasting intermittent time series with Gaussian Processes and Tweedie likelihood",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We adopt Gaussian Processes (GPs) as latent functions for probabilistic forecasting of intermittent time series. The model is trained in a Bayesian framework that accounts for the uncertainty about the latent function. We couple the latent GP variable with two types of forecast distributions: the negative binomial (NegBinGP) and the Tweedie distribution (TweedieGP). While the negative binomial has already been used in forecasting intermittent time series, this is the first time in which a fully parameterized Tweedie density is used for intermittent time series. We properly evaluate the Tweedie density, which has both a point mass at zero and heavy tails, avoiding simplifying assumptions made in existing models. We test our models on thousands of intermittent count time series. Results show that our models provide consistently better probabilistic forecasts than the competitors. In particular, TweedieGP obtains the best estimates of the highest quantiles, thus showing that it is more flexible than NegBinGP.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "2511.06224v1",
+            "paperId": "2511.06224v1",
+            "title": "Bitcoin Forecasting with Classical Time Series Models on Prices and Volatility",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "This paper evaluates the performance of classical time series models in forecasting Bitcoin prices, focusing on ARIMA, SARIMA, GARCH, and EGARCH. Daily price data from 2010 to 2020 were analyzed, with models trained on the first 90 percent and tested on the final 10 percent. Forecast accuracy was assessed using MAE, RMSE, AIC, and BIC. The results show that ARIMA provided the strongest forecasts for short-run log-price dynamics, while EGARCH offered the best fit for volatility by capturing asymmetry in responses to shocks. These findings suggest that despite Bitcoin's extreme volatility, classical time series models remain valuable for short-run forecasting. The study contributes to understanding cryptocurrency predictability and sets the stage for future work integrating machine learning and macroeconomic variables.",
+            "tldr": null,
+            "score": 3
+        },
+        {
+            "id": "1904.03825v1",
+            "paperId": "1904.03825v1",
+            "title": "Application of data compression techniques to time series forecasting",
+            "year": "2019",
+            "citationCount": 0,
+            "abstract": "In this study we show that standard well-known file compression programs (zlib, bzip2, etc.) are able to forecast real-world time series data well. The strength of our approach is its ability to use a set of data compression algorithms and \"automatically\" choose the best one of them during the process of forecasting. Besides, modern data-compressors are able to find many kinds of latent regularities using some methods of artificial intelligence (for example, some data-compressors are based on finding the smallest formal grammar that describes the time series). Thus, our approach makes it possible to apply some particular methods of artificial intelligence for time-series forecasting.\n  As examples of the application of the proposed method, we made forecasts for the monthly T-index and the Kp-index time series using standard compressors. In both cases, we used the Mean Absolute Error (MAE) as an accuracy measure.\n  For the monthly T-index time series, we made 18 forecasts beyond the available data for each month since January 2011 to July 2017. We show that, in comparison with the forecasts made by the Australian Bureau of Meteorology, our method more accurately predicts one value ahead.\n  The Kp-index time series consists of 3-hour values ranging from 0 to 9. For each day from February 4, 2018 to March 28, 2018, we made forecasts for 24 values ahead. We compared our forecasts with the forecasts made by the Space Weather Prediction Center (SWPC). The results showed that the accuracy of our method is similar to the accuracy of the SWPC's method. As in the previous case, we also obtained more accurate one-step forecasts.",
             "tldr": null,
             "score": 2
+        },
+        {
+            "id": "1902.03714v1",
+            "paperId": "1902.03714v1",
+            "title": "Hawkes processes for credit indices time series analysis: How random are trades arrival times?",
+            "year": "2019",
+            "citationCount": 0,
+            "abstract": "Targeting a better understanding of credit market dynamics, the authors have studied a stochastic model named the Hawkes process. Describing trades arrival times, this kind of model allows for the capture of self-excitement and mutual interactions phenomena. The authors propose here a simple yet conclusive method for fitting multidimensional Hawkes processes with exponential kernels, based on a maximum likelihood non-convex optimization. The method was successfully tested on simulated data, then used on new publicly available real trading data for three European credit indices, thus enabling quantification of self-excitement as well as volume impacts or cross indices influences.",
+            "tldr": null,
+            "score": 2
+        },
+        {
+            "id": "2303.14295v1",
+            "paperId": "2303.14295v1",
+            "title": "Clustering Multivariate Time Series using Energy Distance",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "A novel methodology is proposed for clustering multivariate time series data using energy distance defined in Sz\u00e9kely and Rizzo (2013). Specifically, a dissimilarity matrix is formed using the energy distance statistic to measure separation between the finite dimensional distributions for the component time series. Once the pairwise dissimilarity matrix is calculated, a hierarchical clustering method is then applied to obtain the dendrogram. This procedure is completely nonparametric as the dissimilarities between stationary distributions are directly calculated without making any model assumptions. In order to justify this procedure, asymptotic properties of the energy distance estimates are derived for general stationary and ergodic time series. The method is illustrated in a simulation study for various component time series that are either linear or nonlinear. Finally the methodology is applied to two examples; one involves GDP of selected countries and the other is population size of various states in the U.S.A. in the years 1900 -1999.",
+            "tldr": null,
+            "score": 1
+        },
+        {
+            "id": "1411.4413v2",
+            "paperId": "1411.4413v2",
+            "title": "Observation of the rare $B^0_s\\to\u03bc^+\u03bc^-$ decay from the combined analysis of CMS and LHCb data",
+            "year": "2014",
+            "citationCount": 0,
+            "abstract": "A joint measurement is presented of the branching fractions $B^0_s\\to\u03bc^+\u03bc^-$ and $B^0\\to\u03bc^+\u03bc^-$ in proton-proton collisions at the LHC by the CMS and LHCb experiments. The data samples were collected in 2011 at a centre-of-mass energy of 7 TeV, and in 2012 at 8 TeV. The combined analysis produces the first observation of the $B^0_s\\to\u03bc^+\u03bc^-$ decay, with a statistical significance exceeding six standard deviations, and the best measurement of its branching fraction so far. Furthermore, evidence for the $B^0\\to\u03bc^+\u03bc^-$ decay is obtained with a statistical significance of three standard deviations. The branching fraction measurements are statistically compatible with SM predictions and impose stringent constraints on several theories beyond the SM.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "0901.0512v4",
+            "paperId": "0901.0512v4",
+            "title": "Expected Performance of the ATLAS Experiment - Detector, Trigger and Physics",
+            "year": "2008",
+            "citationCount": 0,
+            "abstract": "A detailed study is presented of the expected performance of the ATLAS detector. The reconstruction of tracks, leptons, photons, missing energy and jets is investigated, together with the performance of b-tagging and the trigger. The physics potential for a variety of interesting physics processes, within the Standard Model and beyond, is examined. The study comprises a series of notes based on simulations of the detector and physics processes, with particular emphasis given to the data expected from the first years of operation of the LHC at CERN.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "1710.05839v2",
+            "paperId": "1710.05839v2",
+            "title": "Search for High-energy Neutrinos from Binary Neutron Star Merger GW170817 with ANTARES, IceCube, and the Pierre Auger Observatory",
+            "year": "2017",
+            "citationCount": 0,
+            "abstract": "The Advanced LIGO and Advanced Virgo observatories recently discovered gravitational waves from a binary neutron star inspiral. A short gamma-ray burst (GRB) that followed the merger of this binary was also recorded by the Fermi Gamma-ray Burst Monitor (Fermi-GBM), and the Anticoincidence Shield for the Spectrometer for the International Gamma-Ray Astrophysics Laboratory (INTEGRAL), indicating particle acceleration by the source. The precise location of the event was determined by optical detections of emission following the merger. We searched for high-energy neutrinos from the merger in the GeV--EeV energy range using the ANTARES, IceCube, and Pierre Auger Observatories. No neutrinos directionally coincident with the source were detected within $\\pm500$ s around the merger time. Additionally, no MeV neutrino burst signal was detected coincident with the merger. We further carried out an extended search in the direction of the source for high-energy neutrinos within the 14-day period following the merger, but found no evidence of emission. We used these results to probe dissipation mechanisms in relativistic outflows driven by the binary neutron star merger. The non-detection is consistent with model predictions of short GRBs observed at a large off-axis angle.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18080v2",
+            "paperId": "2508.18080v2",
+            "title": "GWTC-4.0: An Introduction to Version 4.0 of the Gravitational-Wave Transient Catalog",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "The Gravitational-Wave Transient Catalog (GWTC) is a collection of short-duration (transient) gravitational wave signals identified by the LIGO-Virgo-KAGRA Collaboration in gravitational-wave data produced by the eponymous detectors. The catalog provides information about the identified candidates, such as the arrival time and amplitude of the signal and properties of the signal's source as inferred from the observational data. GWTC is the data release of this dataset and version 4.0 extends the catalog to include observations made during the first part of the fourth LIGO-Virgo-KAGRA observing run up until 2024 January 31. This paper marks an introduction to a collection of articles related to this version of the catalog, GWTC-4.0. The collection of articles accompanying the catalog provides documentation of the methods used to analyze the data, summaries of the catalog of events, observational measurements drawn from the population, and detailed discussions of selected candidates",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2403.03004v1",
+            "paperId": "2403.03004v1",
+            "title": "Ultralight vector dark matter search using data from the KAGRA O3GK run",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Among the various candidates for dark matter (DM), ultralight vector DM can be probed by laser interferometric gravitational wave detectors through the measurement of oscillating length changes in the arm cavities. In this context, KAGRA has a unique feature due to differing compositions of its mirrors, enhancing the signal of vector DM in the length change in the auxiliary channels. Here we present the result of a search for $U(1)_{B-L}$ gauge boson DM using the KAGRA data from auxiliary length channels during the first joint observation run together with GEO600. By applying our search pipeline, which takes into account the stochastic nature of ultralight DM, upper bounds on the coupling strength between the $U(1)_{B-L}$ gauge boson and ordinary matter are obtained for a range of DM masses. While our constraints are less stringent than those derived from previous experiments, this study demonstrates the applicability of our method to the lower-mass vector DM search, which is made difficult in this measurement by the short observation time compared to the auto-correlation time scale of DM.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18081v1",
+            "paperId": "2508.18081v1",
+            "title": "GWTC-4.0: Methods for Identifying and Characterizing Gravitational-wave Transients",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "The Gravitational-Wave Transient Catalog (GWTC) is a collection of candidate gravitational-wave transient signals identified and characterized by the LIGO-Virgo-KAGRA Collaboration. Producing the contents of the GWTC from detector data requires complex analysis methods. These comprise techniques to model the signal; identify the transients in the data; evaluate the quality of the data and mitigate possible instrumental issues; infer the parameters of each transient; compare the data with the waveform models for compact binary coalescences; and handle the large amount of results associated with all these different analyses. In this paper, we describe the methods employed to produce the catalog's fourth release, GWTC-4.0, focusing on the analysis of the first part of the fourth observing run of Advanced LIGO, Advanced Virgo and KAGRA.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2407.12867v2",
+            "paperId": "2407.12867v2",
+            "title": "Swift-BAT GUANO follow-up of gravitational-wave triggers in the third LIGO-Virgo-KAGRA observing run",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "We present results from a search for X-ray/gamma-ray counterparts of gravitational-wave (GW) candidates from the third observing run (O3) of the LIGO-Virgo-KAGRA (LVK) network using the Swift Burst Alert Telescope (Swift-BAT). The search includes 636 GW candidates received in low latency, 86 of which have been confirmed by the offline analysis and included in the third cumulative Gravitational-Wave Transient Catalogs (GWTC-3). Targeted searches were carried out on the entire GW sample using the maximum--likelihood NITRATES pipeline on the BAT data made available via the GUANO infrastructure. We do not detect any significant electromagnetic emission that is temporally and spatially coincident with any of the GW candidates. We report flux upper limits in the 15-350 keV band as a function of sky position for all the catalog candidates. For GW candidates where the Swift-BAT false alarm rate is less than 10$^{-3}$ Hz, we compute the GW--BAT joint false alarm rate. Finally, the derived Swift-BAT upper limits are used to infer constraints on the putative electromagnetic emission associated with binary black hole mergers.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2410.16565v2",
+            "paperId": "2410.16565v2",
+            "title": "Search for gravitational waves emitted from SN 2023ixf",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "We present the results of a search for gravitational-wave transients associated with core-collapse supernova SN 2023ixf, which was observed in the galaxy Messier 101 via optical emission on 2023 May 19th, during the LIGO-Virgo-KAGRA 15th Engineering Run. We define a five-day on-source window during which an accompanying gravitational-wave signal may have occurred. No gravitational waves have been identified in data when at least two gravitational-wave observatories were operating, which covered $\\sim 14\\%$ of this five-day window. We report the search detection efficiency for various possible gravitational-wave emission models. Considering the distance to M101 (6.7 Mpc), we derive constraints on the gravitational-wave emission mechanism of core-collapse supernovae across a broad frequency spectrum, ranging from 50 Hz to 2 kHz where we assume the gravitational-wave emission occurred when coincident data are available in the on-source window. Considering an ellipsoid model for a rotating proto-neutron star, our search is sensitive to gravitational-wave energy $1 \\times 10^{-4} M_{\\odot} c^2$ and luminosity $2.6 \\times 10^{-4} M_{\\odot} c^2/s$ for a source emitting at 82 Hz. These constraints are around an order of magnitude more stringent than those obtained so far with gravitational-wave data. The constraint on the ellipticity of the proto-neutron star that is formed is as low as 1.08, at frequencies above 1200 Hz, surpassing past results.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2501.01495v2",
+            "paperId": "2501.01495v2",
+            "title": "Search for continuous gravitational waves from known pulsars in the first part of the fourth LIGO-Virgo-KAGRA observing run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Continuous gravitational waves (CWs) emission from neutron stars carries information about their internal structure and equation of state, and it can provide tests of General Relativity. We present a search for CWs from a set of 45 known pulsars in the first part of the fourth LIGO--Virgo--KAGRA observing run, known as O4a. We conducted a targeted search for each pulsar using three independent analysis methods considering the single-harmonic and the dual-harmonic emission models. We find no evidence of a CW signal in O4a data for both models and set upper limits on the signal amplitude and on the ellipticity, which quantifies the asymmetry in the neutron star mass distribution. For the single-harmonic emission model, 29 targets have the upper limit on the amplitude below the theoretical spin-down limit. The lowest upper limit on the amplitude is $6.4\\!\\times\\!10^{-27}$ for the young energetic pulsar J0537-6910, while the lowest constraint on the ellipticity is $8.8\\!\\times\\!10^{-9}$ for the bright nearby millisecond pulsar J0437-4715. Additionally, for a subset of 16 targets we performed a narrowband search that is more robust regarding the emission model, with no evidence of a signal. We also found no evidence of non-standard polarizations as predicted by the Brans-Dicke theory.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2410.09151v2",
+            "paperId": "2410.09151v2",
+            "title": "A search using GEO600 for gravitational waves coincident with fast radio bursts from SGR 1935+2154",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "The magnetar SGR 1935+2154 is the only known Galactic source of fast radio bursts (FRBs). FRBs from SGR 1935+2154 were first detected by CHIME/FRB and STARE2 in 2020 April, after the conclusion of the LIGO, Virgo, and KAGRA Collaborations' O3 observing run. Here we analyze four periods of gravitational wave (GW) data from the GEO600 detector coincident with four periods of FRB activity detected by CHIME/FRB, as well as X-ray glitches and X-ray bursts detected by NICER and NuSTAR close to the time of one of the FRBs. We do not detect any significant GW emission from any of the events. Instead, using a short-duration GW search (for bursts $\\leq$ 1 s) we derive 50\\% (90\\%) upper limits of $10^{48}$ ($10^{49}$) erg for GWs at 300 Hz and $10^{49}$ ($10^{50}$) erg at 2 kHz, and constrain the GW-to-radio energy ratio to $\\leq 10^{14} - 10^{16}$. We also derive upper limits from a long-duration search for bursts with durations between 1 and 10 s. These represent the strictest upper limits on concurrent GW emission from FRBs.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18083v2",
+            "paperId": "2508.18083v2",
+            "title": "GWTC-4.0: Population Properties of Merging Compact Binaries",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We detail the population properties of merging compact objects using 158 mergers from the cumulative Gravitational-Wave Transient Catalog 4.0, which includes three types of binary mergers: binary neutron star, neutron star--black hole binary, and binary black hole mergers. We resolve multiple over- and under-densities in the black hole mass distribution: features persist at primary masses of $10\\,M_\\odot$ and $35\\,M_\\odot$ with a possible third feature at $\\sim 20\\,M_\\odot$. These are departures from an otherwise power-law-like continuum that steepens above $35\\,M_\\odot$. Binary black holes with primary masses near $10\\,M_\\odot$ are more likely to have less massive secondaries, with a mass ratio distribution peaking at $q = 0.74^{+0.13}_{-0.13}$, potentially a signature of stable mass transfer during binary evolution. Black hole spins are inferred to be non-extremal, with 90\\% of black holes having $\u03c7< 0.57$, and preferentially aligned with binary orbits, implying many merging binaries form in isolation. However, we find a significant fraction, 0.24-0.42, of binaries have negative effective inspiral spins, suggesting many could be formed dynamically in gas-free environments. We find evidence for correlation between effective inspiral spin and mass ratio, though it is unclear if this is driven by variation in the mode of the distribution or the width. (Abridged)",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2308.03822v1",
+            "paperId": "2308.03822v1",
+            "title": "Search for Eccentric Black Hole Coalescences during the Third Observing Run of LIGO and Virgo",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Despite the growing number of confident binary black hole coalescences observed through gravitational waves so far, the astrophysical origin of these binaries remains uncertain. Orbital eccentricity is one of the clearest tracers of binary formation channels. Identifying binary eccentricity, however, remains challenging due to the limited availability of gravitational waveforms that include effects of eccentricity. Here, we present observational results for a waveform-independent search sensitive to eccentric black hole coalescences, covering the third observing run (O3) of the LIGO and Virgo detectors. We identified no new high-significance candidates beyond those that were already identified with searches focusing on quasi-circular binaries. We determine the sensitivity of our search to high-mass (total mass $M>70$ $M_\\odot$) binaries covering eccentricities up to 0.3 at 15 Hz orbital frequency, and use this to compare model predictions to search results. Assuming all detections are indeed quasi-circular, for our fiducial population model, we place an upper limit for the merger rate density of high-mass binaries with eccentricities $0 < e \\leq 0.3$ at $0.33$ Gpc$^{-3}$ yr$^{-1}$ at 90\\% confidence level.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2404.04248v3",
+            "paperId": "2404.04248v3",
+            "title": "Observation of Gravitational Waves from the Coalescence of a $2.5\\text{-}4.5~M_\\odot$ Compact Object and a Neutron Star",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "We report the observation of a coalescing compact binary with component masses $2.5\\text{-}4.5~M_\\odot$ and $1.2\\text{-}2.0~M_\\odot$ (all measurements quoted at the 90% credible level). The gravitational-wave signal GW230529_181500 was observed during the fourth observing run of the LIGO-Virgo-KAGRA detector network on 2023 May 29 by the LIGO Livingston Observatory. The primary component of the source has a mass less than $5~M_\\odot$ at 99% credibility. We cannot definitively determine from gravitational-wave data alone whether either component of the source is a neutron star or a black hole. However, given existing estimates of the maximum neutron star mass, we find the most probable interpretation of the source to be the coalescence of a neutron star with a black hole that has a mass between the most massive neutron stars and the least massive black holes observed in the Galaxy. We provisionally estimate a merger rate density of $55^{+127}_{-47}~\\text{Gpc}^{-3}\\,\\text{yr}^{-1}$ for compact binary coalescences with properties similar to the source of GW230529_181500; assuming that the source is a neutron star-black hole merger, GW230529_181500-like sources constitute about 60% of the total merger rate inferred for neutron star-black hole coalescences. The discovery of this system implies an increase in the expected rate of neutron star-black hole mergers with electromagnetic counterparts and provides further evidence for compact objects existing within the purported lower mass gap.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.20721v1",
+            "paperId": "2508.20721v1",
+            "title": "Upper Limits on the Isotropic Gravitational-Wave Background from the first part of LIGO, Virgo, and KAGRA's fourth Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We present results from the search for an isotropic gravitational-wave background using Advanced LIGO and Advanced Virgo data from O1 through O4a, the first part of the fourth observing run. This background is the accumulated signal from unresolved sources throughout cosmic history and encodes information about the merger history of compact binaries throughout the Universe, as well as exotic physics and potentially primordial processes from the early cosmos. Our cross-correlation analysis reveals no statistically significant background signal, enabling us to constrain several theoretical scenarios. For compact binary coalescences which approximately follow a 2/3 power-law spectrum, we constrain the fractional energy density to $\u03a9_{\\rm GW}(25{\\rm Hz})\\leq 2.0\\times 10^{-9}$ (95% cred.), a factor of 1.7 improvement over previous results. Scale-invariant backgrounds are constrained to $\u03a9_{\\rm GW}(25{\\rm Hz})\\leq 2.8\\times 10^{-9}$, representing a 2.1x sensitivity gain. We also place new limits on gravity theories predicting non-standard polarization modes and confirm that terrestrial magnetic noise sources remain below detection threshold. Combining these spectral limits with population models for GWTC-4, the latest gravitational-wave event catalog, we find our constraints remain above predicted merger backgrounds but are approaching detectability. The joint analysis combining the background limits shown here with the GWTC-4 catalog enables improved inference of the binary black hole merger rate evolution across cosmic time. Employing GWTC-4 inference results and standard modeling choices, we estimate that the total background arising from compact binary coalescences is $\u03a9_{\\rm CBC}(25{\\rm Hz})={0.9^{+1.1}_{-0.5}\\times 10^{-9}}$ at 90% confidence, where the largest contribution is due to binary black holes only, $\u03a9_{\\rm BBH}(25{\\rm Hz})=0.8^{+1.1}_{-0.5}\\times 10^{-9}$.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.26848v2",
+            "paperId": "2510.26848v2",
+            "title": "Cosmological and High Energy Physics implications from gravitational-wave background searches in LIGO-Virgo-KAGRA's O1-O4a runs",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We search for gravitational-wave background signals produced by various early Universe processes in the Advanced LIGO O4a dataset, combined with the data from the earlier O1, O2, and O3 (LIGO-Virgo) runs. The absence of detectable signals enables powerful constraints on fundamental physics. We derive gravitational-wave background energy density upper limits from the O1-O4a data to constrain parameters associated with various possible processes in the early Universe: first-order phase transitions, cosmic strings, domain walls, stiff equation of state, axion inflation, second-order scalar perturbations, primordial black hole binaries, and parity violation. In our analyses, the presence of an astrophysical background produced by compact (black hole and neutron star) binary coalescences throughout the Universe is also considered. We address the implications for various cosmological and high energy physics models based on the obtained parameter constraints. We conclude that LIGO-Virgo data already yield significant constraints on numerous early Universe scenarios.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18079v3",
+            "paperId": "2508.18079v3",
+            "title": "Open Data from LIGO, Virgo, and KAGRA through the First Part of the Fourth Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "LIGO, Virgo, and KAGRA form a network of gravitational-wave observatories. Data and analysis results from this network are made publicly available through the Gravitational Wave Open Science Center. This paper describes open data from this network, including the addition of data from the first part of the fourth observing run (O4a) and selected periods from the preceding engineering run, collected from May 2023 to January 2024. The public data set includes calibrated strain time series for each instrument, data from additional channels used for noise subtraction and detector characterization, and analysis data products from version 4.0 of the Gravitational-Wave Transient Catalog.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.27022v2",
+            "paperId": "2510.27022v2",
+            "title": "Direct multi-model dark-matter search with gravitational-wave interferometers using data from the first part of the fourth LIGO-Virgo-KAGRA observing run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Gravitational-wave detectors can probe the existence of dark matter with exquisite sensitivity. Here, we perform a search for three kinds of dark matter -- dilatons (spin-0), dark photons (spin-1) and tensor bosons (spin-2) -- using three independent methods on the first part of the most recent data from the fourth observing run of LIGO--Virgo--KAGRA. Each form of dark matter could have interacted with different standard-model particles in the instruments, causing unique differential strains on the interferometers. While we do not find any evidence for a signal, we place the most stringent upper limits to-date on each of these models. For scalars with masses between $[4\\times 10^{-14},1.5\\times 10^{-13}]$ eV that couple to photons or electrons, our constraints improve upon those from the third observing run by one order of magnitude, with the tightest limit of $\\sim 10^{-20}\\,\\text{GeV}^{-1}$ at a mass of $\\sim2\\times 10^{-13}\\text{ eV}$. For vectors with masses between $[7\\times 10^{-13},8.47\\times 10^{-12}]$ eV that couple to baryons, our constraints supersede those from MICROSCOPE and E\u00f6t-Wash by one to two orders of magnitude, reaching a minimum of $\\sim 5\\times 10^{-24}$ at a mass of $\\sim 10^{-12}$ eV. For tensors with masses of $[4\\times 10^{-14},8.47\\times 10^{-12}]$ eV (the full mass range analyzed) that couple via a Yukawa interaction, our constraints surpass those from fifth-force experiments by four to five orders of magnitude, achieving a limit as low as $\\sim 8\\times 10^{-9}$ at $\\sim2\\times 10^{-13}$ eV. Our results show that gravitational-wave interferometers have become frontiers for new physics and laboratories for direct multi-model dark-matter detection.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.26931v1",
+            "paperId": "2510.26931v1",
+            "title": "GW241011 and GW241110: Exploring Binary Formation and Fundamental Physics with Asymmetric, High-Spin Black Hole Coalescence",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "We report the observation of gravitational waves from two binary black hole coalescences during the fourth observing run of the LIGO--Virgo--KAGRA detector network, GW241011 and GW241110. The sources of these two signals are characterized by rapid and precisely measured primary spins, non-negligible spin--orbit misalignment, and unequal mass ratios between their constituent black holes. These properties are characteristic of binaries in which the more massive object was itself formed from a previous binary black hole merger, and suggest that the sources of GW241011 and GW241110 may have formed in dense stellar environments in which repeated mergers can take place. As the third loudest gravitational-wave event published to date, with a median network signal-to-noise ratio of $36.0$, GW241011 furthermore yields stringent constraints on the Kerr nature of black holes, the multipolar structure of gravitational-wave generation, and the existence of ultralight bosons within the mass range $10^{-13}$--$10^{-12}$ eV.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2510.17487v1",
+            "paperId": "2510.17487v1",
+            "title": "Directional Search for Persistent Gravitational Waves: Results from the First Part of LIGO-Virgo-KAGRA's Fourth Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "The angular distribution of gravitational-wave power from persistent sources may exhibit anisotropies arising from the large-scale structure of the Universe. This motivates directional searches for astrophysical and cosmological gravitational-wave backgrounds, as well as continuous-wave emitters. We present results of such a search using data from the first observing run through the first portion of the fourth observing run of the LIGO-Virgo-KAGRA Collaborations. We apply gravitational-wave radiometer techniques to generate skymaps and search for both narrowband and broadband persistent gravitational-wave sources. Additionally, we use spherical harmonic decomposition to probe spatially extended sources. No evidence of persistent gravitational-wave signals is found, and we set the most stringent constraints to date on such emissions. For narrowband point sources, our sensitivity estimate to effective strain amplitude lies in the range $(0.03 - 8.4) \\times 10^{-24}$ across all sky and frequency range $(20 - 160)$ Hz. For targeted sources -- Scorpius X-1, SN 1987A, the Galactic Center, Terzan 5, and NGC 6397 -- we constrain the strain amplitude with best limits ranging from $\\sim 1.1 \\times 10^{-25}$ to $6.5 \\times 10^{-24}$. For persistent broadband sources, we constrain the gravitational-wave flux $F_{\u03b1, \\hat{n}}^{95\\%, \\mathrm{UL}}(25\\, \\mathrm{Hz}) < (0.008 - 5.5) \\times 10^{-8}\\, \\mathrm{erg\\, cm^{-2}\\, s^{-1}\\, Hz^{-1}}$, depending on the sky direction $\\hat{n}$ and spectral index $\u03b1=0,\\,2/3,\\,3$. Finally, for extended sources, we place upper limits on the strain angular power spectrum $C_\\ell^{1/2} < (0.63 - 17) \\times 10^{-10} \\,\\mathrm{sr}^{-1}$.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2508.18082v2",
+            "paperId": "2508.18082v2",
+            "title": "GWTC-4.0: Updating the Gravitational-Wave Transient Catalog with Observations from the First Part of the Fourth LIGO-Virgo-KAGRA Observing Run",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Version 4.0 of the Gravitational-Wave Transient Catalog (GWTC-4.0) adds new candidates detected by the LIGO, Virgo, and KAGRA observatories through the first part of the fourth observing run (O4a: 2023 May 24 15:00:00 to 2024 January 16 16:00:00 UTC) and a preceding engineering run. In this new data, we find 128 new compact binary coalescence candidates that are identified by at least one of our search algorithms with a probability of astrophysical origin $p_{\\rm astro} \\geq 0.5$ and that are not vetoed during event validation. We also provide detailed source property measurements for 86 of these that have a false alarm rate $< 1 \\rm{yr}^{-1}$. Based on the inferred component masses, these new candidates are consistent with signals from binary black holes and neutron star-black hole binaries (GW230518_125908 and GW230529_181500). Median inferred component masses of binary black holes in the catalog now range from $5.79\\,M_\\odot$ (GW230627_015337) to $137\\,M_\\odot$ (GW231123_135430), while GW231123_135430 was probably produced by the most massive binary observed in the catalog. For the first time we have discovered binary black hole signals with network signal-to-noise ratio exceeding 30, GW230814_230901 and GW231226_01520, enabling high-fidelity studies of the waveforms and astrophysical properties of these systems. Combined with the 90 candidates included in GWTC-3.0, the catalog now contains 218 candidates with $p_{\\rm astro} \\geq 0.5$ and not otherwise vetoed, doubling the size of the catalog and further opening our view of the gravitational-wave Universe.",
+            "tldr": null,
+            "score": 0
         }
     ]
 }

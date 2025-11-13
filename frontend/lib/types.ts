@@ -27,6 +27,14 @@ export interface PaperBank {
     baseline_score?: number;
 }
 
+export interface PaperReview {
+    selected_paper_ids: string[];
+    selected_papers?: Paper[];
+    comment?: string | null;
+    skip?: boolean;
+    submitted_at?: string;
+}
+
 // --- Idea & Experiment Types (from your sample) ---
 export interface Idea {
     Name: string;
@@ -75,10 +83,14 @@ export interface Job {
     status: string;
     request: ResearchRequest;
     papers: PaperBank | null;
+    paper_review?: PaperReview | null;
     ideas: Idea[] | null;
     experiment_results: ExperimentResult[];
     log: string | null;
     error_log: string | null;
+    current_idea_idx?: number;
+    human_feedback?: Record<string, any> | null;
+    requires_human?: boolean;
 }
 
 export interface JobSidebarItem {

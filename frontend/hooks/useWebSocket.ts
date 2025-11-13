@@ -13,8 +13,8 @@ const getWebSocketUrl = () => {
 export const useWebSocket = (
     onMessage: (message: any) => void,
     onError: (error: string) => void,
-    // --- NEW ---
     shouldConnect: boolean = true, // Default to true
+    jobId?: string,
 ) => {
     const { token } = useAuth();
     const ws = useRef<WebSocket | null>(null);
@@ -24,7 +24,11 @@ export const useWebSocket = (
         // --- UPDATED ---
         // Only connect if we have a token AND shouldConnect is true
         if (token && shouldConnect) {
-            const wsUrl = `${getWebSocketUrl()}?token=${token}`;
+            const query = new URLSearchParams({ token });
+            if (jobId) {
+                query.append("job_id", jobId);
+            }
+            const wsUrl = `${getWebSocketUrl()}?${query.toString()}`;
             ws.current = new WebSocket(wsUrl);
 
             ws.current.onopen = () => {
@@ -62,7 +66,7 @@ export const useWebSocket = (
             ws.current?.close();
             setIsConnected(false);
         }
-    }, [token, onMessage, onError, shouldConnect]); // Add shouldConnect to deps
+    }, [token, onMessage, onError, shouldConnect, jobId]);
     // --- END UPDATED ---
 
     return { isConnected };

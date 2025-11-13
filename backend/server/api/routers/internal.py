@@ -4,6 +4,8 @@ from fastapi import APIRouter, Depends, Body, Path, HTTPException, status, Reque
 from pydantic_mongo import PydanticObjectId
 from typing import Dict, Any, List
 
+from server.models.job import JobStatus
+
 from server.models.user import User
 from server.services.auth import get_current_user
 from server.services.websocket import manager
@@ -115,13 +117,36 @@ async def update_papers(
     user_id = await get_job_and_user_id(job_id)
     await jobs_collection.update_one(
         {"_id": job_id},
-        {"$set": {"papers": papers_data}}
+        {"$set": {"papers": papers_data, "status": JobStatus.PENDING_HUMAN_PAPERS, "paper_review": None}}
     )
     await manager.send_json(user_id, {
         "type": "PAPERS_UPDATED",
         "data": papers_data
     })
+    await manager.send_json(user_id, {
+        "type": "JOB_STATUS_UPDATE",
+        "data": {"status": JobStatus.PENDING_HUMAN_PAPERS, "job_id": str(job_id)}
+    })
     return {"status": "papers updated"}
+
+
+@router.get("/paper-review/{job_id}")
+async def get_paper_review(job_id: PydanticObjectId):
+    job_doc = await jobs_collection.find_one(
+        {"_id": job_id},
+        {"paper_review": 1, "status": 1}
+    )
+    if not job_doc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Job not found")
+
+    review = job_doc.get("paper_review")
+    if review:
+        return {"status": "ready", "paper_review": review}
+
+    return {
+        "status": "pending",
+        "job_status": job_doc.get("status")
+    }
 
 
 # --- FIX: Renamed route from '/update-ideas' to '/update-novel-ideas' ---

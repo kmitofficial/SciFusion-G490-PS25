@@ -21,7 +21,8 @@ async def websocket_endpoint(
         current_user: User = Depends(get_current_user_ws)
 ):
     user_id = str(current_user.id)
-    await manager.connect(user_id, websocket)
+    job_id = websocket.query_params.get("job_id")
+    await manager.connect(user_id, websocket, job_id)
 
     try:
         while True:
@@ -33,11 +34,11 @@ async def websocket_endpoint(
     except WebSocketDisconnect:
         # --- FIX ---
         # Removed 'await'. disconnect() is not an async function.
-        manager.disconnect(user_id)
+        manager.disconnect(user_id, job_id)
         # --- END FIX ---
     except Exception as e:
         print(f"Error in WebSocket for user {user_id}: {e}")
         # --- FIX ---
         # Removed 'await'. disconnect() is not an async function.
-        manager.disconnect(user_id)
+        manager.disconnect(user_id, job_id)
         # --- END FIX ---

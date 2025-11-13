@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
+from enum import Enum
 from pydantic_mongo import PydanticObjectId
 
 
@@ -28,20 +29,37 @@ class ResearchRequest(BaseModel):
         }
 
 
-# --- NEW: Job Model (for Database) ---
+# Add to JobStatus enum (or create one)
+class JobStatus(str, Enum):
+    PENDING = "pending"
+    PAPERS_COLLECTED = "papers_collected"
+    PENDING_HUMAN_PAPERS = "pending_human_papers"
+    PAPERS_REVIEWED = "papers_reviewed"
+    IDEAS_GENERATED = "ideas_generated"
+    PENDING_HUMAN_IDEA = "pending_human_idea"
+    CODE_GENERATED = "code_generated"
+    PENDING_HUMAN_CODE = "pending_human_code"
+    RUNNING = "running"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+# Update Job model
 class Job(BaseModel):
     id: PydanticObjectId = Field(default_factory=PydanticObjectId, alias="_id")
     user_id: PydanticObjectId
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    status: str = "pending"
+    status: str = JobStatus.PENDING
     request: ResearchRequest
 
-    # --- NEW FIELDS FOR LIVE DATA ---
-    papers: Optional[Dict[str, Any]] = None
-    ideas: Optional[List[Dict[str, Any]]] = None
-    experiment_results: List[Dict[str, Any]] = []  # Start as empty list
+    # HITL FIELDS
+    requires_human: bool = True
+    human_feedback: Optional[Dict[str, Any]] = None  # idea, code, result
+    current_idea_idx: int = 0
 
-    # --- Final Log Fields (from Stage 3) ---
+    papers: Optional[Dict[str, Any]] = None
+    paper_review: Optional[Dict[str, Any]] = None
+    ideas: Optional[List[Dict[str, Any]]] = None
+    experiment_results: List[Dict[str, Any]] = []
     log: Optional[str] = None
     error_log: Optional[str] = None
 
