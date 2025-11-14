@@ -286,6 +286,18 @@ export default function ExperimentPage() {
     return papers.paper_bank.filter((paper) => selectedPaperIds.has(paper.id));
   }, [papers, selectedPaperIds]);
 
+  // --- NEW: Display only selected papers after review ---
+  const displayedPapers = useMemo(() => {
+    if (!papers) return [];
+    // If paper review exists and not skipped, show only selected papers
+    if (paperReview && !paperReview.skip && paperReview.selected_papers && paperReview.selected_papers.length > 0) {
+      return paperReview.selected_papers;
+    }
+    // Otherwise show all papers
+    return papers.paper_bank;
+  }, [papers, paperReview]);
+  // --- END NEW ---
+
   const submitPaperSelection = useCallback(async () => {
     if (!token || !jobId) {
       toast({ title: "Not authenticated", description: "Sign in to submit feedback.", variant: "destructive" });
@@ -688,6 +700,12 @@ export default function ExperimentPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-5">
+              <div className="rounded-lg border border-amber-500/30 bg-amber-900/10 px-4 py-3">
+                <p className="text-sm text-amber-200/90">
+                  <span className="font-semibold">💡 Important:</span> Only your selected papers will be used for idea generation. 
+                  Choose papers that best align with your research direction.
+                </p>
+              </div>
               <p className="text-sm text-indigo-200/80">
                 Select the papers that look most promising and add optional guidance to steer the next idea generation round.
               </p>
@@ -762,25 +780,43 @@ export default function ExperimentPage() {
       )}
 
       {/* HITL: Idea Approval */}
-      {jobStatus === "pending_human_idea" && currentIdea && (
+      {jobStatus === "pending_human_idea" && (
         <div className="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-8 py-6 bg-black/70 backdrop-blur-xl">
           <Card className="w-full max-w-3xl border-indigo-500/30 bg-gradient-to-br from-gray-900/95 to-gray-800/95 shadow-2xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-indigo-300">
-                <Edit3 className="h-5 w-5" /> Review Idea #{currentIdeaIdx + 1}
+                <Edit3 className="h-5 w-5" /> Ideas Generated - Ready for Experiments
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-white">{currentIdea.Title}</h3>
-                <p className="mt-1 text-sm text-gray-300">{currentIdea.Summary}</p>
-              </div>
+              {currentIdea ? (
+                <div>
+                  <h3 className="font-semibold text-white">{currentIdea.Title}</h3>
+                  <p className="mt-1 text-sm text-gray-300">{currentIdea.Summary}</p>
+                </div>
+              ) : novelIdeas.length > 0 ? (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-300">
+                    {novelIdeas.length} novel {novelIdeas.length === 1 ? 'idea has' : 'ideas have'} been generated and are ready for experimentation.
+                  </p>
+                  <div className="max-h-60 space-y-2 overflow-auto rounded-lg bg-gray-800/50 p-3">
+                    {novelIdeas.map((idea, idx) => (
+                      <div key={idx} className="rounded border border-indigo-500/20 bg-gray-900/50 p-2">
+                        <p className="text-sm font-semibold text-white">{idx + 1}. {idea.Title || idea.Name}</p>
+                        {idea.Summary && <p className="mt-1 text-xs text-gray-400 line-clamp-2">{idea.Summary}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-300">Ideas are ready. Click below to start experiments.</p>
+              )}
               <div className="flex flex-wrap gap-2">
                 <Button onClick={approveIdea} className="bg-green-600 hover:bg-green-700">
-                  <CheckCircle className="h-4 w-4 mr-1" /> Approve & Generate Code
+                  <CheckCircle className="h-4 w-4 mr-1" /> Start Experiments
                 </Button>
                 <Button variant="outline" onClick={() => setJobStatus("pending_human_feedback")}>
-                  <XCircle className="h-4 w-4 mr-1" /> Give Feedback
+                  <XCircle className="h-4 w-4 mr-1" /> Give Feedback First
                 </Button>
               </div>
             </CardContent>
@@ -914,9 +950,23 @@ export default function ExperimentPage() {
             {papers && (
               <div className="flex flex-col gap-4">
                 <h2 className="text-2xl font-semibold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  Found {papers.paper_bank.length} Relevant Papers
+                  {paperReview && !paperReview.skip && paperReview.selected_papers && paperReview.selected_papers.length > 0
+                    ? `${displayedPapers.length} Selected Paper${displayedPapers.length === 1 ? '' : 's'}`
+                    : `Found ${papers.paper_bank.length} Relevant Papers`}
                 </h2>
-                {papers.paper_bank.map((paper) => (
+                {paperReview && !paperReview.skip && paperReview.selected_papers && paperReview.selected_papers.length > 0 && (
+                  <div className="mb-2 rounded-lg border border-indigo-500/30 bg-indigo-900/20 px-4 py-3">
+                    <p className="text-sm text-indigo-200/90">
+                      <span className="font-semibold">✓ Human Review Completed:</span> Showing only your selected papers
+                      {paperReview.comment && (
+                        <span className="block mt-1 text-indigo-300/70 italic">
+                          "{paperReview.comment}"
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                )}
+                {displayedPapers.map((paper) => (
                   <PaperCard key={paper.id} paper={paper} />
                 ))}
               </div>
