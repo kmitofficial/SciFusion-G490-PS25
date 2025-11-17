@@ -1,8 +1,8 @@
 {
-    "topic_description": "using transformers for time series forecasting",
+    "topic_description": "Using Transformers for time series forcasting",
     "all_queries": [
-        "Input(\"time series data\"), Output(\"future time series values\")",
-        "KeywordQuery(\"transformer time series forecasting\")",
+        "Input(\"historical time series data\"), Output(\"future time series values\")",
+        "KeywordQuery(\"Transformer time series forecasting\")",
         "PaperQuery(\"2410.11674v2\")"
     ],
     "paper_bank": [
@@ -47,12 +47,12 @@
             "score": 7
         },
         {
-            "id": "2410.19025v1",
-            "paperId": "2410.19025v1",
-            "title": "Large Language Models for Financial Aid in Financial Time-series Forecasting",
-            "year": "2024",
+            "id": "2510.09776v1",
+            "paperId": "2510.09776v1",
+            "title": "Why Do Transformers Fail to Forecast Time Series In-Context?",
+            "year": "2025",
             "citationCount": 0,
-            "abstract": "Considering the difficulty of financial time series forecasting in financial aid, much of the current research focuses on leveraging big data analytics in financial services. One modern approach is to utilize \"predictive analysis\", analogous to forecasting financial trends. However, many of these time series data in Financial Aid (FA) pose unique challenges due to limited historical datasets and high dimensional financial information, which hinder the development of effective predictive models that balance accuracy with efficient runtime and memory usage. Pre-trained foundation models are employed to address these challenging tasks. We use state-of-the-art time series models including pre-trained LLMs (GPT-2 as the backbone), transformers, and linear models to demonstrate their ability to outperform traditional approaches, even with minimal (\"few-shot\") or no fine-tuning (\"zero-shot\"). Our benchmark study, which includes financial aid with seven other time series tasks, shows the potential of using LLMs for scarce financial datasets.",
+            "abstract": "Time series forecasting (TSF) remains a challenging and largely unsolved problem in machine learning, despite significant recent efforts leveraging Large Language Models (LLMs), which predominantly rely on Transformer architectures. Empirical evidence consistently shows that even powerful Transformers often fail to outperform much simpler models, e.g., linear models, on TSF tasks; however, a rigorous theoretical understanding of this phenomenon remains limited. In this paper, we provide a theoretical analysis of Transformers' limitations for TSF through the lens of In-Context Learning (ICL) theory. Specifically, under AR($p$) data, we establish that: (1) Linear Self-Attention (LSA) models $\\textit{cannot}$ achieve lower expected MSE than classical linear models for in-context forecasting; (2) as the context length approaches to infinity, LSA asymptotically recovers the optimal linear predictor; and (3) under Chain-of-Thought (CoT) style inference, predictions collapse to the mean exponentially. We empirically validate these findings through carefully designed experiments. Our theory not only sheds light on several previously underexplored phenomena but also offers practical insights for designing more effective forecasting architectures. We hope our work encourages the broader research community to revisit the fundamental theoretical limitations of TSF and to critically evaluate the direct application of increasingly sophisticated architectures without deeper scrutiny.",
             "tldr": null,
             "score": 7
         },
@@ -67,24 +67,14 @@
             "score": 7
         },
         {
-            "id": "2510.09776v1",
-            "paperId": "2510.09776v1",
-            "title": "Why Do Transformers Fail to Forecast Time Series In-Context?",
-            "year": "2025",
+            "id": "2410.19025v1",
+            "paperId": "2410.19025v1",
+            "title": "Large Language Models for Financial Aid in Financial Time-series Forecasting",
+            "year": "2024",
             "citationCount": 0,
-            "abstract": "Time series forecasting (TSF) remains a challenging and largely unsolved problem in machine learning, despite significant recent efforts leveraging Large Language Models (LLMs), which predominantly rely on Transformer architectures. Empirical evidence consistently shows that even powerful Transformers often fail to outperform much simpler models, e.g., linear models, on TSF tasks; however, a rigorous theoretical understanding of this phenomenon remains limited. In this paper, we provide a theoretical analysis of Transformers' limitations for TSF through the lens of In-Context Learning (ICL) theory. Specifically, under AR($p$) data, we establish that: (1) Linear Self-Attention (LSA) models $\\textit{cannot}$ achieve lower expected MSE than classical linear models for in-context forecasting; (2) as the context length approaches to infinity, LSA asymptotically recovers the optimal linear predictor; and (3) under Chain-of-Thought (CoT) style inference, predictions collapse to the mean exponentially. We empirically validate these findings through carefully designed experiments. Our theory not only sheds light on several previously underexplored phenomena but also offers practical insights for designing more effective forecasting architectures. We hope our work encourages the broader research community to revisit the fundamental theoretical limitations of TSF and to critically evaluate the direct application of increasingly sophisticated architectures without deeper scrutiny.",
+            "abstract": "Considering the difficulty of financial time series forecasting in financial aid, much of the current research focuses on leveraging big data analytics in financial services. One modern approach is to utilize \"predictive analysis\", analogous to forecasting financial trends. However, many of these time series data in Financial Aid (FA) pose unique challenges due to limited historical datasets and high dimensional financial information, which hinder the development of effective predictive models that balance accuracy with efficient runtime and memory usage. Pre-trained foundation models are employed to address these challenging tasks. We use state-of-the-art time series models including pre-trained LLMs (GPT-2 as the backbone), transformers, and linear models to demonstrate their ability to outperform traditional approaches, even with minimal (\"few-shot\") or no fine-tuning (\"zero-shot\"). Our benchmark study, which includes financial aid with seven other time series tasks, shows the potential of using LLMs for scarce financial datasets.",
             "tldr": null,
             "score": 6
-        },
-        {
-            "id": "2107.03743v1",
-            "paperId": "2107.03743v1",
-            "title": "Probabilistic Time Series Forecasting with Implicit Quantile Networks",
-            "year": "2021",
-            "citationCount": 0,
-            "abstract": "Here, we propose a general method for probabilistic time series forecasting. We combine an autoregressive recurrent neural network to model temporal dynamics with Implicit Quantile Networks to learn a large class of distributions over a time-series target. When compared to other probabilistic neural forecasting models on real- and simulated data, our approach is favorable in terms of point-wise prediction accuracy as well as on estimating the underlying temporal distribution.",
-            "tldr": null,
-            "score": 5
         },
         {
             "id": "2306.12086v2",
@@ -93,6 +83,16 @@
             "year": "2023",
             "citationCount": 0,
             "abstract": "In recent years, the introduction of self-supervised contrastive learning (SSCL) has demonstrated remarkable improvements in representation learning across various domains, including natural language processing and computer vision. By leveraging the inherent benefits of self-supervision, SSCL enables the pre-training of representation models using vast amounts of unlabeled data. Despite these advances, there remains a significant gap in understanding the impact of different SSCL strategies on time series forecasting performance, as well as the specific benefits that SSCL can bring. This paper aims to address these gaps by conducting a comprehensive analysis of the effectiveness of various training variables, including different SSCL algorithms, learning strategies, model architectures, and their interplay. Additionally, to gain deeper insights into the improvements brought about by SSCL in the context of time-series forecasting, a qualitative analysis of the empirical receptive field is performed. Through our experiments, we demonstrate that the end-to-end training of a Transformer model using the Mean Squared Error (MSE) loss and SSCL emerges as the most effective approach in time series forecasting. Notably, the incorporation of the contrastive objective enables the model to prioritize more pertinent information for forecasting, such as scale and periodic relationships. These findings contribute to a better understanding of the benefits of SSCL in time series forecasting and provide valuable insights for future research in this area. Our codes are available at https://github.com/chiyuzhang94/contrastive_learning_time-series_e2e.",
+            "tldr": null,
+            "score": 5
+        },
+        {
+            "id": "2107.03743v1",
+            "paperId": "2107.03743v1",
+            "title": "Probabilistic Time Series Forecasting with Implicit Quantile Networks",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Here, we propose a general method for probabilistic time series forecasting. We combine an autoregressive recurrent neural network to model temporal dynamics with Implicit Quantile Networks to learn a large class of distributions over a time-series target. When compared to other probabilistic neural forecasting models on real- and simulated data, our approach is favorable in terms of point-wise prediction accuracy as well as on estimating the underlying temporal distribution.",
             "tldr": null,
             "score": 4
         },
@@ -157,6 +157,16 @@
             "score": 3
         },
         {
+            "id": "2303.14295v1",
+            "paperId": "2303.14295v1",
+            "title": "Clustering Multivariate Time Series using Energy Distance",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "A novel methodology is proposed for clustering multivariate time series data using energy distance defined in Sz\u00e9kely and Rizzo (2013). Specifically, a dissimilarity matrix is formed using the energy distance statistic to measure separation between the finite dimensional distributions for the component time series. Once the pairwise dissimilarity matrix is calculated, a hierarchical clustering method is then applied to obtain the dendrogram. This procedure is completely nonparametric as the dissimilarities between stationary distributions are directly calculated without making any model assumptions. In order to justify this procedure, asymptotic properties of the energy distance estimates are derived for general stationary and ergodic time series. The method is illustrated in a simulation study for various component time series that are either linear or nonlinear. Finally the methodology is applied to two examples; one involves GDP of selected countries and the other is population size of various states in the U.S.A. in the years 1900 -1999.",
+            "tldr": null,
+            "score": 2
+        },
+        {
             "id": "1904.03825v1",
             "paperId": "1904.03825v1",
             "title": "Application of data compression techniques to time series forecasting",
@@ -175,16 +185,6 @@
             "abstract": "Targeting a better understanding of credit market dynamics, the authors have studied a stochastic model named the Hawkes process. Describing trades arrival times, this kind of model allows for the capture of self-excitement and mutual interactions phenomena. The authors propose here a simple yet conclusive method for fitting multidimensional Hawkes processes with exponential kernels, based on a maximum likelihood non-convex optimization. The method was successfully tested on simulated data, then used on new publicly available real trading data for three European credit indices, thus enabling quantification of self-excitement as well as volume impacts or cross indices influences.",
             "tldr": null,
             "score": 2
-        },
-        {
-            "id": "2303.14295v1",
-            "paperId": "2303.14295v1",
-            "title": "Clustering Multivariate Time Series using Energy Distance",
-            "year": "2023",
-            "citationCount": 0,
-            "abstract": "A novel methodology is proposed for clustering multivariate time series data using energy distance defined in Sz\u00e9kely and Rizzo (2013). Specifically, a dissimilarity matrix is formed using the energy distance statistic to measure separation between the finite dimensional distributions for the component time series. Once the pairwise dissimilarity matrix is calculated, a hierarchical clustering method is then applied to obtain the dendrogram. This procedure is completely nonparametric as the dissimilarities between stationary distributions are directly calculated without making any model assumptions. In order to justify this procedure, asymptotic properties of the energy distance estimates are derived for general stationary and ergodic time series. The method is illustrated in a simulation study for various component time series that are either linear or nonlinear. Finally the methodology is applied to two examples; one involves GDP of selected countries and the other is population size of various states in the U.S.A. in the years 1900 -1999.",
-            "tldr": null,
-            "score": 1
         },
         {
             "id": "1411.4413v2",
@@ -257,22 +257,22 @@
             "score": 0
         },
         {
-            "id": "2410.16565v2",
-            "paperId": "2410.16565v2",
-            "title": "Search for gravitational waves emitted from SN 2023ixf",
-            "year": "2024",
-            "citationCount": 0,
-            "abstract": "We present the results of a search for gravitational-wave transients associated with core-collapse supernova SN 2023ixf, which was observed in the galaxy Messier 101 via optical emission on 2023 May 19th, during the LIGO-Virgo-KAGRA 15th Engineering Run. We define a five-day on-source window during which an accompanying gravitational-wave signal may have occurred. No gravitational waves have been identified in data when at least two gravitational-wave observatories were operating, which covered $\\sim 14\\%$ of this five-day window. We report the search detection efficiency for various possible gravitational-wave emission models. Considering the distance to M101 (6.7 Mpc), we derive constraints on the gravitational-wave emission mechanism of core-collapse supernovae across a broad frequency spectrum, ranging from 50 Hz to 2 kHz where we assume the gravitational-wave emission occurred when coincident data are available in the on-source window. Considering an ellipsoid model for a rotating proto-neutron star, our search is sensitive to gravitational-wave energy $1 \\times 10^{-4} M_{\\odot} c^2$ and luminosity $2.6 \\times 10^{-4} M_{\\odot} c^2/s$ for a source emitting at 82 Hz. These constraints are around an order of magnitude more stringent than those obtained so far with gravitational-wave data. The constraint on the ellipticity of the proto-neutron star that is formed is as low as 1.08, at frequencies above 1200 Hz, surpassing past results.",
-            "tldr": null,
-            "score": 0
-        },
-        {
             "id": "2501.01495v2",
             "paperId": "2501.01495v2",
             "title": "Search for continuous gravitational waves from known pulsars in the first part of the fourth LIGO-Virgo-KAGRA observing run",
             "year": "2025",
             "citationCount": 0,
             "abstract": "Continuous gravitational waves (CWs) emission from neutron stars carries information about their internal structure and equation of state, and it can provide tests of General Relativity. We present a search for CWs from a set of 45 known pulsars in the first part of the fourth LIGO--Virgo--KAGRA observing run, known as O4a. We conducted a targeted search for each pulsar using three independent analysis methods considering the single-harmonic and the dual-harmonic emission models. We find no evidence of a CW signal in O4a data for both models and set upper limits on the signal amplitude and on the ellipticity, which quantifies the asymmetry in the neutron star mass distribution. For the single-harmonic emission model, 29 targets have the upper limit on the amplitude below the theoretical spin-down limit. The lowest upper limit on the amplitude is $6.4\\!\\times\\!10^{-27}$ for the young energetic pulsar J0537-6910, while the lowest constraint on the ellipticity is $8.8\\!\\times\\!10^{-9}$ for the bright nearby millisecond pulsar J0437-4715. Additionally, for a subset of 16 targets we performed a narrowband search that is more robust regarding the emission model, with no evidence of a signal. We also found no evidence of non-standard polarizations as predicted by the Brans-Dicke theory.",
+            "tldr": null,
+            "score": 0
+        },
+        {
+            "id": "2410.16565v2",
+            "paperId": "2410.16565v2",
+            "title": "Search for gravitational waves emitted from SN 2023ixf",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "We present the results of a search for gravitational-wave transients associated with core-collapse supernova SN 2023ixf, which was observed in the galaxy Messier 101 via optical emission on 2023 May 19th, during the LIGO-Virgo-KAGRA 15th Engineering Run. We define a five-day on-source window during which an accompanying gravitational-wave signal may have occurred. No gravitational waves have been identified in data when at least two gravitational-wave observatories were operating, which covered $\\sim 14\\%$ of this five-day window. We report the search detection efficiency for various possible gravitational-wave emission models. Considering the distance to M101 (6.7 Mpc), we derive constraints on the gravitational-wave emission mechanism of core-collapse supernovae across a broad frequency spectrum, ranging from 50 Hz to 2 kHz where we assume the gravitational-wave emission occurred when coincident data are available in the on-source window. Considering an ellipsoid model for a rotating proto-neutron star, our search is sensitive to gravitational-wave energy $1 \\times 10^{-4} M_{\\odot} c^2$ and luminosity $2.6 \\times 10^{-4} M_{\\odot} c^2/s$ for a source emitting at 82 Hz. These constraints are around an order of magnitude more stringent than those obtained so far with gravitational-wave data. The constraint on the ellipticity of the proto-neutron star that is formed is as low as 1.08, at frequencies above 1200 Hz, surpassing past results.",
             "tldr": null,
             "score": 0
         },
@@ -347,8 +347,8 @@
             "score": 0
         },
         {
-            "id": "2510.27022v2",
-            "paperId": "2510.27022v2",
+            "id": "2510.27022v3",
+            "paperId": "2510.27022v3",
             "title": "Direct multi-model dark-matter search with gravitational-wave interferometers using data from the first part of the fourth LIGO-Virgo-KAGRA observing run",
             "year": "2025",
             "citationCount": 0,
