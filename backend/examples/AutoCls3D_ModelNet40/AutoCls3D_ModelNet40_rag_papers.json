@@ -1,0 +1,209 @@
+{
+    "topic_description": "build a 3d classification using modelnet40",
+    "all_queries": [
+        "Input(\"3D point clouds or meshes from ModelNet40 dataset\"), Output(\"class label for each 3D object\")",
+        "KeywordQuery(\"3D classification ModelNet40\")"
+    ],
+    "paper_bank": [
+        {
+            "id": "2509.24802v1",
+            "paperId": "2509.24802v1",
+            "title": "TACO-Net: Topological Signatures Triumph in 3D Object Classification",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "3D object classification is a crucial problem due to its significant\npractical relevance in many fields, including computer vision, robotics, and\nautonomous driving. Although deep learning methods applied to point clouds\nsampled on CAD models of the objects and/or captured by LiDAR or RGBD cameras\nhave achieved remarkable success in recent years, achieving high classification\naccuracy remains a challenging problem due to the unordered point clouds and\ntheir irregularity and noise. To this end, we propose a novel state-of-the-art\n(SOTA) 3D object classification technique that combines topological data\nanalysis with various image filtration techniques to classify objects when they\nare represented using point clouds. We transform every point cloud into a\nvoxelized binary 3D image to extract distinguishing topological features. Next,\nwe train a lightweight one-dimensional Convolutional Neural Network (1D CNN)\nusing the extracted feature set from the training dataset. Our framework,\nTACO-Net, sets a new state-of-the-art by achieving $99.05\\%$ and $99.52\\%$\naccuracy on the widely used synthetic benchmarks ModelNet40 and ModelNet10, and\nfurther demonstrates its robustness on the large-scale real-world OmniObject3D\ndataset. When tested with ten different kinds of corrupted ModelNet40 inputs,\nthe proposed TACO-Net demonstrates strong resiliency overall.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2509.05198v1",
+            "paperId": "2509.05198v1",
+            "title": "Enhancing 3D Point Cloud Classification with ModelNet-R and\n  Point-SkipNet",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "The classification of 3D point clouds is crucial for applications such as\nautonomous driving, robotics, and augmented reality. However, the commonly used\nModelNet40 dataset suffers from limitations such as inconsistent labeling, 2D\ndata, size mismatches, and inadequate class differentiation, which hinder model\nperformance. This paper introduces ModelNet-R, a meticulously refined version\nof ModelNet40 designed to address these issues and serve as a more reliable\nbenchmark. Additionally, this paper proposes Point-SkipNet, a lightweight\ngraph-based neural network that leverages efficient sampling, neighborhood\ngrouping, and skip connections to achieve high classification accuracy with\nreduced computational overhead. Extensive experiments demonstrate that models\ntrained in ModelNet-R exhibit significant performance improvements. Notably,\nPoint-SkipNet achieves state-of-the-art accuracy on ModelNet-R with a\nsubstantially lower parameter count compared to contemporary models. This\nresearch highlights the crucial role of dataset quality in optimizing model\nefficiency for 3D point cloud classification. For more details, see the code\nat: https://github.com/m-saeid/ModeNetR_PointSkipNet.",
+            "tldr": null,
+            "score": 9
+        },
+        {
+            "id": "2303.10898v1",
+            "paperId": "2303.10898v1",
+            "title": "A Tiny Machine Learning Model for Point Cloud Object Classification",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "The design of a tiny machine learning model, which can be deployed in mobile\nand edge devices, for point cloud object classification is investigated in this\nwork. To achieve this objective, we replace the multi-scale representation of a\npoint cloud object with a single-scale representation for complexity reduction,\nand exploit rich 3D geometric information of a point cloud object for\nperformance improvement. The proposed solution is named Green-PointHop due to\nits low computational complexity. We evaluate the performance of Green-PointHop\non ModelNet40 and ScanObjectNN two datasets. Green-PointHop has a model size of\n64K parameters. It demands 2.3M floating-point operations (FLOPs) to classify a\nModelNet40 object of 1024 down-sampled points. Its classification performance\ngaps against the state-of-the-art DGCNN method are 3% and 7% for ModelNet40 and\nScanObjectNN, respectively. On the other hand, the model size and inference\ncomplexity of DGCNN are 42X and 1203X of those of Green-PointHop, respectively.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2108.04221v1",
+            "paperId": "2108.04221v1",
+            "title": "ABD-Net: Attention Based Decomposition Network for 3D Point Cloud\n  Decomposition",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "In this paper, we propose Attention Based Decomposition Network (ABD-Net),\nfor point cloud decomposition into basic geometric shapes namely, plane,\nsphere, cone and cylinder. We show improved performance of 3D object\nclassification using attention features based on primitive shapes in point\nclouds. Point clouds, being the simple and compact representation of 3D objects\nhave gained increasing popularity. They demand robust methods for feature\nextraction due to unorderness in point sets. In ABD-Net the proposed Local\nProximity Encapsulator captures the local geometric variations along with\nspatial encoding around each point from the input point sets. The encapsulated\nlocal features are further passed to proposed Attention Feature Encoder to\nlearn basic shapes in point cloud. Attention Feature Encoder models geometric\nrelationship between the neighborhoods of all the points resulting in capturing\nglobal point cloud information. We demonstrate the results of our proposed\nABD-Net on ANSI mechanical component and ModelNet40 datasets. We also\ndemonstrate the effectiveness of ABD-Net over the acquired attention features\nby improving the performance of 3D object classification on ModelNet40\nbenchmark dataset and compare them with state-of-the-art techniques.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "1912.10644v1",
+            "paperId": "1912.10644v1",
+            "title": "Geometry Sharing Network for 3D Point Cloud Classification and\n  Segmentation",
+            "year": "2019",
+            "citationCount": 0,
+            "abstract": "In spite of the recent progresses on classifying 3D point cloud with deep\nCNNs, large geometric transformations like rotation and translation remain\nchallenging problem and harm the final classification performance. To address\nthis challenge, we propose Geometry Sharing Network (GS-Net) which effectively\nlearns point descriptors with holistic context to enhance the robustness to\ngeometric transformations. Compared with previous 3D point CNNs which perform\nconvolution on nearby points, GS-Net can aggregate point features in a more\nglobal way. Specially, GS-Net consists of Geometry Similarity Connection (GSC)\nmodules which exploit Eigen-Graph to group distant points with similar and\nrelevant geometric information, and aggregate features from nearest neighbors\nin both Euclidean space and Eigenvalue space. This design allows GS-Net to\nefficiently capture both local and holistic geometric features such as\nsymmetry, curvature, convexity and connectivity. Theoretically, we show the\nnearest neighbors of each point in Eigenvalue space are invariant to rotation\nand translation. We conduct extensive experiments on public datasets,\nModelNet40, ShapeNet Part. Experiments demonstrate that GS-Net achieves the\nstate-of-the-art performances on major datasets, 93.3% on ModelNet40, and are\nmore robust to geometric transformations.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2105.01288v2",
+            "paperId": "2105.01288v2",
+            "title": "Walk in the Cloud: Learning Curves for Point Clouds Shape Analysis",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Discrete point cloud objects lack sufficient shape descriptors of 3D\ngeometries. In this paper, we present a novel method for aggregating\nhypothetical curves in point clouds. Sequences of connected points (curves) are\ninitially grouped by taking guided walks in the point clouds, and then\nsubsequently aggregated back to augment their point-wise features. We provide\nan effective implementation of the proposed aggregation strategy including a\nnovel curve grouping operator followed by a curve aggregation operator. Our\nmethod was benchmarked on several point cloud analysis tasks where we achieved\nthe state-of-the-art classification accuracy of 94.2% on the ModelNet40\nclassification task, instance IoU of 86.8 on the ShapeNetPart segmentation\ntask, and cosine error of 0.11 on the ModelNet40 normal estimation task.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2011.03921v2",
+            "paperId": "2011.03921v2",
+            "title": "Point Transformer for Shape Classification and Retrieval of 3D and ALS\n  Roof PointClouds",
+            "year": "2020",
+            "citationCount": 0,
+            "abstract": "The success of deep learning methods led to significant breakthroughs in 3-D\npoint cloud processing tasks with applications in remote sensing. Existing\nmethods utilize convolutions that have some limitations, as they assume a\nuniform input distribution and cannot learn long-range dependencies. Recent\nworks have shown that adding attention in conjunction with these methods\nimproves performance. This raises a question: can attention layers completely\nreplace convolutions? This paper proposes a fully attentional model - {\\em\nPoint Transformer}, for deriving a rich point cloud representation. The model's\nshape classification and retrieval performance are evaluated on a large-scale\nurban dataset - RoofN3D and a standard benchmark dataset ModelNet40. Extensive\nexperiments are conducted to test the model's robustness to unseen point\ncorruptions for analyzing its effectiveness on real datasets. The proposed\nmethod outperforms other state-of-the-art models in the RoofN3D dataset, gives\ncompetitive results in the ModelNet40 benchmark, and showcases high robustness\nto various unseen point corruptions. Furthermore, the model is highly memory\nand space efficient when compared to other methods.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "1604.03351v2",
+            "paperId": "1604.03351v2",
+            "title": "Orientation-boosted Voxel Nets for 3D Object Recognition",
+            "year": "2016",
+            "citationCount": 0,
+            "abstract": "Recent work has shown good recognition results in 3D object recognition using\n3D convolutional networks. In this paper, we show that the object orientation\nplays an important role in 3D recognition. More specifically, we argue that\nobjects induce different features in the network under rotation. Thus, we\napproach the category-level classification task as a multi-task problem, in\nwhich the network is trained to predict the pose of the object in addition to\nthe class label as a parallel task. We show that this yields significant\nimprovements in the classification results. We test our suggested architecture\non several datasets representing various 3D data sources: LiDAR data, CAD\nmodels, and RGB-D images. We report state-of-the-art results on classification\nas well as significant improvements in precision and speed over the baseline on\n3D detection.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "1712.04426v1",
+            "paperId": "1712.04426v1",
+            "title": "3D Object Classification via Spherical Projections",
+            "year": "2017",
+            "citationCount": 0,
+            "abstract": "In this paper, we introduce a new method for classifying 3D objects. Our main\nidea is to project a 3D object onto a spherical domain centered around its\nbarycenter and develop neural network to classify the spherical projection. We\nintroduce two complementary projections. The first captures depth variations of\na 3D object, and the second captures contour-information viewed from different\nangles. Spherical projections combine key advantages of two main-stream 3D\nclassification methods: image-based and 3D-based. Specifically, spherical\nprojections are locally planar, allowing us to use massive image datasets (e.g,\nImageNet) for pre-training. Also spherical projections are similar to\nvoxel-based methods, as they encode complete information of a 3D object in a\nsingle neural network capturing dependencies across different views. Our novel\nnetwork design can fully utilize these advantages. Experimental results on\nModelNet40 and ShapeNetCore show that our method is superior to prior methods.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2106.00227v1",
+            "paperId": "2106.00227v1",
+            "title": "VA-GCN: A Vector Attention Graph Convolution Network for learning on\n  Point Clouds",
+            "year": "2021",
+            "citationCount": 0,
+            "abstract": "Owing to the development of research on local aggregation operators, dramatic\nbreakthrough has been made in point cloud analysis models. However, existing\nlocal aggregation operators in the current literature fail to attach decent\nimportance to the local information of the point cloud, which limits the power\nof the models. To fit this gap, we propose an efficient Vector Attention\nConvolution module (VAConv), which utilizes K-Nearest Neighbor (KNN) to extract\nthe neighbor points of each input point, and then uses the elevation and\nazimuth relationship of the vectors between the center point and its neighbors\nto construct an attention weight matrix for edge features. Afterwards, the\nVAConv adopts a dual-channel structure to fuse weighted edge features and\nglobal features. To verify the efficiency of the VAConv, we connect the VAConvs\nwith different receptive fields in parallel to obtain a Multi-scale graph\nconvolutional network, VA-GCN. The proposed VA-GCN achieves state-of-the-art\nperformance on standard benchmarks including ModelNet40, S3DIS and ShapeNet.\nRemarkably, on the ModelNet40 dataset for 3D classification, VA-GCN increased\nby 2.4% compared to the baseline.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "1912.11606v2",
+            "paperId": "1912.11606v2",
+            "title": "InSphereNet: a Concise Representation and Classification Method for 3D\n  Object",
+            "year": "2019",
+            "citationCount": 0,
+            "abstract": "In this paper, we present an InSphereNet method for the problem of 3D object\nclassification. Unlike previous methods that use points, voxels, or multi-view\nimages as inputs of deep neural network (DNN), the proposed method constructs a\nclass of more representative features named infilling spheres from signed\ndistance field (SDF). Because of the admirable spatial representation of\ninfilling spheres, we can not only utilize very fewer number of spheres to\naccomplish classification task, but also design a lightweight InSphereNet with\nless layers and parameters than previous methods. Experiments on ModelNet40\nshow that the proposed method leads to superior performance than PointNet and\nPointNet++ in accuracy. In particular, if there are only a few dozen sphere\ninputs or about 100000 DNN parameters, the accuracy of our method remains at a\nvery high level (over 88%). This further validates the conciseness and\neffectiveness of the proposed InSphere 3D representation. Keywords: 3D object\nclassification , signed distance field , deep learning , infilling sphere",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "2203.00828v1",
+            "paperId": "2203.00828v1",
+            "title": "3DCTN: 3D Convolution-Transformer Network for Point Cloud Classification",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "Although accurate and fast point cloud classification is a fundamental task\nin 3D applications, it is difficult to achieve this purpose due to the\nirregularity and disorder of point clouds that make it challenging to achieve\neffective and efficient global discriminative feature learning. Lately, 3D\nTransformers have been adopted to improve point cloud processing. Nevertheless,\nmassive Transformer layers tend to incur huge computational and memory costs.\nThis paper presents a novel hierarchical framework that incorporates\nconvolution with Transformer for point cloud classification, named 3D\nConvolution-Transformer Network (3DCTN), to combine the strong and efficient\nlocal feature learning ability of convolution with the remarkable global\ncontext modeling capability of Transformer. Our method has two main modules\noperating on the downsampling point sets, and each module consists of a\nmulti-scale local feature aggregating (LFA) block and a global feature learning\n(GFL) block, which are implemented by using Graph Convolution and Transformer\nrespectively. We also conduct a detailed investigation on a series of\nTransformer variants to explore better performance for our network. Various\nexperiments on ModelNet40 demonstrate that our method achieves state-of-the-art\nclassification performance, in terms of both accuracy and efficiency.",
+            "tldr": null,
+            "score": 8
+        },
+        {
+            "id": "1611.09159v2",
+            "paperId": "1611.09159v2",
+            "title": "Large-Scale Shape Retrieval with Sparse 3D Convolutional Neural Networks",
+            "year": "2016",
+            "citationCount": 0,
+            "abstract": "In this paper we present results of performance evaluation of S3DCNN - a\nSparse 3D Convolutional Neural Network - on a large-scale 3D Shape benchmark\nModelNet40, and measure how it is impacted by voxel resolution of input shape.\nWe demonstrate comparable classification and retrieval performance to\nstate-of-the-art models, but with much less computational costs in training and\ninference phases. We also notice that benefits of higher input resolution can\nbe limited by an ability of a neural network to generalize high level features.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2212.05140v2",
+            "paperId": "2212.05140v2",
+            "title": "Local Neighborhood Features for 3D Classification",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "With advances in deep learning model training strategies, the training of\nPoint cloud classification methods is significantly improving. For example,\nPointNeXt, which adopts prominent training techniques and InvResNet layers into\nPointNet++, achieves over 7% improvement on the real-world ScanObjectNN\ndataset. However, most of these models use point coordinates features of\nneighborhood points mapped to higher dimensional space while ignoring the\nneighborhood point features computed before feeding to the network layers. In\nthis paper, we revisit the PointNeXt model to study the usage and benefit of\nsuch neighborhood point features. We train and evaluate PointNeXt on ModelNet40\n(synthetic), ScanObjectNN (real-world), and a recent large-scale, real-world\ngrocery dataset, i.e., 3DGrocery100. In addition, we provide an additional\ninference strategy of weight averaging the top two checkpoints of PointNeXt to\nimprove classification accuracy. Together with the abovementioned ideas, we\ngain 0.5%, 1%, 4.8%, 3.4%, and 1.6% overall accuracy on the PointNeXt model\nwith real-world datasets, ScanObjectNN (hardest variant), 3DGrocery100's\nApple10, Fruits, Vegetables, and Packages subsets, respectively. We also\nachieve a comparable 0.2% accuracy gain on ModelNet40.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2212.05171v4",
+            "paperId": "2212.05171v4",
+            "title": "ULIP: Learning a Unified Representation of Language, Images, and Point\n  Clouds for 3D Understanding",
+            "year": "2022",
+            "citationCount": 0,
+            "abstract": "The recognition capabilities of current state-of-the-art 3D models are\nlimited by datasets with a small number of annotated data and a pre-defined set\nof categories. In its 2D counterpart, recent advances have shown that similar\nproblems can be significantly alleviated by employing knowledge from other\nmodalities, such as language. Inspired by this, leveraging multimodal\ninformation for 3D modality could be promising to improve 3D understanding\nunder the restricted data regime, but this line of research is not well\nstudied. Therefore, we introduce ULIP to learn a unified representation of\nimages, texts, and 3D point clouds by pre-training with object triplets from\nthe three modalities. To overcome the shortage of training triplets, ULIP\nleverages a pre-trained vision-language model that has already learned a common\nvisual and textual space by training with massive image-text pairs. Then, ULIP\nlearns a 3D representation space aligned with the common image-text space,\nusing a small number of automatically synthesized triplets. ULIP is agnostic to\n3D backbone networks and can easily be integrated into any 3D architecture.\nExperiments show that ULIP effectively improves the performance of multiple\nrecent 3D backbones by simply pre-training them on ShapeNet55 using our\nframework, achieving state-of-the-art performance in both standard 3D\nclassification and zero-shot 3D classification on ModelNet40 and ScanObjectNN.\nULIP also improves the performance of PointMLP by around 3% in 3D\nclassification on ScanObjectNN, and outperforms PointCLIP by 28.8% on top-1\naccuracy for zero-shot 3D classification on ModelNet40. Our code and\npre-trained models are released at https://github.com/salesforce/ULIP.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2501.09278v2",
+            "paperId": "2501.09278v2",
+            "title": "Text-guided Synthetic Geometric Augmentation for Zero-shot 3D\n  Understanding",
+            "year": "2025",
+            "citationCount": 0,
+            "abstract": "Zero-shot recognition models require extensive training data for\ngeneralization. However, in zero-shot 3D classification, collecting 3D data and\ncaptions is costly and laborintensive, posing a significant barrier compared to\n2D vision. Recent advances in generative models have achieved unprecedented\nrealism in synthetic data production, and recent research shows the potential\nfor using generated data as training data. Here, naturally raising the\nquestion: Can synthetic 3D data generated by generative models be used as\nexpanding limited 3D datasets? In response, we present a synthetic 3D dataset\nexpansion method, Textguided Geometric Augmentation (TeGA). TeGA is tailored\nfor language-image-3D pretraining, which achieves SoTA in zero-shot 3D\nclassification, and uses a generative textto-3D model to enhance and extend\nlimited 3D datasets. Specifically, we automatically generate text-guided\nsynthetic 3D data and introduce a consistency filtering strategy to discard\nnoisy samples where semantics and geometric shapes do not match with text. In\nthe experiment to double the original dataset size using TeGA, our approach\ndemonstrates improvements over the baselines, achieving zeroshot performance\ngains of 3.0% on Objaverse-LVIS, 4.6% on ScanObjectNN, and 8.7% on ModelNet40.\nThese results demonstrate that TeGA effectively bridges the 3D data gap,\nenabling robust zero-shot 3D classification even with limited real training\ndata and paving the way for zero-shot 3D vision application.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2410.06418v2",
+            "paperId": "2410.06418v2",
+            "title": "MIRACLE3D: Memory-efficient Integrated Robust Approach for Continual\n  Learning on Point Clouds via Shape Model Construction",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "In this paper, we introduce a novel framework for memory-efficient and\nprivacy-preserving continual learning in 3D object classification. Unlike\nconventional memory-based approaches in continual learning that require storing\nnumerous exemplars, our method constructs a compact shape model for each class,\nretaining only the mean shape along with a few key modes of variation. This\nstrategy not only enables the generation of diverse training samples while\ndrastically reducing memory usage but also enhances privacy by eliminating the\nneed to store original data. To further improve model robustness against input\nvariations, an issue common in 3D domains due to the absence of strong\nbackbones and limited training data, we incorporate Gradient Mode\nRegularization. This technique enhances model stability and broadens\nclassification margins, resulting in accuracy improvements. We validate our\napproach through extensive experiments on the ModelNet40, ShapeNet, and ScanNet\ndatasets, where we achieve state-of-the-art performance. Notably, our method\nconsumes only 15% of the memory required by competing methods on the ModelNet40\nand ShapeNet, while achieving comparable performance on the challenging ScanNet\ndataset with just 8.5% of the memory. These results underscore the scalability,\neffectiveness, and privacy-preserving strengths of our framework for 3D object\nclassification.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2305.15957v3",
+            "paperId": "2305.15957v3",
+            "title": "DiffCLIP: Leveraging Stable Diffusion for Language Grounded 3D\n  Classification",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Large pre-trained models have had a significant impact on computer vision by\nenabling multi-modal learning, where the CLIP model has achieved impressive\nresults in image classification, object detection, and semantic segmentation.\nHowever, the model's performance on 3D point cloud processing tasks is limited\ndue to the domain gap between depth maps from 3D projection and training images\nof CLIP. This paper proposes DiffCLIP, a new pre-training framework that\nincorporates stable diffusion with ControlNet to minimize the domain gap in the\nvisual branch. Additionally, a style-prompt generation module is introduced for\nfew-shot tasks in the textual branch. Extensive experiments on the ModelNet10,\nModelNet40, and ScanObjectNN datasets show that DiffCLIP has strong abilities\nfor 3D understanding. By using stable diffusion and style-prompt generation,\nDiffCLIP achieves an accuracy of 43.2\\% for zero-shot classification on OBJ\\_BG\nof ScanObjectNN, which is state-of-the-art performance, and an accuracy of\n80.6\\% for zero-shot classification on ModelNet10, which is comparable to\nstate-of-the-art performance.",
+            "tldr": null,
+            "score": 7
+        },
+        {
+            "id": "2412.07360v3",
+            "paperId": "2412.07360v3",
+            "title": "Efficient 3D Recognition with Event-driven Spike Sparse Convolution",
+            "year": "2024",
+            "citationCount": 0,
+            "abstract": "Spiking Neural Networks (SNNs) provide an energy-efficient way to extract 3D\nspatio-temporal features. Point clouds are sparse 3D spatial data, which\nsuggests that SNNs should be well-suited for processing them. However, when\napplying SNNs to point clouds, they often exhibit limited performance and fewer\napplication scenarios. We attribute this to inappropriate preprocessing and\nfeature extraction methods. To address this issue, we first introduce the Spike\nVoxel Coding (SVC) scheme, which encodes the 3D point clouds into a sparse\nspike train space, reducing the storage requirements and saving time on point\ncloud preprocessing. Then, we propose a Spike Sparse Convolution (SSC) model\nfor efficiently extracting 3D sparse point cloud features. Combining SVC and\nSSC, we design an efficient 3D SNN backbone (E-3DSNN), which is friendly with\nneuromorphic hardware. For instance, SSC can be implemented on neuromorphic\nchips with only minor modifications to the addressing function of vanilla spike\nconvolution. Experiments on ModelNet40, KITTI, and Semantic KITTI datasets\ndemonstrate that E-3DSNN achieves state-of-the-art (SOTA) results with\nremarkable efficiency. Notably, our E-3DSNN (1.87M) obtained 91.7\\% top-1\naccuracy on ModelNet40, surpassing the current best SNN baselines (14.3M) by\n3.0\\%. To our best knowledge, it is the first direct training 3D SNN backbone\nthat can simultaneously handle various 3D computer vision tasks (e.g.,\nclassification, detection, and segmentation) with an event-driven nature. Code\nis available: https://github.com/bollossom/E-3DSNN/.",
+            "tldr": null,
+            "score": 6
+        },
+        {
+            "id": "2303.06652v1",
+            "paperId": "2303.06652v1",
+            "title": "Interpreting Hidden Semantics in the Intermediate Layers of 3D Point\n  Cloud Classification Neural Network",
+            "year": "2023",
+            "citationCount": 0,
+            "abstract": "Although 3D point cloud classification neural network models have been widely\nused, the in-depth interpretation of the activation of the neurons and layers\nis still a challenge. We propose a novel approach, named Relevance Flow, to\ninterpret the hidden semantics of 3D point cloud classification neural\nnetworks. It delivers the class Relevance to the activated neurons in the\nintermediate layers in a back-propagation manner, and associates the activation\nof neurons with the input points to visualize the hidden semantics of each\nlayer. Specially, we reveal that the 3D point cloud classification neural\nnetwork has learned the plane-level and part-level hidden semantics in the\nintermediate layers, and utilize the normal and IoU to evaluate the consistency\nof both levels' hidden semantics. Besides, by using the hidden semantics, we\ngenerate the adversarial attack samples to attack 3D point cloud classifiers.\nExperiments show that our proposed method reveals the hidden semantics of the\n3D point cloud classification neural network on ModelNet40 and ShapeNet, which\ncan be used for the unsupervised point cloud part segmentation without labels\nand attacking the 3D point cloud classifiers.",
+            "tldr": null,
+            "score": 5
+        }
+    ]
+}

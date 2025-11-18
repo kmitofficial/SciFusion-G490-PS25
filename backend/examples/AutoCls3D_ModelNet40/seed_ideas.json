@@ -1,0 +1,9 @@
+[
+    {
+        "Name": "Baseline",
+        "Title": "Baseline Experiment",
+        "Summary": "build a 3d classification using modelnet40",
+        "Experiment": "Establish baseline performance for the task.",
+        "Method": "Baseline implementation."
+    }
+]

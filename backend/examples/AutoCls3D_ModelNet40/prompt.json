@@ -1,0 +1,4 @@
+{
+    "system": "You are an AI research assistant. Your goal is to design novel machine learning algorithms.",
+    "task_description": "build a 3d classification using modelnet40"
+}
